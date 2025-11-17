@@ -1,0 +1,235 @@
+/* MOBILE FIRST */
+.portal-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  gap: 1rem;
+}
+
+.profile-panel {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem;
+  background-color: #eaf2f8;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.profile-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #5DADE2;
+}
+
+.profile-info {
+  text-align: left;
+}
+
+.profile-name {
+  font-size: 1rem;
+  margin: 0;
+  font-weight: 700;
+}
+
+.profile-age {
+  font-size: 0.9rem;
+  margin: 0;
+  color: #555;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.7rem;
+  flex-grow: 1;
+}
+
+.grid-item img {
+  height: 60%;
+  width: auto;
+  max-width: 95%;
+  object-fit: contain;
+}
+
+.card-text-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.grid-item {
+  position: relative;
+  background-color: #A1DF9E;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 1/1;
+  display: flex;
+}
+
+.image-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0.25rem 0;
+  color: #333;
+  text-align: center;
+}
+
+.click-me {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #333;
+  text-decoration: underline;
+  margin-top: 0;
+}
+
+.grid-item .info {
+  padding: 1rem;
+  font-size: 1rem;
+  color: #333;
+  text-align: center;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.grid-item .info h2 {
+  font-size: 1.2rem;
+  color: #5DADE2;
+  margin-bottom: 0.5rem;
+}
+
+.grid-item .info p {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #555;
+}
+
+
+/* clickable full-box link */
+.grid-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 100%;
+  padding: 0.7rem;
+  box-sizing: border-box;
+  text-decoration: none;
+  color: inherit;
+}
+
+
+/* RESPONSIVENESS DESIGN --- FOR TABLET */
+@media (min-width: 768px) {
+
+
+  .portal-layout {
+    flex-direction: row;
+    gap: 2rem;
+    /* ADD THIS: Prevents any weird overflow issues at the main layout level */
+    align-items: center;
+    ;
+  }
+
+  /* --- Profile Panel becomes a Sidebar --- */
+  .profile-panel {
+    flex-direction: column;
+    flex-basis: 200px;
+    flex-shrink: 0;
+    justify-content: center;
+    padding: 2rem;
+    /* ADD THIS: Ensures the panel has its own scrollbar if its content is too tall */
+    align-self: stretch;
+  }
+
+  /* ... (tus otros estilos para .profile-image, .profile-info, etc.) ... */
+  .profile-image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .profile-info {
+    text-align: center;
+  }
+
+  .profile-name {
+    font-size: 1.2rem;
+  }
+
+
+  /* --- Grid adjusts for more space --- */
+  .content-grid {
+    grid-template-columns: repeat(3, 1fr);
+    /* ADD THESE TWO LINES - THIS IS THE KEY FIX */
+    gap: 1rem;
+    /* Make the grid container take the full available height */
+    overflow-y: auto;
+    /* If the grid items overflow, THIS container will scroll, not the whole page */
+    margin: 1rem auto;
+  }
+
+  /* ... (tus otros estilos para .grid-item, .image-title, etc.) ... */
+  .grid-item img {
+    height: 60%;
+  }
+
+  .grid-item .image-title {
+    font-size: 1rem;
+  }
+
+  .image-title {
+    font-size: 1.2rem;
+  }
+}
+
+/* ==========================================================================
+   3. RESPONSIVE DESIGN - DESKTOP AND UP
+   ========================================================================== */
+
+/* These styles apply to screens 992px WIDE AND LARGER */
+/* We only add what needs to change from the tablet styles */
+@media (min-width: 992px) {
+
+  .portal-layout {
+    gap: 3rem;
+    /* Aún más espacio en pantallas grandes */
+  }
+
+  .profile-panel {
+    flex-basis: 250px;
+    /* Barra lateral un poco más ancha */
+    padding: 2.5rem;
+  }
+
+  .profile-image {
+    width: 120px;
+    height: 120px;
+  }
+
+  .content-grid {
+    gap: 1.5rem;
+    /* Más espacio entre las tarjetas */
+  }
+
+  .grid-item img {
+    height: 60%;
+    /* La imagen puede ser un poco más grande de nuevo */
+  }
+
+  .image-title {
+    font-size: 1.3rem;
+  }
+
+  .click-me {
+    font-size: 1rem;
+  }
+
+}

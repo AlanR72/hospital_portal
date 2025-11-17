@@ -1,0 +1,111 @@
+/* NAV BAR */
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #5DADE2;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.portal-logo {
+  flex-shrink: 0;
+  max-width: 100px;
+}
+
+.portal-logo img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* PORTAL MENU STYLING (specific to your menu with images) */
+.portal-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.portal-menu li {
+  display: flex;
+  flex-direction: column;
+  /* stack image + text vertically */
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.portal-menu li:hover {
+  transform: scale(1.05);
+}
+
+.portal-menu img {
+  width: 35px;
+  /* larger icons */
+  height: 35px;
+  object-fit: contain;
+  margin-bottom: 0.25rem;
+}
+
+.portal-menu span {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+
+
+/* RESPONSIVE BEHAVIOR for TABLET*/
+@media (min-width: 768px) {
+  .nav-container {
+    padding: 0.7rem 2 rem;
+  }
+
+  .portal-logo {
+    max-width: 140px;
+  }
+
+  .portal-menu {
+    gap: 2rem;
+  }
+
+  .portal-menu li {
+    width: 40%;
+    margin-bottom: 20px;
+  }
+
+  .portal-menu img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .portal-menu span {
+    font-size: 1rem;
+  }
+}
+
+/* RESPONSIVE BEHAVIOR for DESKTOP*/
+@media (min-width: 991px) {
+
+  .portal-logo {
+    max-width: 160px;
+  }
+
+  .portal-menu {
+    gap: 3rem;
+  }
+
+  .portal-menu img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .portal-menu span {
+    font-size: 1.1rem;
+  }
+}

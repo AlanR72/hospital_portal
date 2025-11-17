@@ -1,0 +1,142 @@
+.footer-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  /* flex-direction: row; */
+  background-color: #5DADE2;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.hospital-map {
+  display: flex;
+  flex-direction: column;
+  /* stack image and text */
+  align-items: center;
+  text-align: center;
+  padding: 5%;
+  /* gap: 8px; */
+  /* space between image and text */
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.hospital-map img {
+  width: 50px;
+  height: auto;
+  object-fit: contain;
+}
+
+.hospital-map span {
+  font-size: 0.75rem;
+  color: #333;
+  font-weight: 500;
+}
+
+/* Hover effect */
+.hospital-map:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+ul {
+  display: flex;
+  flex-direction: row;
+  gap: 5%;
+  padding: 5% 5%;
+  list-style-type: none;
+  text-align: center;
+  width: 70%;
+}
+
+li {
+  width: 100%;
+}
+
+.footer-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: space-around;
+  /* evenly space items */
+  /* align-items: flex-start; */
+  gap: 1.5rem;
+  width: 55%;
+}
+
+.footer-menu li {
+  display: flex;
+  flex-direction: column;
+  /* stack image + text vertically */
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.footer-menu li:hover {
+  transform: scale(1.05);
+}
+
+.footer-menu img {
+  width: 50px;
+  /* larger icons */
+  height: 50px;
+  object-fit: contain;
+  margin-bottom: 0.25rem;
+}
+
+.footer-menu span {
+  font-size: 0.75rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.social-media-icons {
+  margin-left: 40px;
+  display: flex;
+  gap: 1rem;
+}
+
+.social-media-icons img {
+  width: 50px;
+}
+
+/* RESPONSIVE DESIGN --- TABLET */
+@media (min-width:768px) {
+
+  .hospital-map img,
+  .footer-menu img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .hospital-map span,
+  .footer-menu span {
+    font-size: 0.9rem;
+  }
+
+  .social-media-icons img {
+    width: 35px;
+  }
+}
+
+/* RESPONSIVE DESIGN --- DESKTOP */
+@media (min-width:991px) {
+
+  .hospital-map img,
+  .footer-menu img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .hospital-map span,
+  .footer-menu span {
+    font-size: 1rem;
+  }
+
+  .social-media-icons img {
+    width: 50px;
+  }
+}

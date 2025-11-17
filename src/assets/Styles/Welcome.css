@@ -1,0 +1,241 @@
+/* ==========================================================================
+   1. Base & Mobile-First Styles (Default for all screens)
+   ========================================================================== */
+
+/* Universal Reset & Font Settings */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.page-container {
+  background-color: #E7F1E0;
+  /* Light green page background */
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #333;
+}
+
+/* On mobile, the wrapper just acts as a simple container */
+.content-wrapper {
+  width: 100%;
+}
+
+/* Header Section */
+.page-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: #e4ecf5;
+  /* Light blue-gray header background */
+}
+
+.logo {
+  width: 80px;
+  flex-shrink: 0;
+  margin-right: 15px;
+}
+
+.hide-on-mobile {
+  display: none;
+  /* Por defecto, el logo del portal está oculto */
+}
+
+.logo img {
+  width: 100%;
+  display: block;
+}
+
+.welcome-heading h1 {
+  font-size: 1rem;
+  margin-bottom: 2px;
+}
+
+.welcome-heading h3 {
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* Main Content Area */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 15px;
+}
+
+/* Login Section (Appears FIRST on mobile) */
+.portal-login-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+  max-width: 400px;
+  padding: 30px;
+  background-color: #5DADE2;
+  /* Blue login panel */
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  order: -1;
+  color: white;
+}
+
+.portal-login-section img {
+  width: 100px;
+  margin-bottom: 15px;
+}
+
+.portal-login-section h2 {
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+}
+
+.portal-login-section input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.portal-login-section .temp-link {
+  display: inline-block;
+  background-color: #f7d100;
+  /* Yellow button */
+  color: #333;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-top: 10px;
+  transition: transform 0.2s ease;
+}
+
+.portal-login-section .temp-link:hover {
+  transform: scale(1.05);
+}
+
+/* Information Section (Appears SECOND on mobile) */
+.info-section {
+  width: 100%;
+  max-width: 500px;
+  background-color: #ffffff;
+  /* White info panel */
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.icon-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+}
+
+.icon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.icon-item img {
+  max-width: 65px;
+  height: auto;
+  margin-bottom: 8px;
+}
+
+.icon-item span {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   2. Tablet & Desktop Styles (`768px` and up)
+   ========================================================================== */
+@media (min-width: 768px) {
+
+  /* --- THE DEFINITIVE CENTERING SOLUTION --- */
+  .page-container {
+    display: flex;
+    justify-content: center;
+    /* Center horizontally */
+    align-items: center;
+    /* Center vertically */
+    padding: 40px;
+    /* Creates the outer whitespace margin */
+  }
+
+  .content-wrapper {
+    width: 100%;
+    max-width: 1100px;
+    /* The max width of our entire content box */
+    border-radius: 20px;
+    /* Rounded corners for the whole box */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    /* A more prominent shadow */
+    overflow: hidden;
+    /* Ensures inner content respects the rounded corners */
+  }
+
+  /* --- Internal Layout Adjustments --- */
+
+  .page-header {
+    padding: 25px 40px;
+  }
+
+  .logo {
+    width: 150px;
+  }
+
+  .hide-on-mobile {
+    display: block;
+    /* Cuando la pantalla es de 768px o más, volvemos a mostrar el logo */
+  }
+
+  .welcome-heading h1 {
+    font-size: 1.8rem;
+  }
+
+  .welcome-heading h3 {
+    font-size: 1rem;
+  }
+
+  .main-container {
+    flex-direction: row;
+    align-items: stretch;
+    /* Makes both columns the same height */
+    padding: 40px;
+    gap: 40px;
+  }
+
+  /* Info section is on the left */
+  .info-section {
+    order: 1;
+    flex: 2 1 0;
+    /* Takes up 2/3 of the space */
+  }
+
+  /* Login section is on the right */
+  .portal-login-section {
+    order: 2;
+    flex: 1 1 350px;
+    /* Takes up 1/3 of the space */
+  }
+
+  .icon-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .icon-item img {
+    max-width: 80px;
+  }
+
+  .icon-item span {
+    font-size: 1rem;
+  }
+}
