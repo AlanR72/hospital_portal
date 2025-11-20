@@ -7,30 +7,37 @@ import clipboardIcon from "../../assets/images/clipboard.png";
 import medicineIcon from "../../assets/images/medicine.png";
 import medicalTeamIcon from "../../assets/images/ambulance.png";
 
-export default function ThreeFourHeader() {
+export default function ThreeFourHeader({setView}) {
   return (
     <div>
       <nav className="nav-container">
-        <div className="portal-logo">
-          <a id="logo" href="/Portal">
+        <div className="portal-logo" 
+        onClick={() => setView("default")} 
+        style={{ cursor: "pointer" }}>
+          
             <img src={portalLogo} alt="Hospital Logo" />
-          </a>
+          
         </div>
 
         <ul className="portal-menu">
-          <li>
+          <li onClick={() => setView("default")} 
+          style={{ cursor: "pointer" }}>
             <img src={homeIcon} alt="Home icon" />
             <span>Home</span>
           </li>
-          <li>
+          <li onClick={() => setView('Calendar')} 
+          style={{cursor: "pointer"}}>
             <img src={clipboardIcon} alt="Calendar icon" />
             <span>My Calendar</span>
           </li>
-          <li>
+          <li onClick={() => setView('Medicines')} 
+          style={{cursor: "pointer"}}>
             <img src={medicineIcon} alt="Medicine icon" />
             <span>My Medicine</span>
+            
           </li>
-          <li>
+          <li onClick={() => setView('MedicalTeam')} 
+          style={{cursor: "pointer"}}>
             <img src={medicalTeamIcon} alt="Team icon" />
             <span>Medical Team</span>
           </li>
