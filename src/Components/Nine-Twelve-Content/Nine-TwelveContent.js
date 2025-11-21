@@ -23,27 +23,27 @@ export default function NineTwelveContent() {
   const gridItems = [
     { src: Xray, alt: 'Xray', 
       title: 'X-Ray', 
-      info: "An X-ray is a special camera that lets doctors see inside your body. You’ll just need to stand still for a minute, like a superhero pose, and you can hold a toy to feel calm. The machine makes a small clicking sound, but it’s not scary. The doctor will take a picture of your bones to help you feel better, then you can go back to playing!" },
+      info: "An X-ray is a special kind of camera that can see things inside your body, like your bones and even if something is in the wrong place. It works kind of like taking a picture, but you won’t feel anything at all. You just stand or lie still for a moment while the machine takes the picture. Doctors use X-rays to understand what’s going on so they can help you get better faster." },
       
     { src: mri, alt: 'MRI Scan', 
       title: 'MRI Scan', 
-      info:"An MRI takes pictures of your body, like a superhero camera! You’ll lie on a comfy bed and stay still while the machine makes loud knocking sounds. It might look like a tunnel, but it’s safe. You can wear earplugs or headphones to help you relax. The doctor or nurse will be with you, and soon you’ll be all done and ready to play again!" },
+      info:"An MRI is a big machine shaped like a donut that takes super-detailed pictures of the inside of your body. It uses magnets and sounds—so it might be a little noisy—but it never touches you or hurts. You get to lie on a comfy bed that slides into the machine, and sometimes you can even listen to music while it works. The pictures help doctors see things that are too small for regular cameras." },
 
     { src: clinic, alt: 'Clinic', 
       title: 'Clinic', 
-      info: "Going to the clinic is like visiting a friendly doctor! You might wait with toys or cartoons. When it’s your turn, the doctor will check your heart, height, weight, and tummy. If you need a quick shot, it’s over fast, and you’ll get a sticker or fun band-aid! The doctor will explain everything, and when you're done, you can go home with a special treat for being brave!" },
+      info: "A clinic is a friendly place inside the hospital where you go for check-ups, appointments, and to talk to doctors and nurses. It’s usually bright and welcoming, with people who want to help you feel your best. You might get weighed, have your height measured, or answer simple questions about how you’re feeling. The clinic is where the hospital team gets to know you and helps make a plan to keep you healthy." },
 
     { src: ward, alt: 'Patient Ward', 
       title: 'Patient Ward', 
-      info: "If you're not feeling well, you might stay in a cozy patient ward with a comfy bed and soft blankets. The doctor or nurse will make sure you're comfortable, and you can bring a stuffed animal or play with toys. They’ll check on you, listen to your heart, and give you medicine if needed. It’s okay to feel nervous—they’re there to help you feel safe. Soon, you'll feel better and be ready to play again!" },
+      info: "The patient ward is a cozy area where kids stay when they need to be in the hospital for more than a quick visit. You get your own bed, and sometimes a TV or space for your favourite things from home. Nurses check on you often to make sure you’re comfortable and feeling okay. There are also places to play, relax, or read, so even though you’re in the hospital, you can still have fun and feel cared for." },
 
     { src: playarea, alt: 'Play Area', 
       title: 'Play Area', 
-      info: "A play area is a fun place to run, jump, and play with toys! You can climb blocks, slide down slides, or play with cars and dolls. There might be a ball pit to jump in too! Take a snack break, then back to playing. It’s safe, and you can ask a grown-up for help. When it’s time to go, say goodbye to your friends and get ready for more fun next time!" },
+      info: "The play area is a special spot designed just for kids. It’s filled with toys, books, games, and sometimes craft tables or video games. It’s a place where you can go to have fun, make new friends, and take a break from medical stuff. Friendly play specialists are often there to help you choose activities or show you something new to try so you can feel happy and relaxed." },
 
     { src: surgical, alt: 'Surgical Theatre', 
       title: 'Surgical Theatre', 
-      info: "A surgical theatre is where doctors help you feel better by fixing something inside your body. You’ll be asleep the whole time and feel safe when you wake up. The doctors wear special clothes to keep everything clean, and they’ll give you a warm blanket. After surgery, you’ll be in a comfy bed with your parents, and the nurses will help you feel better. Soon, you’ll be ready to play again!"}
+      info: "A surgical theatre is a super-clean, high-tech room where doctors do special operations to fix problems inside the body. Before you go in, you’ll meet the team who will take care of you, and they’ll explain everything in a way that’s easy to understand. You’ll get medicine that gently puts you to sleep so you won’t feel or remember anything during the surgery. While you’re resting, the doctors and nurses work together like a team to help make you healthier."}
   ];
 
   //profile info
