@@ -1,38 +1,19 @@
-console.log("Server file is running...")
-
 const express = require("express");
-const cors = require("cors");
-require("dotenv").config();
+const cors = require("cors"); // Add this if not already
+const patientsRouter = require("./Routes/patients");
+const appointmentsRouter = require("./Routes/appointments");
+const medicinesRouter = require("./Routes/medicines");
+const medicalTeamRouter = require("./Routes/medicalTeam");
+const authRouter = require("./Routes/auth");
 
 const app = express();
-app.use(cors());
 app.use(express.json());
+app.use(cors()); // allow frontend to fetch
 
-// Import routes
-const authRoutes = require("./routes/auth");
+app.use("/patients", patientsRouter);
+app.use("/appointments", appointmentsRouter);
+app.use("/medicines", medicinesRouter);
+app.use("/medicalTeam", medicalTeamRouter);
+app.use("/auth", authRouter);
 
-// Test route (still ok to keep here)
-const pool = require("./database/connection");
-app.get("/test-db", (req, res) => {
-  pool.query("SELECT 1", (err) => {
-    if (err) {
-      console.error("Database connection failed:", err);
-      return res
-        .status(500)
-        .json({ success: false, message: "Database error" });
-    }
-    res.json({
-      success: true,
-      message: "Database connected successfully!",
-    });
-  });
-});
-
-// Use routes
-app.use("/api", authRoutes);
-
-// Start server
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(4000, () => console.log("Server running on port 4000"));

@@ -1,11 +1,12 @@
 const pool = require("../database/connection");
 
-const getMedicinesByPatient = (req, res) => {
+const getMedicalTeamByPatient = (req, res) => {
   const patientId = req.params.id;
   const sql = `
-    SELECT *
-    FROM medicines
-    WHERE patient_id = ?
+    SELECT mt.*
+    FROM patient_team pt
+    JOIN medical_team mt ON pt.team_member_id = mt.id
+    WHERE pt.patient_id = ?
   `;
   pool.query(sql, [patientId], (err, results) => {
     if (err) return res.status(500).json({ error: "Database error" });
@@ -13,4 +14,4 @@ const getMedicinesByPatient = (req, res) => {
   });
 };
 
-module.exports = { getMedicinesByPatient };
+module.exports = { getMedicalTeamByPatient };

@@ -219,3 +219,8 @@ VALUES
 (10,'Cetirizine','10mg','Once daily','2025-07-10',NULL,'Dr. Sarah Smith','Allergy prevention'),
 (11,'Furosemide','20mg','Once daily','2025-04-01',NULL,'Dr. James Green','Heart surgery recovery'),
 (12,'Diclofenac Gel','2g','Twice daily','2025-03-25','2025-04-10','Dr. Ethan Jones','Sports injury inflammation');
+
+UPDATE appointments
+SET appointment_date = '2025-12-10 10:30:00',
+    status = 'upcoming'
+WHERE id = 1;

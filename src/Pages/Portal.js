@@ -20,12 +20,13 @@ import React, { useState } from "react";
 
 const Portal = () => {
   const ageGroup = localStorage.getItem("age_group");
+  const patientId = localStorage.getItem("patientId");
   const [view, setView] = useState("default");
 
   const ThreeFourComponents = {
   Medicines: <ThreeFourMedicine />,
   MedicalTeam: <ThreeFourMedicalTeam />,
-  Calendar: <ThreeFourCalendar />,
+  Calendar: <ThreeFourCalendar patientId={patientId}/>,
   Content: <ThreeFourContent />,
 };
 

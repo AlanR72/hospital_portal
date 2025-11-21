@@ -8,7 +8,6 @@ import research from "../assets/images/researchstudies.PNG";
 import calendar from "../assets/images/Calendar.PNG";
 import testube from "../assets/images/testube.PNG";
 import communicate from "../assets/images/communicatelogo.png";
-import WelcomeFooter from '../Components/WelcomeFooter';
 import "../assets/Styles/Welcome.css";
 
 
@@ -20,40 +19,49 @@ export default function Welcome() {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      const response = await fetch("http://localhost:4000/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password, role }),
-      });
+  console.log("Submitting login:", { username, password, role });
+  try {
+  const response = await fetch("http://localhost:4000/auth/login", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ username, password, role }),
+  });
 
-      const data = await response.json();
+  const data = await response.json();
 
-      if (!response.ok) {
-        setError(data.error || "Login failed");
-        return;
-      }
+  console.log("LOGIN RESPONSE:", data); // Debugging: see what backend returns
 
-      // Save info locally
-      localStorage.setItem("username", data.username);
-      localStorage.setItem("role", role);
-      if (data.age_group) localStorage.setItem("age_group", data.age_group);
+  if (!response.ok) {
+    setError(data.error || "Login failed");
+    return;
+  }
 
-      // Redirect based on role
-      if (role === "doctor" || role === "admin") {
-        navigate("/admin-dashboard");      // Admin.js
-      } else if (role === "parent") {
-        navigate("/parent-dashboard");     // Parent.js
-      } else if (role === "patient") {
-        navigate("/patient-portal");       // Portal.js (handles age groups)
-      }
-    } catch (err) {
-      console.error("Login error:", err);
-      setError("An error occurred while logging in.");
-    }
-  };
+  // Save info locally
+  localStorage.setItem("username", data.username);
+  localStorage.setItem("role", role);
+  if (data.age_group) localStorage.setItem("age_group", data.age_group);
+
+  // Save patientId only if it exists
+  if (role === "patient" && data.patient_id) {
+    localStorage.setItem("patientId", data.patient_id);
+  }
+
+  // Redirect based on role
+  if (role === "doctor" || role === "admin") {
+    navigate("/admin-dashboard");
+  } else if (role === "parent") {
+    navigate("/parent-dashboard");
+  } else if (role === "patient") {
+    navigate("/patient-portal");
+  }
+
+  } catch (err) {
+  console.error("Login error:", err);
+  setError("An error occurred while logging in.");
+  }
+  };  
 
   return (
     <div className="page-container">
