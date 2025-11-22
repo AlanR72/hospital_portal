@@ -12,7 +12,7 @@ export default function NineTwelveHeader({setView}) {
     <div>
           <nav className="nav-container">
       <div className="portal-logo"
-      onClick={() => setView("default")} 
+      onClick={() => setView("Content")} 
       style={{ cursor: "pointer" }}>
         
       <img src={portalLogo} alt="Hospital Logo" />
@@ -20,7 +20,7 @@ export default function NineTwelveHeader({setView}) {
       </div>
     
       <ul className="portal-menu">
-        <li onClick={() => setView("default")} 
+        <li onClick={() => setView("Content")} 
           style={{ cursor: "pointer" }}>
           <img src={homeIcon} alt="Home icon" />
           <span>Home</span>
