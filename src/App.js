@@ -12,6 +12,7 @@ function App() {
         <Route path="/" element={<Welcome />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/parent-dashboard" element={<ParentDashboard />} />
+        <Route path="/parent-dashboard/:patientId" element={<ParentDashboard />} />
         <Route path="/patient-portal" element={<Portal />} />
       </Routes>
     </Router>

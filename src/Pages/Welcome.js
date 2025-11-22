@@ -39,6 +39,7 @@ export default function Welcome() {
   }
 
   // Save info locally
+  localStorage.setItem("userId", data.id); 
   localStorage.setItem("username", data.username);
   localStorage.setItem("role", role);
   if (data.age_group) localStorage.setItem("age_group", data.age_group);
@@ -146,3 +147,5 @@ export default function Welcome() {
     </div>
   );
 }
+
+
