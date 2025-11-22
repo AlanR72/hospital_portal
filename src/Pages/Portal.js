@@ -31,15 +31,15 @@ const Portal = () => {
   
 
   const ThreeFourComponents = {
-  Medicines: <ThreeFourMedicine />,
-  MedicalTeam: <ThreeFourMedicalTeam />,
+  Medicines: <ThreeFourMedicine patientId={patientId}/>,
+  MedicalTeam: <ThreeFourMedicalTeam patientId={patientId}/>,
   Calendar: <ThreeFourCalendar patientId={patientId}/>,
   Content: <ThreeFourContent patient={patient}/>,
 };
 
 const nineTwelveComponents = {
-  Medicines: <NineTwelveMedicine />,
-  MedicalTeam: <NineTwelveMedicalTeam />,
+  Medicines: <NineTwelveMedicine patientId={patientId}/>,
+  MedicalTeam: <NineTwelveMedicalTeam patientId={patientId}/>,
   Calendar: <NineTwelveCalendar patientId={patientId}/>,
   Content: <NineTwelveContent patientId={patientId}/>,
 };
