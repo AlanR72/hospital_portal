@@ -5,6 +5,8 @@ const appointmentsRouter = require("./Routes/appointments");
 const medicinesRouter = require("./Routes/medicines");
 const medicalTeamRouter = require("./Routes/medicalTeam");
 const authRouter = require("./Routes/auth");
+const parentDashboardRouter = require("./Routes/parentDashboard");
+const adminDashboardRouter = require("./Routes/adminDashboard");
 
 const app = express();
 app.use(express.json());
@@ -15,5 +17,7 @@ app.use("/appointments", appointmentsRouter);
 app.use("/medicines", medicinesRouter);
 app.use("/medicalTeam", medicalTeamRouter);
 app.use("/auth", authRouter);
+app.use("/parentDashboard", parentDashboardRouter);
+app.use("/adminDashboard", adminDashboardRouter);
 
 app.listen(4000, () => console.log("Server running on port 4000"));

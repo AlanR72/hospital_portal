@@ -124,33 +124,50 @@ VALUES
 -- =========================
 -- 4. PATIENT_TEAM TABLE
 -- =========================
+-- Drop old patient_team table
+DROP TABLE IF EXISTS patient_team;
+
+-- Recreate patient_team table
 CREATE TABLE patient_team (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    patient_id INT NOT NULL,
-    team_member_id INT NOT NULL,
-    relationship VARCHAR(50),
-    notes TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CONSTRAINT fk_pt_patient FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_pt_team FOREIGN KEY (team_member_id) REFERENCES medical_team(id) ON DELETE CASCADE ON UPDATE CASCADE
+id INT AUTO_INCREMENT PRIMARY KEY,
+patient_id INT NOT NULL,
+team_member_id INT NOT NULL,
+relationship VARCHAR(50) DEFAULT 'Primary Doctor',
+notes TEXT,
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+FOREIGN KEY (patient_id) REFERENCES patients(id),
+FOREIGN KEY (team_member_id) REFERENCES medical_team(id)
 );
 
--- Link patients to doctors/nurses
+-- Populate patient_team from medicines, matching doctor names to medical_team.id
 INSERT INTO patient_team (patient_id, team_member_id, relationship, notes)
-VALUES
-(1,1,'Primary Doctor','Asthma care'),
-(2,3,'Cardiologist','Heart condition'),
-(3,4,'Neurologist','Epilepsy management'),
-(4,6,'Orthopedic Doctor','Fracture rehab'),
-(5,5,'Oncologist','Chemotherapy treatment'),
-(6,7,'Gastroenterologist','Ulcerative colitis monitoring'),
-(7,3,'Cardiologist','Heart murmur follow-up'),
-(8,6,'Orthopedic Doctor','Arm recovery'),
-(9,3,'Cardiologist','Fractured arm follow-up'),
-(10,1,'Primary Doctor','Allergy management'),
-(11,4,'Neurologist','Migraine management'),
-(12,6,'Orthopedic Doctor','Sports injury rehab');
+SELECT DISTINCT
+m.patient_id,
+mt.id AS team_member_id,
+'Primary Doctor' AS relationship,
+ELT(
+FLOOR(1 + RAND()*10),
+'Assigned based on prescription; monitors blood pressure weekly.',
+'Primary cardiologist; recommends lifestyle adjustments.',
+'Follows up on medication adherence and side effects.',
+'Coordinates care with physiotherapy team.',
+'Tracks patient recovery after surgery.',
+'Provides guidance on diet and exercise.',
+'Consults regarding chronic condition management.',
+'Schedules regular check-ups and lab tests.',
+'Advises on medication timing and dosage adjustments.',
+'Oversees patient’s rehabilitation progress.'
+) AS notes
+FROM medicines m
+JOIN medical_team mt ON m.prescribed_by = mt.name
+WHERE NOT EXISTS (
+SELECT 1
+FROM patient_team pt
+WHERE pt.patient_id = m.patient_id
+AND pt.team_member_id = mt.id
+);
+
 
 -- =========================
 -- 5. APPOINTMENTS TABLE

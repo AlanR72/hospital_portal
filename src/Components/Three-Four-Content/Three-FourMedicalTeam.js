@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 
-export default function ThreeFourMedicalTeam({ patientId }) {
+ function ThreeFourMedicalTeam({ patientId }) {
   const [team, setTeam] = useState([]);
   const [loading, setLoading] = useState(true);
+  
 
   useEffect(() => {
     if (!patientId) return;
 
     async function fetchTeam() {
       try {
-        const res = await fetch(`http://localhost:4000/medical_team/${patientId}`);
+        const res = await fetch(`http://localhost:4000/medicalTeam/${patientId}`);
         if (!res.ok) throw new Error("Failed to fetch medical team");
 
         const data = await res.json();
@@ -53,3 +54,5 @@ export default function ThreeFourMedicalTeam({ patientId }) {
     </div>
   );
 }
+
+export default ThreeFourMedicalTeam;

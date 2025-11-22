@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Parent() {
+export default function AdminDashboard() {
   return (
     <div>
       <h1>Hello</h1>

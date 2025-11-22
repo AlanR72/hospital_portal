@@ -10,6 +10,8 @@ import surgical from '../../assets/images/2-4 year icons/surgical.png'
 import ward from '../../assets/images/2-4 year icons/ward.png'
 import playarea from '../../assets/images/2-4 year icons/play area.png'
 
+
+
 export default function ThreeFourContent({ patientId }) {
   // State to track which grid item is active (clicked)
   const [activeItem, setActiveItem] = useState(null);
@@ -54,11 +56,30 @@ export default function ThreeFourContent({ patientId }) {
   useEffect(() => {
   if (!patientId) return;
 
-  fetch(`http://localhost:4000/patients/${patient.patient_id}`)
-    .then(res => res.json())
-    .then(data => setPatient(data))
-    .catch(err => console.error("Error fetching patient info:", err));
-}, [patient?.patient_id]);
+  async function fetchPatient() {
+    try {
+      console.log("Fetching patient for ID:", patientId);
+      const res = await fetch(`http://localhost:4000/patients/${patientId}`);
+      if (!res.ok) throw new Error("Failed to fetch patient info");
+
+      const data = await res.json();
+      setPatient(data);
+    } catch (err) {
+      console.error("Error fetching patient info:", err);
+    }
+    
+  }
+
+  fetchPatient();
+}, [patientId]);
+
+//debug
+useEffect(() => {
+  console.log("Patient state in ThreeFourContent:", patient); // <-- here
+}, [patient])
+
+
+if (!patient) return <p>Loading patient info...</p>;
 
   //profile info
   return (
@@ -72,6 +93,7 @@ export default function ThreeFourContent({ patientId }) {
         <div className="profile-info">
           <h3 className="profile-name">{patient?.first_name} {patient?.last_name}</h3>
           <p className="profile-age">Age: {patient?.age}</p>
+          
         </div>
       </aside>
 

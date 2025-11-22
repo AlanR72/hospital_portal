@@ -20,8 +20,7 @@ import React, { useState } from "react";
 
 const Portal = () => {
   const ageGroup = localStorage.getItem("age_group");
-  const patientId = localStorage.getItem("patientId")?.trim();
-  const [patient, setPatient] = useState(null);
+  const patientId = Number(localStorage.getItem("patientId"));
   const [view, setView] = useState("default");
   // Check if patientId exists
   if (!patientId) {
@@ -34,7 +33,7 @@ const Portal = () => {
   Medicines: <ThreeFourMedicine patientId={patientId}/>,
   MedicalTeam: <ThreeFourMedicalTeam patientId={patientId}/>,
   Calendar: <ThreeFourCalendar patientId={patientId}/>,
-  Content: <ThreeFourContent patient={patient}/>,
+  Content: <ThreeFourContent patientId={patientId}/>,
 };
 
 const nineTwelveComponents = {

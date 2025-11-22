@@ -4,4 +4,4 @@ const { getPatientById } = require("../Controllers/patientsController");
 
 router.get("/:patientId", getPatientById);
 
-module.exports = router
+module.exports = router;
