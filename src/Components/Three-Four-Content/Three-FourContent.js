@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import '../../assets/Styles/Content.css'
 
@@ -10,9 +10,13 @@ import surgical from '../../assets/images/2-4 year icons/surgical.png'
 import ward from '../../assets/images/2-4 year icons/ward.png'
 import playarea from '../../assets/images/2-4 year icons/play area.png'
 
-export default function ThreeFourContent() {
+export default function ThreeFourContent({ patientId }) {
   // State to track which grid item is active (clicked)
   const [activeItem, setActiveItem] = useState(null);
+
+  // State for patient info
+  const [patient, setPatient] = useState(null);
+  
 
   // Function to toggle between image and text
   const handleToggle = (index) => {
@@ -46,6 +50,16 @@ export default function ThreeFourContent() {
       info: "A surgical theatre is where doctors help you feel better by fixing something inside your body. You’ll be asleep the whole time and feel safe when you wake up. The doctors wear special clothes to keep everything clean, and they’ll give you a warm blanket. After surgery, you’ll be in a comfy bed with your parents, and the nurses will help you feel better. Soon, you’ll be ready to play again!"}
   ];
 
+  // Fetch patient info when patientId prop changes
+  useEffect(() => {
+  if (!patientId) return;
+
+  fetch(`http://localhost:4000/patients/${patient.patient_id}`)
+    .then(res => res.json())
+    .then(data => setPatient(data))
+    .catch(err => console.error("Error fetching patient info:", err));
+}, [patient?.patient_id]);
+
   //profile info
   return (
     <div className="portal-layout">
@@ -56,8 +70,8 @@ export default function ThreeFourContent() {
           className="profile-image"
         />
         <div className="profile-info">
-          <h3 className="profile-name">John Doe</h3>
-          <p className="profile-age">Age: 3</p>
+          <h3 className="profile-name">{patient?.first_name} {patient?.last_name}</h3>
+          <p className="profile-age">Age: {patient?.age}</p>
         </div>
       </aside>
 

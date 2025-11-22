@@ -20,21 +20,28 @@ import React, { useState } from "react";
 
 const Portal = () => {
   const ageGroup = localStorage.getItem("age_group");
-  const patientId = localStorage.getItem("patientId");
+  const patientId = localStorage.getItem("patientId")?.trim();
+  const [patient, setPatient] = useState(null);
   const [view, setView] = useState("default");
+  // Check if patientId exists
+  if (!patientId) {
+    return <p>Error: No patient ID found. Please log in again.</p>;
+  }
+ 
+  
 
   const ThreeFourComponents = {
   Medicines: <ThreeFourMedicine />,
   MedicalTeam: <ThreeFourMedicalTeam />,
   Calendar: <ThreeFourCalendar patientId={patientId}/>,
-  Content: <ThreeFourContent />,
+  Content: <ThreeFourContent patient={patient}/>,
 };
 
 const nineTwelveComponents = {
   Medicines: <NineTwelveMedicine />,
   MedicalTeam: <NineTwelveMedicalTeam />,
-  Calendar: <NineTwelveCalendar />,
-  Content: <NineTwelveContent />,
+  Calendar: <NineTwelveCalendar patientId={patientId}/>,
+  Content: <NineTwelveContent patientId={patientId}/>,
 };
 
   // render content based on age group and view

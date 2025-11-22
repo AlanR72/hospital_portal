@@ -221,6 +221,6 @@ VALUES
 (12,'Diclofenac Gel','2g','Twice daily','2025-03-25','2025-04-10','Dr. Ethan Jones','Sports injury inflammation');
 
 UPDATE appointments
-SET appointment_date = '2025-12-10 10:30:00',
-    status = 'upcoming'
-WHERE id = 1;
+SET appointment_date = DATE_ADD(NOW(), INTERVAL 3 MONTH),
+    status = 'upcoming',
+    updated_at = NOW();

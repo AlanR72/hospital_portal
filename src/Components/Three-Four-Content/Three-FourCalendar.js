@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 
-function ThreeFourCalendar({ patientId }) {
+function ThreeFourCalendar({patientId}) {
   const [appointment, setAppointment] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchAppointment() {
       try {
-        const res = await fetch(`http://localhost:4000/appointments/${patientId}/next`);
+        const res = await fetch(`http://localhost:4000/appointments/${patientId}/next`, {
+          method: "GET",
+        });
         const data = await res.json();
 
         setAppointment(data);   // data can be null, that's OK
@@ -30,9 +32,12 @@ function ThreeFourCalendar({ patientId }) {
   return (
     <div>
       <p>Your next appointment is:</p>
-      <p><strong>Date:</strong> {new Date(appointment.appointment_date).toLocaleString()}</p>
-      <p><strong>Doctor:</strong> {appointment.doctor_name}</p>
-      <p><strong>Location:</strong> {appointment.location}</p>
+      <p><strong>Date:</strong> {appointment?.appointment_date ? new Date(appointment.appointment_date).toLocaleString() : "N/A"}</p>
+      <p><strong>Doctor:</strong> {appointment?.doctor_name || "N/A"}</p>
+      <p><strong>Location:</strong> {appointment?.location || "N/A"}</p>
+      <p><strong>Name:</strong> {appointment?.patient_first_name} {appointment?.patient_last_name}</p>
+      <p><strong>D.O.B:</strong> {appointment?.patient_dob}</p>
+      <p><strong>Age:</strong> {appointment?.patient_age}</p>
     </div>
   );
 }

@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+
 import { Link } from 'react-router-dom'
 import '../../assets/Styles/Content.css'
 
@@ -10,9 +11,11 @@ import surgical from '../../assets/images/9-12 year icons/surgical.png'
 import ward from '../../assets/images/9-12 year icons/ward.png'
 import playarea from '../../assets/images/9-12 year icons/playarea.png'
 
-export default function NineTwelveContent() {
+export default function NineTwelveContent({patientId}) {
   // State to track which grid item is active (clicked)
   const [activeItem, setActiveItem] = useState(null);
+  // State for patient info
+  const [patient, setPatient] = useState(null);
 
   // Function to toggle between image and text
   const handleToggle = (index) => {
@@ -46,6 +49,19 @@ export default function NineTwelveContent() {
       info: "A surgical theatre is where doctors help you feel better by fixing something inside your body. You’ll be asleep the whole time and feel safe when you wake up. The doctors wear special clothes to keep everything clean, and they’ll give you a warm blanket. After surgery, you’ll be in a comfy bed with your parents, and the nurses will help you feel better. Soon, you’ll be ready to play again!"}
   ];
 
+  // Fetch patient info when patientId prop changes
+    useEffect(() => {
+      if (!patientId) return;
+  
+      fetch(`http://localhost:4000/patients/${patientId}`) // adjust if your route is /api/patients
+        .then(res => {
+          if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+          return res.json();
+        })
+        .then(data => setPatient(data))
+        .catch(err => console.error("Error fetching patient info:", err));
+    }, [patientId]);
+
   //profile info
   return (
     <div className="portal-layout">
@@ -56,8 +72,8 @@ export default function NineTwelveContent() {
           className="profile-image"
         />
         <div className="profile-info">
-          <h3 className="profile-name">Jane Doe</h3>
-          <p className="profile-age">Age: 10</p>
+          <h3 className="profile-name">{patient ? `${patient.first_name} ${patient.last_name}` : "Loading..."}</h3>
+          <p className="profile-age">Age: {patient ? patient.age : "..."}</p>
         </div>
       </aside>
 
