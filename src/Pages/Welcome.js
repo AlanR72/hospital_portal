@@ -20,49 +20,44 @@ export default function Welcome() {
 
   const handleLogin = async (e) => {
   e.preventDefault();
+  setError("");
 
-  console.log("Submitting login:", { username, password, role });
   try {
-  const response = await fetch("http://localhost:4000/auth/login", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ username, password, role }),
-  });
+    const res = await fetch("http://localhost:4000/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }) // no role
+    });
 
-  const data = await response.json();
+    const data = await res.json();
 
-  console.log("LOGIN RESPONSE:", data); // Debugging: see what backend returns
+    if (!res.ok) {
+      setError(data.error || "Login failed");
+      return;
+    }
 
-  if (!response.ok) {
-    setError(data.error || "Login failed");
-    return;
-  }
+    // Save user info
+    localStorage.setItem("username", data.username);
+    localStorage.setItem("role", data.role);
+    if (data.patient_id) localStorage.setItem("patientId", data.patient_id);
 
-  // Save info locally
-  localStorage.setItem("userId", data.id); 
-  localStorage.setItem("username", data.username);
-  localStorage.setItem("role", role);
-  if (data.age_group) localStorage.setItem("age_group", data.age_group);
-
-  // Save patientId only if it exists
-  if (role === "patient" && data.patient_id) {
-    localStorage.setItem("patientId", data.patient_id);
-  }
-
-  // Redirect based on role
-  if (role === "doctor" || role === "admin") {
-    navigate("/admin-dashboard");
-  } else if (role === "parent") {
-    navigate("/parent-dashboard");
-  } else if (role === "patient") {
-    navigate("/patient-portal");
-  }
+    // Redirect based on backend validation
+    if (data.canAccessAdmin) {
+      navigate("/admin-dashboard");
+    } else if (data.role === "parent") {
+      navigate("/parent-dashboard");
+    } else if (data.role === "patient") {
+      navigate("/patient-portal");
+    } else {
+      setError("Unknown user role");
+    }
 
   } catch (err) {
-  console.error("Login error:", err);
-  setError("An error occurred while logging in.");
+    console.error("Login error:", err);
+    setError("An error occurred while logging in.");
   }
-  };  
+};
+
 
   return (
     <div className="page-container">

@@ -1,8 +1,9 @@
 const pool = require("../database/connection");
 
 const login = (req, res) => {
-  const { username, password, role } = req.body;
+  const { username, password } = req.body; // remove role from frontend
 
+  // Get the user and patient info if applicable
   const sql = `
     SELECT u.id, u.username, u.password_hash, u.role, u.patient_id,
            p.first_name, p.last_name, p.dob, p.gender, p.address, p.contact_phone, p.notes AS patient_notes
@@ -17,6 +18,7 @@ const login = (req, res) => {
 
     const user = results[0];
 
+    // Password check
     if (user.password_hash !== password)
       return res.status(401).json({ error: "Incorrect password" });
 
@@ -26,6 +28,13 @@ const login = (req, res) => {
       role: user.role,
     };
 
+    // Determine admin access
+    if (user.role === "admin" && !["doctor", "nurse"].includes(user.role)) {
+      return res.status(403).json({ error: "Access denied for admin dashboard" });
+    }
+    response.canAccessAdmin = ["doctor", "nurse"].includes(user.role);
+
+    // Patient info
     if (user.role === "patient") {
       const dob = new Date(user.dob);
       const today = new Date();
@@ -52,27 +61,25 @@ const login = (req, res) => {
         age,
         age_group
       };
-
-      return res.json(response);
     }
 
-    // Parent logic
+    // Parent info
     if (user.role === "parent") {
       const childSql = `
-        SELECT p.id AS patient_id, p.first_name, p.last_name, p.dob, p.gender, p.address, p.contact_phone, p.notes
+        SELECT 
+          p.id AS patient_id, p.first_name, p.last_name, p.dob, p.gender, p.address, p.contact_phone, p.notes
         FROM parent_child pc
         JOIN patients p ON pc.patient_id = p.id
         WHERE pc.parent_user_id = ?
       `;
-      return pool.query(childSql, [user.id], (err2, children) => {
+      pool.query(childSql, [user.id], (err2, children) => {
         if (err2) return res.status(500).json({ error: "Database error fetching children" });
         response.children = children;
         return res.json(response);
       });
+    } else {
+      return res.json(response);
     }
-
-    // Doctors, nurses, admins
-    res.json(response);
   });
 };
 
