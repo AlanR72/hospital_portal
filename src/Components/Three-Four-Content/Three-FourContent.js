@@ -21,29 +21,41 @@ export default function ThreeFourContent() {
 
   // Array to hold the details for each item (image, title, and info)
   const gridItems = [
-    { src: Xray, alt: 'Xray', 
-      title: 'X-Ray', 
-      info: "An X-ray is a special camera that lets doctors see inside your body. You’ll just need to stand still for a minute, like a superhero pose, and you can hold a toy to feel calm. The machine makes a small clicking sound, but it’s not scary. The doctor will take a picture of your bones to help you feel better, then you can go back to playing!" },
-      
-    { src: mri, alt: 'MRI Scan', 
-      title: 'MRI Scan', 
-      info:"An MRI takes pictures of your body, like a superhero camera! You’ll lie on a comfy bed and stay still while the machine makes loud knocking sounds. It might look like a tunnel, but it’s safe. You can wear earplugs or headphones to help you relax. The doctor or nurse will be with you, and soon you’ll be all done and ready to play again!" },
+    {
+      src: Xray, alt: 'Xray',
+      title: 'X-Ray',
+      info: "An X-ray camera takes a picture of your bones! You just have to stand very still for a moment, like a statue. It's quick, it doesn't hurt, and then you can go play!"
+    },
 
-    { src: clinic, alt: 'Clinic', 
-      title: 'Clinic', 
-      info: "Going to the clinic is like visiting a friendly doctor! You might wait with toys or cartoons. When it’s your turn, the doctor will check your heart, height, weight, and tummy. If you need a quick shot, it’s over fast, and you’ll get a sticker or fun band-aid! The doctor will explain everything, and when you're done, you can go home with a special treat for being brave!" },
+    {
+      src: mri, alt: 'MRI Scan',
+      title: 'MRI Scan',
+      info: "You get to lie down on a comfy bed that slides into a tunnel. The machine makes loud tapping sounds, like a drum! You can wear special headphones. The doctors are right there with you."
+    },
 
-    { src: ward, alt: 'Patient Ward', 
-      title: 'Patient Ward', 
-      info: "If you're not feeling well, you might stay in a cozy patient ward with a comfy bed and soft blankets. The doctor or nurse will make sure you're comfortable, and you can bring a stuffed animal or play with toys. They’ll check on you, listen to your heart, and give you medicine if needed. It’s okay to feel nervous—they’re there to help you feel safe. Soon, you'll feel better and be ready to play again!" },
+    {
+      src: clinic, alt: 'Clinic',
+      title: 'Clinic',
+      info: "At the clinic, a friendly doctor will check if you are growing strong! They might listen to your heart. If you need a tiny poke, it's super fast, and you get a cool sticker for being brave!"
+    },
 
-    { src: playarea, alt: 'Play Area', 
-      title: 'Play Area', 
-      info: "A play area is a fun place to run, jump, and play with toys! You can climb blocks, slide down slides, or play with cars and dolls. There might be a ball pit to jump in too! Take a snack break, then back to playing. It’s safe, and you can ask a grown-up for help. When it’s time to go, say goodbye to your friends and get ready for more fun next time!" },
+    {
+      src: ward, alt: 'Patient Ward',
+      title: 'Patient Ward',
+      info: "This is your cozy room if you need to stay for a little while. You get your own bed, and you can bring your favorite toys! The nurses are there to help you feel comfy and safe."
+    },
 
-    { src: surgical, alt: 'Surgical Theatre', 
-      title: 'Surgical Theatre', 
-      info: "A surgical theatre is where doctors help you feel better by fixing something inside your body. You’ll be asleep the whole time and feel safe when you wake up. The doctors wear special clothes to keep everything clean, and they’ll give you a warm blanket. After surgery, you’ll be in a comfy bed with your parents, and the nurses will help you feel better. Soon, you’ll be ready to play again!"}
+    {
+      src: playarea, alt: 'Play Area',
+      title: 'Play Area',
+      info: "The play area is a super fun room with toys, slides, and blocks! You can make new friends and play lots of games. It's a happy place to have fun while you're at the hospital."
+    },
+
+    {
+      src: surgical, alt: 'Surgical Theatre',
+      title: 'Surgical Theatre',
+      info: "This is a special room where doctors help you while you're taking a nap. You won't feel anything at all! When you wake up, you'll be in your cozy bed with your family."
+    }
   ];
 
   //profile info
