@@ -11,44 +11,6 @@ import calendarIcon from "../../assets/images/nine-twelvecalendar.png"
 import medicineIcon from "../../assets/images/nine-twelvemedicine.png"
 import teamIcon from "../../assets/images/nine-twelveteam.png"
 
-<<<<<<< HEAD
-export default function NineTwelveHeader({setView}) {
-  return (
-    <div>
-          <nav className="nav-container">
-      <div className="portal-logo"
-      onClick={() => setView("Content")} 
-      style={{ cursor: "pointer" }}>
-        
-      <img src={portalLogo} alt="Hospital Logo" />
-        
-      </div>
-    
-      <ul className="portal-menu">
-        <li onClick={() => setView("Content")} 
-          style={{ cursor: "pointer" }}>
-          <img src={homeIcon} alt="Home icon" />
-          <span>Home</span>
-        </li>
-        <li onClick={() => setView('Calendar')} 
-          style={{cursor: "pointer"}}>
-          <img src={calendarIcon} alt="Calendar icon" />
-          <span>My Calendar</span>
-        </li>
-        <li onClick={() => setView('Medicines')} 
-          style={{cursor: "pointer"}}>
-          <img src={medicineIcon} alt="Medicine icon" />
-          <span>My Medicine</span>
-        </li>
-        <li onClick={() => setView('MedicalTeam')} 
-          style={{cursor: "pointer"}}>
-          <img src={teamIcon} alt="Team icon" />
-          <span>Medical Team</span>
-        </li>
-      </ul>
-    </nav>
-          
-=======
 //Define and export the 'ThreeFourHeader' functional component.
 export default function NineTwelveHeader() {
   // 1. STATE MANAGEMENT:
@@ -74,11 +36,9 @@ export default function NineTwelveHeader() {
       <nav className="nav-container">
 
         {/* The site logo, which links to the portal homepage */}
-        <div className="portal-logo">
-          <a id="logo" href="/Portal">
-            <img src={portalLogo} alt="Hospital Logo" />
-          </a>
->>>>>>> main
+        <div className="portal-logo" onClick={() => setView("Content")} 
+              style={{ cursor: "pointer" }}>
+          <img src={portalLogo} alt="Hospital Logo" />
         </div>
 
         {/* The burger menu button, visible only on mobile. */}
@@ -101,20 +61,24 @@ export default function NineTwelveHeader() {
 
           {/* The navigation menu items with icons */}
           <ul className="portal-menu-list">
-            <li>
+            <li onClick={() => setView("Content")} 
+              style={{ cursor: "pointer" }}>
               <img src={homeIcon} alt="Home icon" />
               <span>Home</span>
             </li>
-            <li>
-              <img src={calendarIcon} alt="Calendar icon" />
+            <li onClick={() => setView('Calendar')} 
+              style={{cursor: "pointer"}}>
+              <img src={clipboardIcon} alt="Calendar icon" />
               <span>My Calendar</span>
             </li>
-            <li>
-              <img src={medicineIcon} alt="Medicine icon" />
-              <span>My Medicine</span>
+            <li onClick={() => setView('Medicines')} 
+              style={{cursor: "pointer"}}>
+            <img src={medicineIcon} alt="Medicine icon" />
+            <span>My Medicine</span>
             </li>
-            <li>
-              <img src={teamIcon} alt="Team icon" />
+            <li onClick={() => setView("MedicalTeam")} 
+              style={{ cursor: "pointer" }}>
+              <img src={medicalTeamIcon} alt="Team icon" />
               <span>Medical Team</span>
             </li>
           </ul>

@@ -22,7 +22,6 @@ export default function ThreeFourHeader() {
 
   // 2. EVENT HANDLER:
   // This function toggles the menu's open/closed state.
-
   const toggleMenu = () => {
     // setIsMeenuOpen received the opposite of the current value.
     // If IsMenuOpen is true, it become false, and vice-versa.
@@ -35,12 +34,11 @@ export default function ThreeFourHeader() {
     // Use the <header> ~HTML5 semantic tag for better accessibility and SEO.
     <header className="header">
       <nav className="nav-container">
-        <div className="portal-logo" 
-        onClick={() => setView("Content")} 
-        style={{ cursor: "pointer" }}>
-          
-            <img src={portalLogo} alt="Hospital Logo" />
-          
+
+        {/* The site logo, which links to the portal homepage */}
+       <div className="portal-logo" onClick={() => setView("Content")} 
+          style={{ cursor: "pointer" }}>
+        <img src={portalLogo} alt="Hospital Logo" />
         </div>
 
         {/* The burger menu button, visible only on mobile. */}
@@ -54,29 +52,32 @@ export default function ThreeFourHeader() {
           A dynamic class 'open' is added using a template literal if 'IsMenuOpen' is true.
           This allows CSS to control the show/hide transition of the menu on mobile devices. 
         */}
-
         <div className={`portal-menu-panel ${isMenuOpen ? 'open' : ''}`}>
 
           {/* THE CLOSE BUTTON MUST BE *INSIDE* THE MENU PANEL */}
           <button className="close-menu-button" onClick={toggleMenu}>
-            × {/* Simple close icon */}
+            &times;
           </button>
 
-          {/* The list of navigation links */}
-          <ul className="portal-menu-list">
-            <li>
+          {/* The navigation menu items with icons */}
+           <ul className="portal-menu-list">
+            <li onClick={() => setView("Content")} 
+              style={{ cursor: "pointer" }}>
               <img src={homeIcon} alt="Home icon" />
               <span>Home</span>
             </li>
-            <li>
+            <li onClick={() => setView('Calendar')} 
+              style={{cursor: "pointer"}}>
               <img src={clipboardIcon} alt="Calendar icon" />
               <span>My Calendar</span>
             </li>
-            <li>
-              <img src={medicineIcon} alt="Medicine icon" />
-              <span>My Medicine</span>
+            <li onClick={() => setView('Medicines')} 
+              style={{cursor: "pointer"}}>
+            <img src={medicineIcon} alt="Medicine icon" />
+            <span>My Medicine</span>
             </li>
-            <li>
+            <li onClick={() => setView("MedicalTeam")} 
+              style={{ cursor: "pointer" }}>
               <img src={medicalTeamIcon} alt="Team icon" />
               <span>Medical Team</span>
             </li>
@@ -86,3 +87,4 @@ export default function ThreeFourHeader() {
     </header>
   );
 }
+
