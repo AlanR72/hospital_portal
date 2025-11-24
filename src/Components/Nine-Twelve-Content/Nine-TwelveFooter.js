@@ -13,52 +13,48 @@ import TicTokLogo from '../../assets/images/tiktok.png'
 
 export default function Footer() {
   return (
-    <div>
-      <footer>
-        <div className="footer-container">
-          <div className="hospital-map">
-            <img src={HospitalMap} alt="Illustration of Hospital"/>
-            <span>Hospital Map</span>
-          </div>
-          
-            <ul className="footer-menu">
-              <li>
-                <img src={GamesLogo} alt="Snakes and Ladders illustration"/>
-                <span>Games</span>
-              </li>
-              <li>
-                <img src={FunVideos} alt="Illustration of videos"/>
-                <span>Fun Videos</span>
-              </li>
-              <li>
-                <img src={Activities} alt="Illustration of girl"/>
-                <span>Activities</span>
-              </li>
-              <li>
-                <img src={QuizLogo} alt="Illustration of quiz questions"/>
-                <span>Quiz</span>
-              </li>
-            </ul>
-          
-          <div className="social-media-icons">
-            <ul>
-              <li>
-                <img src={FacebookLogo} alt="Facebook Logo"/>
-                
-              </li>
-              <li>
-                <img src={XLogo} alt="X Logo"/>
-                
-              </li>
-              <li>
-                <img src={TicTokLogo} alt="TicTok Logo"/>
-                
-              </li>
-            </ul>
-          </div>
-        </div>
-      </footer>
-    </div>
+    //The <footer> ~HTML5 semantic tag is used for better accessibility and SEO.
+    <footer className='footer-container'>
+
+      {/* Group 1: Hospital Map */}
+      <a href='/hospital-map' className="footer-item">
+        <img src={HospitalMap} alt="Illustration of Hospital" />
+        <span>Hospital Map</span>
+      </a>
+
+      {/* Group 2: Main Menu Items */}
+      <a href='/games' className="footer-item">
+        <img src={GamesLogo} alt="Snakes and Ladders illustration" />
+        <span>Games</span>
+      </a>
+      <a href='/fun-videos' className="footer-item">
+        <img src={FunVideos} alt="Illustration of videos" />
+        <span>Fun Videos</span>
+      </a>
+      <a href='/activities' className="footer-item">
+        <img src={Activities} alt="Illustration of girl" />
+        <span>Activities</span>
+      </a>
+      <a href='/quiz' className="footer-item">
+        <img src={QuizLogo} alt="Illustration of quiz questions" />
+        <span>Quiz</span>
+      </a>
+
+      {/* Group 3: Social Media Icons. Placed within a div for easier styling. */}
+      <div className="social-media-icons">
+        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"  >
+          <img src={FacebookLogo} alt="Facebook Logo" />
+        </a>
+
+        <a href="https://x.com" target="_blank" rel="noopener noreferrer"  >
+          <img src={XLogo} alt="X Logo" />
+        </a>
+
+        <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer"  >
+          <img src={TicTokLogo} alt="TicTok Logo" />
+        </a>
+      </div>
+    </footer >
   )
 }
 

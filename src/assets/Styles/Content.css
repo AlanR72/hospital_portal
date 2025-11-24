@@ -2,7 +2,6 @@
 .portal-layout {
   display: flex;
   flex-direction: column;
-  height: 100%;
   width: 100%;
   gap: 1rem;
 }
@@ -41,6 +40,7 @@
   color: #555;
 }
 
+/*---- Content Grid ----*/
 .content-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -136,7 +136,8 @@
     gap: 2rem;
     /* ADD THIS: Prevents any weird overflow issues at the main layout level */
     align-items: center;
-    ;
+    width: 95%;
+    max-width: 900px;
   }
 
   /* --- Profile Panel becomes a Sidebar --- */
@@ -146,8 +147,6 @@
     flex-shrink: 0;
     justify-content: center;
     padding: 2rem;
-    /* ADD THIS: Ensures the panel has its own scrollbar if its content is too tall */
-    align-self: stretch;
   }
 
   /* ... (tus otros estilos para .profile-image, .profile-info, etc.) ... */
