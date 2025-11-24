@@ -1,4 +1,16 @@
-/* NAV BAR */
+/* ==========================================================================
+   HEADER / NAVIGATION STYLES (CORRECTED)
+   ========================================================================== */
+
+/* --- Base Styles (Mobile First) --- */
+
+.header {
+  position: relative;
+  z-index: 1000;
+  /* Ensures header is on top */
+}
+
+/* This is the top bar that is always visible */
 .nav-container {
   display: flex;
   justify-content: space-between;
@@ -19,93 +31,131 @@
   display: block;
 }
 
-/* PORTAL MENU STYLING (specific to your menu with images) */
-.portal-menu {
+/* --- The Slide-Out Menu Panel (Overlay) --- */
+.portal-menu-panel {
+  /* THIS IS THE KEY: Position it as a fixed overlay */
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 250px;
+  /* Width of the slide-out menu */
+  height: 100vh;
+  /* Full height of the screen */
+  background-color: #5DADE2;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+
+  /* Initial hidden state */
+  transform: translateX(100%);
+  /* Moves it off-screen */
+  transition: transform 0.3s ease-in-out;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* This class is added by JS to show the menu */
+.portal-menu-panel.open {
+  transform: translateX(0);
+  /* Slides it into view */
+}
+
+/* --- The list inside the panel --- */
+.portal-menu-list {
   list-style: none;
   padding: 0;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.portal-menu li {
+  margin-top: 3rem;
+  /* Space below the close button */
   display: flex;
   flex-direction: column;
-  /* stack image + text vertically */
   align-items: center;
-  text-align: center;
+  gap: 2rem;
+}
+
+.portal-menu-list li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   cursor: pointer;
-  transition: transform 0.2s ease;
 }
 
-.portal-menu li:hover {
-  transform: scale(1.05);
-}
-
-.portal-menu img {
-  width: 35px;
-  /* larger icons */
-  height: 35px;
+.portal-menu-list img {
+  width: 50px;
+  height: 50px;
   object-fit: contain;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
 }
 
-.portal-menu span {
-  font-size: 1rem;
+.portal-menu-list span {
+  font-size: 1.1rem;
   color: #333;
   font-weight: 600;
-  white-space: nowrap;
+}
+
+/* --- Burger Menu & Close Buttons --- */
+.burger-menu-button {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #333;
+  cursor: pointer;
+}
+
+.close-menu-button {
+  background: none;
+  border: none;
+  font-size: 2.5rem;
+  color: #333;
+  cursor: pointer;
+  position: absolute;
+  /* Position it relative to the panel */
+  top: 30px;
+  right: 15px;
 }
 
 
-
-/* RESPONSIVE BEHAVIOR for TABLET*/
+/* ==========================================================================
+   RESPONSIVE DESIGN (TABLET & DESKTOP)
+   ========================================================================== */
 @media (min-width: 768px) {
-  .nav-container {
-    padding: 0.7rem 2 rem;
+
+  /* Hide the mobile-only buttons */
+  .burger-menu-button,
+  .close-menu-button {
+    display: none;
   }
 
-  .portal-logo {
-    max-width: 140px;
+  /* Revert the menu panel to be a simple container for a horizontal list */
+  .portal-menu-panel {
+    position: static;
+    width: auto;
+    height: auto;
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0;
+    transform: none;
   }
 
-  .portal-menu {
+  /* Make the list horizontal */
+  .portal-menu-list {
+    flex-direction: row;
+    margin-top: 0;
     gap: 2rem;
   }
 
-  .portal-menu li {
-    width: 40%;
-    margin-bottom: 20px;
+  /* Adjust sizes for tablet */
+  .portal-menu-list img {
+    width: 45px;
+    height: 45px;
   }
 
-  .portal-menu img {
-    width: 70px;
-    height: 70px;
-  }
-
-  .portal-menu span {
-    font-size: 1rem;
+  .portal-menu-list span {
+    font-size: 0.9rem;
   }
 }
 
-/* RESPONSIVE BEHAVIOR for DESKTOP*/
-@media (min-width: 991px) {
+@media (min-width: 992px) {
 
-  .portal-logo {
-    max-width: 160px;
-  }
-
-  .portal-menu {
+  /* Further adjustments for desktop */
+  .portal-menu-list {
     gap: 3rem;
-  }
-
-  .portal-menu img {
-    width: 100px;
-    height: 100px;
-  }
-
-  .portal-menu span {
-    font-size: 1.1rem;
   }
 }
