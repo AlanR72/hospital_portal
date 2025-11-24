@@ -1,19 +1,20 @@
 -- ==========================================================
--- Hospital Portal Database Schema (Cleaned & Commented)
--- Author: Alan
+-- Hospital Portal Database Schema (Full with Random Patient Team, Appointments & Medicines)
 -- ==========================================================
 
 -- Drop the old database if it exists
 DROP DATABASE IF EXISTS hospital_portal;
 
--- Create database and select it
+-- Create a fresh database
 CREATE DATABASE hospital_portal;
+
+-- Use the new database
 USE hospital_portal;
 
 -- ==========================================================
 -- 1. MEDICAL TEAM TABLE
 -- ==========================================================
-CREATE TABLE medical_team (
+CREATE TABLE IF NOT EXISTS medical_team (
 id INT AUTO_INCREMENT PRIMARY KEY,
 name VARCHAR(100) NOT NULL,
 role ENUM('Doctor', 'Nurse', 'Specialist', 'Therapist', 'Admin') NOT NULL,
@@ -26,7 +27,6 @@ created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Sample medical team members
 INSERT INTO medical_team (name, role, department, contact_email, contact_phone, profile_notes)
 VALUES
 ('Dr. Sarah Smith', 'Doctor', 'Pediatrics', '[sarah.smith@hospital.org](mailto:sarah.smith@hospital.org)', '01234 111222', 'Specialist in childhood respiratory conditions.'),
@@ -43,7 +43,7 @@ VALUES
 -- ==========================================================
 -- 2. PATIENTS TABLE
 -- ==========================================================
-CREATE TABLE patients (
+CREATE TABLE IF NOT EXISTS patients (
 id INT AUTO_INCREMENT PRIMARY KEY,
 first_name VARCHAR(100) NOT NULL,
 last_name VARCHAR(100) NOT NULL,
@@ -57,7 +57,6 @@ created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Sample patients
 INSERT INTO patients (first_name, last_name, dob, gender, address, contact_phone, guardian_id, notes)
 VALUES
 ('Emily','Johnson','2022-06-15','Female','12 Oak Street, Glasgow','07891 223344',NULL,'Asthma – regular check-ups with Dr. Sarah Smith.'),
@@ -76,7 +75,7 @@ VALUES
 -- ==========================================================
 -- 3. USERS TABLE
 -- ==========================================================
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
 id INT AUTO_INCREMENT PRIMARY KEY,
 username VARCHAR(100) NOT NULL UNIQUE,
 password_hash VARCHAR(255) NOT NULL,
@@ -87,52 +86,29 @@ updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 CONSTRAINT fk_patient_user FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
--- Insert staff and patient accounts
+-- Staff accounts
 INSERT INTO users (username, password_hash, role, patient_id)
 VALUES
--- Staff
 ('dr_smith','Password123!','doctor',NULL),
 ('nurse_brown','Password123!','nurse',NULL),
 ('dr_green','Password123!','doctor',NULL),
 ('dr_white','Password123!','doctor',NULL),
 ('dr_patel','Password123!','doctor',NULL),
-('dr_jones','Password123!','doctor',NULL),
--- Patients
-('emily_johnson','Password123!','patient',1),
-('mia_patel','Password123!','patient',2),
-('sophia_white','Password123!','patient',3),
-('grace_lewis','Password123!','patient',4),
-('liam_brown','Password123!','patient',5),
-('noah_wilson','Password123!','patient',6),
-('ava_thompson','Password123!','patient',7),
-('oliver_evans','Password123!','patient',8),
-('benjamin_hall','Password123!','patient',9),
-('lucas_scott','Password123!','patient',10),
-('isabella_king','Password123!','patient',11),
-('jacob_moore','Password123!','patient',12);
+('dr_jones','Password123!','doctor',NULL);
+
+-- Patient accounts
+INSERT INTO users (username, password_hash, role, patient_id)
+SELECT
+LOWER(CONCAT(first_name,'_',last_name)) AS username,
+'Password123!',
+'patient',
+id
+FROM patients;
 
 -- ==========================================================
 -- 4. PARENT-CHILD RELATIONSHIP
 -- ==========================================================
--- Parent accounts are created based on patient last_name + random first names
-INSERT INTO users (username, password_hash, role)
-SELECT
-CONCAT(
-ELT(FLOOR(1 + RAND() * 10),
-'Liam','Josh','Oliver','James','Emma',
-'Olivia','Louise','Mia','Sophia','Amelia'
-),
-'*',
-LOWER(p.last_name),
-'*',
-p.id
-) AS username,
-'Password123!' AS password_hash,
-'parent' AS role
-FROM patients p;
-
--- Table to link parents to patients
-CREATE TABLE parent_child (
+CREATE TABLE IF NOT EXISTS parent_child (
 id INT AUTO_INCREMENT PRIMARY KEY,
 parent_user_id INT NOT NULL,
 patient_id INT NOT NULL,
@@ -141,20 +117,26 @@ FOREIGN KEY (parent_user_id) REFERENCES users(id),
 FOREIGN KEY (patient_id) REFERENCES patients(id)
 );
 
--- Populate parent_child by linking parent accounts to patient ID extracted from username
-INSERT INTO parent_child (parent_user_id, patient_id)
+-- Create parent users for patients
+INSERT INTO users (username, password_hash, role)
 SELECT
-u.id AS parent_user_id,
-CAST(SUBSTRING_INDEX(u.username, '*', -1) AS UNSIGNED) AS patient_id
+CONCAT('parent_',LOWER(first_name),'_',LOWER(last_name)) AS username,
+'Password123!',
+'parent'
+FROM patients;
+
+-- Populate parent_child
+INSERT INTO parent_child (parent_user_id, patient_id)
+SELECT u.id, p.id
 FROM users u
 JOIN patients p
-ON p.id = CAST(SUBSTRING_INDEX(u.username, '*', -1) AS UNSIGNED)
-WHERE u.role = 'parent';
+ON u.username = CONCAT('parent_',LOWER(p.first_name),'_',LOWER(p.last_name))
+WHERE u.role='parent';
 
 -- ==========================================================
--- 5. PATIENT TEAM
+-- 5. PATIENT TEAM (Random Doctor and Nurse from Users)
 -- ==========================================================
-CREATE TABLE patient_team (
+CREATE TABLE IF NOT EXISTS patient_team (
 id INT AUTO_INCREMENT PRIMARY KEY,
 patient_id INT NOT NULL,
 team_member_id INT NOT NULL,
@@ -163,16 +145,29 @@ notes TEXT,
 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 FOREIGN KEY (patient_id) REFERENCES patients(id),
-FOREIGN KEY (team_member_id) REFERENCES medical_team(id)
+FOREIGN KEY (team_member_id) REFERENCES users(id)
 );
 
--- Note: Populated automatically based on medicines and assigned doctors
--- (Population query can be run separately as needed)
+DELETE FROM patient_team;
+
+-- Assign one random doctor per patient
+INSERT INTO patient_team (patient_id, team_member_id, relationship)
+SELECT p.id, d.id, 'Primary Doctor'
+FROM patients p
+JOIN (SELECT id FROM users WHERE role='doctor' ORDER BY RAND()) d
+GROUP BY p.id;
+
+-- Assign one random nurse per patient
+INSERT INTO patient_team (patient_id, team_member_id, relationship)
+SELECT p.id, n.id, 'Nurse'
+FROM patients p
+JOIN (SELECT id FROM users WHERE role='nurse' ORDER BY RAND()) n
+GROUP BY p.id;
 
 -- ==========================================================
 -- 6. APPOINTMENTS TABLE
 -- ==========================================================
-CREATE TABLE appointments (
+CREATE TABLE IF NOT EXISTS appointments (
 id INT AUTO_INCREMENT PRIMARY KEY,
 patient_id INT NOT NULL,
 doctor_id INT NULL,
@@ -184,13 +179,26 @@ notes TEXT,
 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 CONSTRAINT fk_appointment_patient FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE ON UPDATE CASCADE,
-CONSTRAINT fk_appointment_doctor FOREIGN KEY (doctor_id) REFERENCES medical_team(id) ON DELETE SET NULL ON UPDATE CASCADE
+CONSTRAINT fk_appointment_doctor FOREIGN KEY (doctor_id) REFERENCES users(id) ON DELETE SET NULL ON UPDATE CASCADE
 );
+
+DELETE FROM appointments;
+
+INSERT INTO appointments (patient_id, doctor_id, appointment_date, location, purpose)
+SELECT p.id,
+pt.team_member_id,
+DATE_ADD('2025-12-01', INTERVAL p.id DAY),
+CONCAT('Room ', p.id),
+'Checkup'
+FROM patients p
+JOIN patient_team pt
+ON pt.patient_id = p.id
+AND pt.relationship='Primary Doctor';
 
 -- ==========================================================
 -- 7. MEDICINES TABLE
 -- ==========================================================
-CREATE TABLE medicines (
+CREATE TABLE IF NOT EXISTS medicines (
 id INT AUTO_INCREMENT PRIMARY KEY,
 patient_id INT NOT NULL,
 medicine_name VARCHAR(100) NOT NULL,
@@ -205,7 +213,17 @@ updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 CONSTRAINT fk_medicine_patient FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- ==========================================================
--- Sample inserts for appointments, medicines, etc.
--- Populate as needed for development or testing
--- ==========================================================
+INSERT INTO medicines (patient_id, medicine_name, dosage, frequency, start_date, end_date, prescribed_by, notes)
+VALUES
+(1, 'Albuterol', '2 puffs', 'Every 4 hours', '2025-11-01', '2025-12-01', 'Dr. Sarah Smith', 'For asthma management.'),
+(2, 'Levetiracetam', '250 mg', 'Twice daily', '2025-11-05', NULL, 'Dr. James Green', 'Epilepsy maintenance dose.'),
+(3, 'Propranolol', '10 mg', 'Once daily', '2025-11-07', '2025-12-07', 'Dr. James Green', 'For heart murmur management.'),
+(4, 'Ibuprofen', '100 mg', 'Three times daily', '2025-11-10', '2025-11-20', 'Dr. James Green', 'Post-surgery pain relief.'),
+(5, 'Furosemide', '20 mg', 'Once daily', '2025-11-01', NULL, 'Dr. James Green', 'For congenital heart condition.'),
+(6, 'Paracetamol', '250 mg', 'Every 6 hours', '2025-11-08', '2025-11-18', 'Dr. Ethan Jones', 'Pain relief during physiotherapy.'),
+(7, 'Methotrexate', '5 mg', 'Weekly', '2025-11-01', NULL, 'Dr. Chloe Patel', 'Leukemia treatment.'),
+(8, 'Mesalazine', '500 mg', 'Three times daily', '2025-11-03', NULL, 'Dr. Daniel Wilson', 'Ulcerative colitis maintenance.'),
+(9, 'Amoxicillin', '250 mg', 'Three times daily', '2025-11-10', '2025-11-17', 'Dr. Ethan Jones', 'Post-fracture infection prevention.'),
+(10, 'Cetirizine', '10 mg', 'Once daily', '2025-11-05', '2025-12-05', 'Dr. Sarah Smith', 'For food allergy symptom control.'),
+(11, 'Sumatriptan', '50 mg', 'As needed', '2025-11-01', NULL, 'Dr. Olivia White', 'Migraine management.'),
+(12, 'Diclofenac', '25 mg', 'Twice daily', '2025-11-06', '2025-11-20', 'Dr. Ethan Jones', 'Sports injury pain control.');

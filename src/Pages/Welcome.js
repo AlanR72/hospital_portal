@@ -40,6 +40,10 @@ export default function Welcome() {
     localStorage.setItem("username", data.username);
     localStorage.setItem("role", data.role);
     if (data.patient_id) localStorage.setItem("patientId", data.patient_id);
+    
+    if (data.age_group) {
+      localStorage.setItem("age_group", data.age_group);
+    }
 
     // Redirect based on backend validation
     if (data.canAccessAdmin) {

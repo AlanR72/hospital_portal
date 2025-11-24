@@ -12,7 +12,7 @@ import medicalTeamIcon from "../../assets/images/ambulance.png";
 
 
 //Define and export the 'ThreeFourHeader' functional component.
-export default function ThreeFourHeader() {
+export default function ThreeFourHeader( {setView}) {
   // 1. STATE MANAGEMENT:
   // Create a state variable to track if the mobile menu is open or closed.
   // -'isMenuOpen' will be 'true' if the menu is open, 'false' otherwise.

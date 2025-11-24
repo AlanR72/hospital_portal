@@ -20,22 +20,22 @@ export default function ThreeFourContent({ patient }) {
 
   const gridItems = [
     { src: Xray, alt: 'Xray', title: 'X-Ray',
-      info: "An X-ray is a special camera that lets doctors see inside your body..." },
+      info: "An X-ray camera takes a picture of your bones! You just have to stand very still for a moment, like a statue. It's quick, it doesn't hurt, and then you can go play!"},
 
     { src: mri, alt: 'MRI Scan', title: 'MRI Scan',
-      info: "An MRI takes pictures of your body, like a superhero camera..." },
+      info: "You get to lie down on a comfy bed that slides into a tunnel. The machine makes loud tapping sounds, like a drum! You can wear special headphones. The doctors are right there with you."},
 
     { src: clinic, alt: 'Clinic', title: 'Clinic',
-      info: "Going to the clinic is like visiting a friendly doctor..." },
+      info: "At the clinic, a friendly doctor will check if you are growing strong! They might listen to your heart. If you need a tiny poke, it's super fast, and you get a cool sticker for being brave!"},
 
     { src: ward, alt: 'Patient Ward', title: 'Patient Ward',
-      info: "If you're not feeling well, you might stay in a cozy ward..." },
+      info: "This is your cozy room if you need to stay for a little while. You get your own bed, and you can bring your favorite toys! The nurses are there to help you feel comfy and safe." },
 
     { src: playarea, alt: 'Play Area', title: 'Play Area',
-      info: "A play area is a fun place to run, jump, and play with toys..." },
+      info: "The play area is a super fun room with toys, slides, and blocks! You can make new friends and play lots of games. It's a happy place to have fun while you're at the hospital." },
 
     { src: surgical, alt: 'Surgical Theatre', title: 'Surgical Theatre',
-      info: "A surgical theatre is where doctors help you feel better..." }
+      info: "This is a special room where doctors help you while you're taking a nap. You won't feel anything at all! When you wake up, you'll be in your cozy bed with your family." }
   ];
 
   if (!patient)

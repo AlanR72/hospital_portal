@@ -12,7 +12,7 @@ import medicineIcon from "../../assets/images/nine-twelvemedicine.png"
 import teamIcon from "../../assets/images/nine-twelveteam.png"
 
 //Define and export the 'ThreeFourHeader' functional component.
-export default function NineTwelveHeader() {
+export default function NineTwelveHeader( {setView}) {
   // 1. STATE MANAGEMENT:
   // Create a state variable to track if the mobile menu is open or closed.
   // -'isMenuOpen' will be 'true' if the menu is open, 'false' otherwise.
@@ -68,7 +68,7 @@ export default function NineTwelveHeader() {
             </li>
             <li onClick={() => setView('Calendar')} 
               style={{cursor: "pointer"}}>
-              <img src={clipboardIcon} alt="Calendar icon" />
+              <img src={calendarIcon} alt="Calendar icon" />
               <span>My Calendar</span>
             </li>
             <li onClick={() => setView('Medicines')} 
@@ -78,7 +78,7 @@ export default function NineTwelveHeader() {
             </li>
             <li onClick={() => setView("MedicalTeam")} 
               style={{ cursor: "pointer" }}>
-              <img src={medicalTeamIcon} alt="Team icon" />
+              <img src={teamIcon} alt="Team icon" />
               <span>Medical Team</span>
             </li>
           </ul>
