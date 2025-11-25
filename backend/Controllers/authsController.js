@@ -1,12 +1,12 @@
 const pool = require("../database/connection");
 
 const login = (req, res) => {
-  const { username, password } = req.body; // remove role from frontend
+  const { username, password } = req.body;
 
-  // Get the user and patient info if applicable
   const sql = `
-    SELECT u.id, u.username, u.password_hash, u.role, u.patient_id,
-           p.first_name, p.last_name, p.dob, p.gender, p.address, p.contact_phone, p.notes AS patient_notes
+    SELECT 
+      u.id, u.username, u.password_hash, u.role, u.patient_id,
+      p.first_name, p.last_name, p.dob, p.gender, p.address, p.contact_phone, p.notes AS patient_notes
     FROM users u
     LEFT JOIN patients p ON u.patient_id = p.id
     WHERE u.username = ?
@@ -18,23 +18,19 @@ const login = (req, res) => {
 
     const user = results[0];
 
-    // Password check
     if (user.password_hash !== password)
       return res.status(401).json({ error: "Incorrect password" });
 
-    let response = {
+    const response = {
       id: user.id,
       username: user.username,
-      role: user.role,
+      role: user.role
     };
 
-    // Determine admin access
-    if (user.role === "admin" && !["doctor", "nurse"].includes(user.role)) {
-      return res.status(403).json({ error: "Access denied for admin dashboard" });
-    }
-    response.canAccessAdmin = ["doctor", "nurse"].includes(user.role);
+    // Admin/Dashboard access
+    response.canAccessAdmin = ["doctor", "nurse", "admin"].includes(user.role);
 
-    // Patient info
+    // PATIENT LOGIC
     if (user.role === "patient") {
       const dob = new Date(user.dob);
       const today = new Date();
@@ -47,7 +43,6 @@ const login = (req, res) => {
       else if (age >= 9 && age <= 12) age_group = "9-12";
 
       response.patient_id = user.patient_id;
-      response.age = age;
       response.age_group = age_group;
       response.patient = {
         id: user.patient_id,
@@ -57,13 +52,13 @@ const login = (req, res) => {
         gender: user.gender,
         address: user.address,
         contact_phone: user.contact_phone,
-        notes: user.patient_notes,
-        age,
-        age_group
+        notes: user.patient_notes
       };
+
+      return res.json(response);
     }
 
-    // Parent info
+    // PARENT LOGIC
     if (user.role === "parent") {
       const childSql = `
         SELECT 
@@ -74,12 +69,15 @@ const login = (req, res) => {
       `;
       pool.query(childSql, [user.id], (err2, children) => {
         if (err2) return res.status(500).json({ error: "Database error fetching children" });
+
         response.children = children;
         return res.json(response);
       });
-    } else {
-      return res.json(response);
+      return;
     }
+
+    // DOCTOR, NURSE, ADMIN — basic login
+    return res.json(response);
   });
 };
 

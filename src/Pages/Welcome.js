@@ -39,6 +39,7 @@ export default function Welcome() {
     // Save user info
     localStorage.setItem("username", data.username);
     localStorage.setItem("role", data.role);
+    localStorage.setItem("userId", data.id); 
     if (data.patient_id) localStorage.setItem("patientId", data.patient_id);
     
     if (data.age_group) {
