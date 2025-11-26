@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import '../../assets/Styles/Medicine.css'
+
 
 function ThreeFourMedicine({ patientId }) {
   const [medicines, setMedicines] = useState([]);
@@ -30,19 +32,31 @@ function ThreeFourMedicine({ patientId }) {
   if (error) return <p>Error: {error}</p>;
   if (medicines.length === 0) return <p>No medicines assigned.</p>;
 
+  const patientName = medicines[0].patient_first_name;
+
   return (
-    <div>
-      <h3>Medicines</h3>
-      <ul>
-        {medicines.map((med, index) => (
-          <li key={index}>
-            <strong>{med.medicine_name}</strong> — {med.dosage}, {med.frequency} <br />
-            Prescribed by: {med.prescribed_by} <br />
-            Notes: {med.notes || "None"} <br />
-            Start: {med.start_date} — End: {med.end_date || "Ongoing"}
-          </li>
-        ))}
-      </ul>
+    <div className="child-medicine-container">
+      <h2 className="child-medicine-title">Hi {patientName}!</h2>
+      <p>Here are the medicines you need to take:</p>
+
+      {medicines.map((med, index) => (
+        <div key={index} className="child-medicine-item">
+          <p>
+            <strong>{med.medicine_name}</strong> is your medicine. You take it{" "}
+            {med.frequency}. The dose is {med.dosage}.
+          </p>
+          <p>
+            Your doctor, {med.prescribed_by}, gave you this medicine.{" "}
+            {med.notes ? `Remember: ${med.notes}` : ""}
+          </p>
+          <p>
+            Start date: {med.start_date}
+            {med.end_date ? ` — End date: ${med.end_date}` : " — Keep taking it until your doctor says stop."}
+          </p>
+        </div>
+      ))}
+
+      <p>Make sure to take your medicines on time and stay healthy {patientName}! 💊😊</p>
     </div>
   );
 }

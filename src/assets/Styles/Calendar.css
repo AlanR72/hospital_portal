@@ -1,0 +1,39 @@
+.child-friendly-container {
+  background-color: #E7F1E0;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 700px;
+  margin: 15px auto;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.child-friendly-greeting,
+.child-friendly-appointment,
+.child-friendly-location,
+.child-friendly-info,
+.child-friendly-signoff {
+  font-size: 1.3rem;
+  line-height: 1.5;
+  margin: 8px 0;
+  color: #333;
+}
+
+.child-friendly-greeting,
+.child-friendly-signoff {
+  color: #5DADE2;
+}
+
+@media (max-width: 768px) {
+  .child-friendly-container {
+    padding: 15px;
+  }
+
+  .child-friendly-greeting,
+  .child-friendly-appointment,
+  .child-friendly-location,
+  .child-friendly-info,
+  .child-friendly-signoff {
+    font-size: 1.1rem;
+  }
+}

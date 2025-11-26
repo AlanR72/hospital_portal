@@ -1,0 +1,51 @@
+.medical-team-container {
+  background-color: #E7F1E0;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 800px;
+  margin: 15px auto;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.intro-text,
+.outro-text,
+.team-text {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  margin: 8px 0;
+}
+
+.team-member-card {
+  background-color: #fff;
+  border: 2px solid #5DADE2;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.team-photo {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+  .medical-team-container {
+    padding: 15px;
+  }
+
+  .team-photo {
+    width: 80px;
+    height: 80px;
+  }
+
+  .intro-text,
+  .outro-text,
+  .team-text {
+    font-size: 1rem;
+  }
+}
