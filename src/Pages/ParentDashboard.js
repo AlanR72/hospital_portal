@@ -1,5 +1,7 @@
 // ParentDashboard.js
 import React, { useState, useEffect } from "react";
+import "../assets/Styles/ParentDash.css";
+
 
 export default function ParentDashboard() {
   // Get parent user ID from localStorage (set at login)

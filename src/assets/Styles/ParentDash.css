@@ -1,0 +1,75 @@
+.parent-dashboard {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #E7F1E0; /* Soft green background */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #2c3e50;
+}
+
+.parent-dashboard h1 {
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+  color: #5DADE2; /* Accent blue for main header */
+  text-align: center;
+  border-bottom: 2px solid #5DADE2;
+  padding-bottom: 10px;
+}
+
+.parent-dashboard section {
+  background-color: #ffffff; /* White card for content */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.parent-dashboard h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: #5DADE2; /* Section header in blue */
+}
+
+.parent-dashboard h3 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color: #2c3e50; /* Slightly darker for subsection headers */
+}
+
+.parent-dashboard p {
+  font-size: 1rem;
+  margin: 5px 0;
+  line-height: 1.5;
+}
+
+.parent-dashboard section div {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.parent-dashboard section div:last-child {
+  border-bottom: none;
+}
+
+.parent-dashboard section div p {
+  margin: 2px 0;
+}
+
+@media (max-width: 768px) {
+  .parent-dashboard {
+    padding: 20px;
+  }
+  
+  .parent-dashboard h1 {
+    font-size: 1.8rem;
+  }
+
+  .parent-dashboard h2 {
+    font-size: 1.5rem;
+  }
+
+  .parent-dashboard h3 {
+    font-size: 1.2rem;
+  }
+}
