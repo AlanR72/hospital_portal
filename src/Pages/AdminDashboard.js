@@ -613,13 +613,13 @@ export default function AdminDashboard() {
                 <div className="form-field full-width">
                   <label>Notes</label>
                   <textarea
-                    value={mt.patient_notes ?? ""}
+                    value={mt.profile_notes ?? mt.patient_notes ?? mt.notes ?? ""}
                     onChange={(e) =>
                       setSelectedPatient((prev) => ({
                         ...prev,
                         medicalTeam: prev.medicalTeam.map((t, i) =>
                           i === idx
-                            ? { ...t, patient_notes: e.target.value, notes: e.target.value }
+                            ? { ...t, profile_notes: e.target.value, patient_notes: e.target.value, notes: e.target.value }
                             : t
                         ),
                       }))

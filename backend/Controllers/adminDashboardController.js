@@ -26,7 +26,7 @@ const getAdminDashboard = async (req, res) => {
     );
 
     const [medicalTeam] = await pool.promise().query(
-      `SELECT mt.id, mt.name, mt.role, mt.department, mt.contact_email, mt.contact_phone,
+      `SELECT mt.id, mt.name, mt.role, mt.department, mt.contact_email, mt.contact_phone, mt.profile_notes,
               pt.relationship, pt.notes AS patient_notes
        FROM patient_team pt
        JOIN medical_team mt ON pt.team_member_id = mt.id
