@@ -14,7 +14,9 @@ function PatientSearch({ onPatientSelect }) {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`http://localhost:4000/adminDashboard/search?query=${encodeURIComponent(query)}`);
+      const res = await fetch(
+        `http://localhost:4000/adminDashboard/search?query=${encodeURIComponent(query)}`
+      );
       if (!res.ok) throw new Error("Search failed");
       const data = await res.json();
       setResults(data);
@@ -55,20 +57,30 @@ function PatientSearch({ onPatientSelect }) {
             </tr>
           </thead>
           <tbody>
-            {results.map((patient) => (
-              <tr key={patient.id}>
-                <td>{patient.id}</td>
-                <td>{patient.first_name}</td>
-                <td>{patient.last_name}</td>
-                <td>{patient.dob}</td>
-                <td>{patient.age}</td>
-                <td>
-                  <button className="btn btn-success" onClick={() => onPatientSelect(patient.id)}>
-                    View
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {results.map((patient) => {
+              // Format DOB as DD/MM/YYYY
+              const dobParts = patient.dob ? patient.dob.split("-") : [];
+              const formattedDOB =
+                dobParts.length === 3 ? `${dobParts[2]}/${dobParts[1]}/${dobParts[0]}` : patient.dob;
+
+              return (
+                <tr key={patient.id}>
+                  <td>{patient.id}</td>
+                  <td>{patient.first_name}</td>
+                  <td>{patient.last_name}</td>
+                  <td>{formattedDOB}</td>
+                  <td>{patient.age}</td>
+                  <td>
+                    <button
+                      className="btn btn-success"
+                      onClick={() => onPatientSelect(patient.id)}
+                    >
+                      View
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       ) : (
@@ -82,28 +94,52 @@ function PatientSearch({ onPatientSelect }) {
 export default function AdminDashboard() {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [patientForm, setPatientForm] = useState({});
-  const [newPatient, setNewPatient] = useState({});
-  const [appointmentForm, setAppointmentForm] = useState({});
-  const [medicineForm, setMedicineForm] = useState({});
-  const [teamForm, setTeamForm] = useState({});
+  const [newPatient, setNewPatient] = useState({
+    appointments: [{ appointment_date: "", purpose: "TBD", location: "TBD", status: "TBD", appointment_notes: "" }],
+    medicines: [{ medicine_name: "TBD", dosage: "TBD", frequency: "TBD", start_date: "", end_date: "", prescribed_by: "TBD", medicine_notes: "" }],
+    medicalTeam: [{ name: "TBD", role: "TBD", department: "TBD", contact_email: "", contact_phone: "", relationship: "TBD", patient_notes: "" }]
+  });
 
-  // ----------------- Fetch Patient -----------------
   const fetchPatient = async (patientId) => {
-    try {
-      const res = await fetch(`http://localhost:4000/adminDashboard/${patientId}`);
-      if (!res.ok) throw new Error("Failed to fetch patient details");
-      const data = await res.json();
-      setSelectedPatient(data);
-      setPatientForm(data.patient);
-    } catch (err) {
-      console.error(err);
-      alert("Could not load patient details");
-    }
-  };
+  try {
+    const res = await fetch(`http://localhost:4000/adminDashboard/${patientId}`);
+    if (!res.ok) throw new Error("Failed to fetch patient details");
+    const data = await res.json();
+
+    setSelectedPatient({
+      patient: data.patient || {},
+      appointments: data.appointments?.length
+        ? data.appointments.map(a => ({
+            ...a,
+            appointment_date: a.appointment_date?.split("T")[0] || ""
+          }))
+        : [{ appointment_date: "", purpose: "TBD", location: "TBD", status: "TBD", appointment_notes: "" }],
+      medicines: data.medicines?.length
+        ? data.medicines.map(m => ({
+            ...m,
+            start_date: m.start_date?.split("T")[0] || "",
+            end_date: m.end_date?.split("T")[0] || ""
+          }))
+        : [{ medicine_name: "TBD", dosage: "TBD", frequency: "TBD", start_date: "", end_date: "", prescribed_by: "TBD", medicine_notes: "" }],
+      medicalTeam: data.medicalTeam?.length
+        ? data.medicalTeam
+        : [{ name: "TBD", role: "TBD", department: "TBD", contact_email: "", contact_phone: "", relationship: "TBD", patient_notes: "" }]
+    });
+
+    // Convert DOB for the input
+    setPatientForm({
+      ...data.patient,
+      dob: data.patient.dob?.split("T")[0] || ""
+    });
+
+  } catch (err) {
+    console.error(err);
+    alert("Could not load patient details");
+  }
+};
+
 
   const handlePatientSelect = (id) => fetchPatient(id);
-
-  // ----------------- Form Changes -----------------
   const handleInputChange = (setter) => (e) => {
     const { name, value } = e.target;
     setter((prev) => ({ ...prev, [name]: value }));
@@ -111,12 +147,12 @@ export default function AdminDashboard() {
 
   // ----------------- Patient CRUD -----------------
   const updatePatient = async () => {
+    if (!selectedPatient?.patient?.id) return alert("No patient selected");
     try {
-      const res = await fetch(`http://localhost:4000/adminDashboard/patient/${selectedPatient.patient.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(patientForm),
-      });
+      const res = await fetch(
+        `http://localhost:4000/adminDashboard/patient/${selectedPatient.patient.id}`,
+        { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(patientForm) }
+      );
       if (!res.ok) throw new Error("Update failed");
       alert("Patient updated");
       fetchPatient(selectedPatient.patient.id);
@@ -127,12 +163,17 @@ export default function AdminDashboard() {
   };
 
   const deletePatient = async () => {
+    if (!selectedPatient?.patient?.id) return;
     if (!window.confirm("Are you sure you want to delete this patient?")) return;
     try {
-      const res = await fetch(`http://localhost:4000/adminDashboard/patient/${selectedPatient.patient.id}`, { method: "DELETE" });
+      const res = await fetch(
+        `http://localhost:4000/adminDashboard/patient/${selectedPatient.patient.id}`,
+        { method: "DELETE" }
+      );
       if (!res.ok) throw new Error("Delete failed");
       alert("Patient deleted");
       setSelectedPatient(null);
+      setPatientForm({});
     } catch (err) {
       console.error(err);
       alert("Error deleting patient");
@@ -140,6 +181,9 @@ export default function AdminDashboard() {
   };
 
   const createPatient = async () => {
+    if (!newPatient.first_name || !newPatient.last_name) {
+      return alert("Please provide first and last name for the new patient.");
+    }
     try {
       const res = await fetch(`http://localhost:4000/adminDashboard/patient`, {
         method: "POST",
@@ -148,146 +192,94 @@ export default function AdminDashboard() {
       });
       if (!res.ok) throw new Error("Create failed");
       const created = await res.json();
-      alert("Patient created with ID " + created.id);
-      setNewPatient({});
-    } catch (err) {
-      console.error(err);
-      alert("Error creating patient");
-    }
-  };
-
-  // ----------------- Appointment CRUD -----------------
-  const createAppointment = async () => {
-    try {
-      const res = await fetch(`http://localhost:4000/adminDashboard/${selectedPatient.patient.id}/appointments`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(appointmentForm),
+      alert("Patient created with ID " + created.patientId);
+      setNewPatient({
+        appointments: [{ appointment_date: "", purpose: "TBD", location: "TBD", status: "TBD", appointment_notes: "" }],
+        medicines: [{ medicine_name: "TBD", dosage: "TBD", frequency: "TBD", start_date: "", end_date: "", prescribed_by: "TBD", medicine_notes: "" }],
+        medicalTeam: [{ name: "TBD", role: "TBD", department: "TBD", contact_email: "", contact_phone: "", relationship: "TBD", patient_notes: "" }]
       });
-      if (!res.ok) throw new Error("Failed to create appointment");
-      alert("Appointment created");
-      fetchPatient(selectedPatient.patient.id);
-      setAppointmentForm({});
+      if (created.patientId) fetchPatient(created.patientId);
     } catch (err) {
       console.error(err);
+      alert("Error creating patient: " + (err.message || ""));
     }
   };
 
-  const updateAppointment = async (id) => {
+  // ----------------- Update Functions Only -----------------
+  const updateAppointment = async (id, obj) => {
+    const payload = {
+      appointment_date: obj.appointment_date,
+      location: obj.location,
+      purpose: obj.purpose,
+      status: obj.status,
+      appointment_notes: obj.appointment_notes ?? obj.notes ?? "",
+    };
     try {
       const res = await fetch(`http://localhost:4000/adminDashboard/appointments/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(appointmentForm),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error("Update failed");
       alert("Appointment updated");
       fetchPatient(selectedPatient.patient.id);
     } catch (err) {
       console.error(err);
+      alert("Error updating appointment");
     }
   };
 
-  const deleteAppointment = async (id) => {
-    if (!window.confirm("Delete this appointment?")) return;
-    try {
-      const res = await fetch(`http://localhost:4000/adminDashboard/appointments/${id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error("Delete failed");
-      alert("Appointment deleted");
-      fetchPatient(selectedPatient.patient.id);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  // ----------------- Medicine CRUD -----------------
-  const createMedicine = async () => {
-    try {
-      const res = await fetch(`http://localhost:4000/adminDashboard/${selectedPatient.patient.id}/medicines`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(medicineForm),
-      });
-      if (!res.ok) throw new Error("Failed to create medicine");
-      alert("Medicine created");
-      fetchPatient(selectedPatient.patient.id);
-      setMedicineForm({});
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const updateMedicine = async (id) => {
+  const updateMedicine = async (id, obj) => {
+    const payload = {
+      medicine_name: obj.medicine_name,
+      dosage: obj.dosage,
+      frequency: obj.frequency,
+      start_date: obj.start_date,
+      end_date: obj.end_date,
+      prescribed_by: obj.prescribed_by,
+      medicine_notes: obj.medicine_notes ?? obj.notes ?? "",
+    };
     try {
       const res = await fetch(`http://localhost:4000/adminDashboard/medicines/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(medicineForm),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error("Update failed");
       alert("Medicine updated");
       fetchPatient(selectedPatient.patient.id);
     } catch (err) {
       console.error(err);
+      alert("Error updating medicine");
     }
   };
 
-  const deleteMedicine = async (id) => {
-    if (!window.confirm("Delete this medicine?")) return;
-    try {
-      const res = await fetch(`http://localhost:4000/adminDashboard/medicines/${id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error("Delete failed");
-      alert("Medicine deleted");
-      fetchPatient(selectedPatient.patient.id);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  // ----------------- Medical Team CRUD -----------------
-  const createTeamMember = async () => {
-    try {
-      const res = await fetch(`http://localhost:4000/adminDashboard/${selectedPatient.patient.id}/team`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(teamForm),
-      });
-      if (!res.ok) throw new Error("Failed to create team member");
-      alert("Team member added");
-      fetchPatient(selectedPatient.patient.id);
-      setTeamForm({});
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const updateTeamMember = async (id) => {
+  const updateTeamMember = async (id, obj) => {
+    const payload = {
+      name: obj.name,
+      role: obj.role,
+      department: obj.department,
+      contact_email: obj.contact_email,
+      contact_phone: obj.contact_phone,
+      relationship: obj.relationship,
+      patient_notes: obj.patient_notes ?? obj.notes ?? "",
+    };
     try {
       const res = await fetch(`http://localhost:4000/adminDashboard/team/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(teamForm),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error("Update failed");
       alert("Team member updated");
       fetchPatient(selectedPatient.patient.id);
     } catch (err) {
       console.error(err);
+      alert("Error updating team member");
     }
   };
 
-  const deleteTeamMember = async (id) => {
-    if (!window.confirm("Delete this team member?")) return;
-    try {
-      const res = await fetch(`http://localhost:4000/adminDashboard/team/${id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error("Delete failed");
-      alert("Team member deleted");
-      fetchPatient(selectedPatient.patient.id);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
+  // ----------------- JSX -----------------
   return (
     <div className="admin-dashboard">
       <h1>Admin Dashboard</h1>
@@ -298,15 +290,27 @@ export default function AdminDashboard() {
         <div className="patient-section">
           <h2>Edit Patient</h2>
           <div className="form-group">
-            <input name="first_name" value={patientForm.first_name || ""} onChange={handleInputChange(setPatientForm)} placeholder="First Name" />
-            <input name="last_name" value={patientForm.last_name || ""} onChange={handleInputChange(setPatientForm)} placeholder="Last Name" />
-            <input name="dob" type="date" value={patientForm.dob || ""} onChange={handleInputChange(setPatientForm)} />
-            <input name="gender" value={patientForm.gender || ""} onChange={handleInputChange(setPatientForm)} placeholder="Gender" />
-            <input name="contact_phone" value={patientForm.contact_phone || ""} onChange={handleInputChange(setPatientForm)} placeholder="Contact" />
-            <input name="address" value={patientForm.address || ""} onChange={handleInputChange(setPatientForm)} placeholder="Address" />
-            <textarea name="patient_notes" value={patientForm.patient_notes || ""} onChange={handleInputChange(setPatientForm)} placeholder="Notes" />
+            {["first_name","last_name","dob","gender","contact_phone","address"].map((key) => (
+              <div key={key} className="form-field">
+                <label>{key.replace("_"," ").toUpperCase()}</label>
+                <input
+                  name={key}
+                  value={patientForm[key] || ""}
+                  type={key==="dob"?"date":"text"}
+                  onChange={handleInputChange(setPatientForm)}
+                />
+              </div>
+            ))}
+            <div className="form-field full-width">
+              <label>Notes</label>
+              <textarea
+                name="patient_notes"
+                value={patientForm.patient_notes || ""}
+                onChange={handleInputChange(setPatientForm)}
+              />
+            </div>
           </div>
-          <div className="btn-group">
+          <div className="btn-group main-patient-buttons">
             <button className="btn btn-primary" onClick={updatePatient}>Update Patient</button>
             <button className="btn btn-danger" onClick={deletePatient}>Delete Patient</button>
           </div>
@@ -314,90 +318,321 @@ export default function AdminDashboard() {
           {/* ---------- Appointments ---------- */}
           <section className="section">
             <h3>Appointments</h3>
-            {selectedPatient.appointments.map((a) => (
-              <div key={a.id} className="sub-form">
-                <input placeholder="Date" type="date" value={appointmentForm.appointment_date || a.appointment_date} onChange={handleInputChange(setAppointmentForm)} />
-                <input placeholder="Purpose" value={appointmentForm.purpose || a.purpose} onChange={handleInputChange(setAppointmentForm)} />
-                <input placeholder="Location" value={appointmentForm.location || a.location} onChange={handleInputChange(setAppointmentForm)} />
-                <input placeholder="Status" value={appointmentForm.status || a.status} onChange={handleInputChange(setAppointmentForm)} />
-                <textarea placeholder="Notes" value={appointmentForm.appointment_notes || a.appointment_notes} onChange={handleInputChange(setAppointmentForm)} />
-                <div className="btn-group">
-                  <button className="btn btn-primary" onClick={() => updateAppointment(a.id)}>Update</button>
-                  <button className="btn btn-danger" onClick={() => deleteAppointment(a.id)}>Delete</button>
+            {selectedPatient.appointments.map((a, idx) => {
+              const appointmentDateValue = a.appointment_date?.split?.("T")?.[0] || "";
+              return (
+                <div key={idx} className="sub-form">
+                  <div className="form-field">
+                    <label>Date</label>
+                    <input
+                      type="date"
+                      value={appointmentDateValue}
+                      onChange={(e) =>
+                        setSelectedPatient((prev) => ({
+                          ...prev,
+                          appointments: prev.appointments.map((ap, i) =>
+                            i === idx ? { ...ap, appointment_date: e.target.value } : ap
+                          ),
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="form-field">
+                    <label>Purpose</label>
+                    <input
+                      value={a.purpose || "TBD"}
+                      onChange={(e) =>
+                        setSelectedPatient((prev) => ({
+                          ...prev,
+                          appointments: prev.appointments.map((ap, i) =>
+                            i === idx ? { ...ap, purpose: e.target.value } : ap
+                          ),
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="form-field">
+                    <label>Location</label>
+                    <input
+                      value={a.location || "TBD"}
+                      onChange={(e) =>
+                        setSelectedPatient((prev) => ({
+                          ...prev,
+                          appointments: prev.appointments.map((ap, i) =>
+                            i === idx ? { ...ap, location: e.target.value } : ap
+                          ),
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="form-field">
+                    <label>Status</label>
+                    <input
+                      value={a.status || "TBD"}
+                      onChange={(e) =>
+                        setSelectedPatient((prev) => ({
+                          ...prev,
+                          appointments: prev.appointments.map((ap, i) =>
+                            i === idx ? { ...ap, status: e.target.value } : ap
+                          ),
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="form-field full-width">
+                    <label>Notes</label>
+                    <textarea
+                      value={a.appointment_notes ?? ""}
+                      onChange={(e) =>
+                        setSelectedPatient((prev) => ({
+                          ...prev,
+                          appointments: prev.appointments.map((ap, i) =>
+                            i === idx
+                              ? { ...ap, appointment_notes: e.target.value, notes: e.target.value }
+                              : ap
+                          ),
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="btn-group">
+                    <button className="btn btn-primary" onClick={() => updateAppointment(a.id, a)}>
+                      Update
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
-            <h4>Add New Appointment</h4>
-            <div className="sub-form">
-              <input placeholder="Date" type="date" value={appointmentForm.appointment_date || ""} onChange={handleInputChange(setAppointmentForm)} />
-              <input placeholder="Purpose" value={appointmentForm.purpose || ""} onChange={handleInputChange(setAppointmentForm)} />
-              <input placeholder="Location" value={appointmentForm.location || ""} onChange={handleInputChange(setAppointmentForm)} />
-              <input placeholder="Status" value={appointmentForm.status || ""} onChange={handleInputChange(setAppointmentForm)} />
-              <textarea placeholder="Notes" value={appointmentForm.appointment_notes || ""} onChange={handleInputChange(setAppointmentForm)} />
-              <button className="btn btn-success" onClick={createAppointment}>Add Appointment</button>
-            </div>
+              );
+            })}
           </section>
 
           {/* ---------- Medicines ---------- */}
           <section className="section">
             <h3>Medicines</h3>
-            {selectedPatient.medicines.map((m) => (
-              <div key={m.id} className="sub-form">
-                <input placeholder="Name" value={medicineForm.medicine_name || m.medicine_name} onChange={handleInputChange(setMedicineForm)} />
-                <input placeholder="Dosage" value={medicineForm.dosage || m.dosage} onChange={handleInputChange(setMedicineForm)} />
-                <input placeholder="Frequency" value={medicineForm.frequency || m.frequency} onChange={handleInputChange(setMedicineForm)} />
-                <input placeholder="Start" type="date" value={medicineForm.start_date || m.start_date} onChange={handleInputChange(setMedicineForm)} />
-                <input placeholder="End" type="date" value={medicineForm.end_date || m.end_date} onChange={handleInputChange(setMedicineForm)} />
-                <input placeholder="Prescribed By" value={medicineForm.prescribed_by || m.prescribed_by} onChange={handleInputChange(setMedicineForm)} />
-                <textarea placeholder="Notes" value={medicineForm.medicine_notes || m.medicine_notes} onChange={handleInputChange(setMedicineForm)} />
+            {selectedPatient.medicines.map((m, idx) => (
+              <div key={idx} className="sub-form">
+                <div className="form-field">
+                  <label>Name</label>
+                  <input
+                    value={m.medicine_name || "TBD"}
+                    onChange={(e) =>
+                      setSelectedPatient((prev) => ({
+                        ...prev,
+                        medicines: prev.medicines.map((med, i) =>
+                          i === idx ? { ...med, medicine_name: e.target.value } : med
+                        ),
+                      }))
+                    }
+                  />
+                </div>
+                <div className="form-field">
+                  <label>Dosage</label>
+                  <input
+                    value={m.dosage || "TBD"}
+                    onChange={(e) =>
+                      setSelectedPatient((prev) => ({
+                        ...prev,
+                        medicines: prev.medicines.map((med, i) =>
+                          i === idx ? { ...med, dosage: e.target.value } : med
+                        ),
+                      }))
+                    }
+                  />
+                </div>
+                <div className="form-field">
+                  <label>Frequency</label>
+                  <input
+                    value={m.frequency || "TBD"}
+                    onChange={(e) =>
+                      setSelectedPatient((prev) => ({
+                        ...prev,
+                        medicines: prev.medicines.map((med, i) =>
+                          i === idx ? { ...med, frequency: e.target.value } : med
+                        ),
+                      }))
+                    }
+                  />
+                </div>
+                <div className="form-field">
+                  <label>Start Date</label>
+                  <input
+                    type="date"
+                    value={m.start_date?.split?.("T")?.[0] || ""}
+                    onChange={(e) =>
+                      setSelectedPatient((prev) => ({
+                        ...prev,
+                        medicines: prev.medicines.map((med, i) =>
+                          i === idx ? { ...med, start_date: e.target.value } : med
+                        ),
+                      }))
+                    }
+                  />
+                </div>
+                <div className="form-field">
+                  <label>End Date</label>
+                  <input
+                    type="date"
+                    value={m.end_date?.split?.("T")?.[0] || ""}
+                    onChange={(e) =>
+                      setSelectedPatient((prev) => ({
+                        ...prev,
+                        medicines: prev.medicines.map((med, i) =>
+                          i === idx ? { ...med, end_date: e.target.value } : med
+                        ),
+                      }))
+                    }
+                  />
+                </div>
+                <div className="form-field">
+                  <label>Prescribed By</label>
+                  <input
+                    value={m.prescribed_by || "TBD"}
+                    onChange={(e) =>
+                      setSelectedPatient((prev) => ({
+                        ...prev,
+                        medicines: prev.medicines.map((med, i) =>
+                          i === idx ? { ...med, prescribed_by: e.target.value } : med
+                        ),
+                      }))
+                    }
+                  />
+                </div>
+                <div className="form-field full-width">
+                  <label>Notes</label>
+                  <textarea
+                    value={m.medicine_notes ?? ""}
+                    onChange={(e) =>
+                      setSelectedPatient((prev) => ({
+                        ...prev,
+                        medicines: prev.medicines.map((med, i) =>
+                          i === idx
+                            ? { ...med, medicine_notes: e.target.value, notes: e.target.value }
+                            : med
+                        ),
+                      }))
+                    }
+                  />
+                </div>
                 <div className="btn-group">
-                  <button className="btn btn-primary" onClick={() => updateMedicine(m.id)}>Update</button>
-                  <button className="btn btn-danger" onClick={() => deleteMedicine(m.id)}>Delete</button>
+                  <button className="btn btn-primary" onClick={() => updateMedicine(m.id, m)}>
+                    Update
+                  </button>
                 </div>
               </div>
             ))}
-            <h4>Add New Medicine</h4>
-            <div className="sub-form">
-              <input placeholder="Name" value={medicineForm.medicine_name || ""} onChange={handleInputChange(setMedicineForm)} />
-              <input placeholder="Dosage" value={medicineForm.dosage || ""} onChange={handleInputChange(setMedicineForm)} />
-              <input placeholder="Frequency" value={medicineForm.frequency || ""} onChange={handleInputChange(setMedicineForm)} />
-              <input placeholder="Start" type="date" value={medicineForm.start_date || ""} onChange={handleInputChange(setMedicineForm)} />
-              <input placeholder="End" type="date" value={medicineForm.end_date || ""} onChange={handleInputChange(setMedicineForm)} />
-              <input placeholder="Prescribed By" value={medicineForm.prescribed_by || ""} onChange={handleInputChange(setMedicineForm)} />
-              <textarea placeholder="Notes" value={medicineForm.medicine_notes || ""} onChange={handleInputChange(setMedicineForm)} />
-              <button className="btn btn-success" onClick={createMedicine}>Add Medicine</button>
-            </div>
           </section>
 
           {/* ---------- Medical Team ---------- */}
           <section className="section">
             <h3>Medical Team</h3>
-            {selectedPatient.medicalTeam.map((mt) => (
-              <div key={mt.id} className="sub-form">
-                <input placeholder="Name" value={teamForm.name || mt.name} onChange={handleInputChange(setTeamForm)} />
-                <input placeholder="Role" value={teamForm.role || mt.role} onChange={handleInputChange(setTeamForm)} />
-                <input placeholder="Department" value={teamForm.department || mt.department} onChange={handleInputChange(setTeamForm)} />
-                <input placeholder="Email" value={teamForm.contact_email || mt.contact_email} onChange={handleInputChange(setTeamForm)} />
-                <input placeholder="Phone" value={teamForm.contact_phone || mt.contact_phone} onChange={handleInputChange(setTeamForm)} />
-                <input placeholder="Relationship" value={teamForm.relationship || mt.relationship} onChange={handleInputChange(setTeamForm)} />
-                <textarea placeholder="Notes" value={teamForm.patient_notes || mt.patient_notes} onChange={handleInputChange(setTeamForm)} />
+            {selectedPatient.medicalTeam.map((mt, idx) => (
+              <div key={idx} className="sub-form">
+                <div className="form-field">
+                  <label>Name</label>
+                  <input
+                    value={mt.name || "TBD"}
+                    onChange={(e) =>
+                      setSelectedPatient((prev) => ({
+                        ...prev,
+                        medicalTeam: prev.medicalTeam.map((t, i) =>
+                          i === idx ? { ...t, name: e.target.value } : t
+                        ),
+                      }))
+                    }
+                  />
+                </div>
+                <div className="form-field">
+                  <label>Role</label>
+                  <input
+                    value={mt.role || "TBD"}
+                    onChange={(e) =>
+                      setSelectedPatient((prev) => ({
+                        ...prev,
+                        medicalTeam: prev.medicalTeam.map((t, i) =>
+                          i === idx ? { ...t, role: e.target.value } : t
+                        ),
+                      }))
+                    }
+                  />
+                </div>
+                <div className="form-field">
+                  <label>Department</label>
+                  <input
+                    value={mt.department || "TBD"}
+                    onChange={(e) =>
+                      setSelectedPatient((prev) => ({
+                        ...prev,
+                        medicalTeam: prev.medicalTeam.map((t, i) =>
+                          i === idx ? { ...t, department: e.target.value } : t
+                        ),
+                      }))
+                    }
+                  />
+                </div>
+                <div className="form-field">
+                  <label>Email</label>
+                  <input
+                    value={mt.contact_email || ""}
+                    onChange={(e) =>
+                      setSelectedPatient((prev) => ({
+                        ...prev,
+                        medicalTeam: prev.medicalTeam.map((t, i) =>
+                          i === idx ? { ...t, contact_email: e.target.value } : t
+                        ),
+                      }))
+                    }
+                  />
+                </div>
+                <div className="form-field">
+                  <label>Phone</label>
+                  <input
+                    value={mt.contact_phone || ""}
+                    onChange={(e) =>
+                      setSelectedPatient((prev) => ({
+                        ...prev,
+                        medicalTeam: prev.medicalTeam.map((t, i) =>
+                          i === idx ? { ...t, contact_phone: e.target.value } : t
+                        ),
+                      }))
+                    }
+                  />
+                </div>
+                <div className="form-field">
+                  <label>Relationship</label>
+                  <input
+                    value={mt.relationship || "TBD"}
+                    onChange={(e) =>
+                      setSelectedPatient((prev) => ({
+                        ...prev,
+                        medicalTeam: prev.medicalTeam.map((t, i) =>
+                          i === idx ? { ...t, relationship: e.target.value } : t
+                        ),
+                      }))
+                    }
+                  />
+                </div>
+                <div className="form-field full-width">
+                  <label>Notes</label>
+                  <textarea
+                    value={mt.patient_notes ?? ""}
+                    onChange={(e) =>
+                      setSelectedPatient((prev) => ({
+                        ...prev,
+                        medicalTeam: prev.medicalTeam.map((t, i) =>
+                          i === idx
+                            ? { ...t, patient_notes: e.target.value, notes: e.target.value }
+                            : t
+                        ),
+                      }))
+                    }
+                  />
+                </div>
                 <div className="btn-group">
-                  <button className="btn btn-primary" onClick={() => updateTeamMember(mt.id)}>Update</button>
-                  <button className="btn btn-danger" onClick={() => deleteTeamMember(mt.id)}>Delete</button>
+                  <button className="btn btn-primary" onClick={() => updateTeamMember(mt.id, mt)}>
+                    Update
+                  </button>
                 </div>
               </div>
             ))}
-            <h4>Add New Team Member</h4>
-            <div className="sub-form">
-              <input placeholder="Name" value={teamForm.name || ""} onChange={handleInputChange(setTeamForm)} />
-              <input placeholder="Role" value={teamForm.role || ""} onChange={handleInputChange(setTeamForm)} />
-              <input placeholder="Department" value={teamForm.department || ""} onChange={handleInputChange(setTeamForm)} />
-              <input placeholder="Email" value={teamForm.contact_email || ""} onChange={handleInputChange(setTeamForm)} />
-              <input placeholder="Phone" value={teamForm.contact_phone || ""} onChange={handleInputChange(setTeamForm)} />
-              <input placeholder="Relationship" value={teamForm.relationship || ""} onChange={handleInputChange(setTeamForm)} />
-              <textarea placeholder="Notes" value={teamForm.patient_notes || ""} onChange={handleInputChange(setTeamForm)} />
-              <button className="btn btn-success" onClick={createTeamMember}>Add Team Member</button>
-            </div>
           </section>
         </div>
       )}
@@ -406,13 +641,25 @@ export default function AdminDashboard() {
       <div className="patient-section">
         <h2>Add New Patient</h2>
         <div className="form-group">
-          <input placeholder="First Name" value={newPatient.first_name || ""} name="first_name" onChange={handleInputChange(setNewPatient)} />
-          <input placeholder="Last Name" value={newPatient.last_name || ""} name="last_name" onChange={handleInputChange(setNewPatient)} />
-          <input placeholder="DOB" type="date" value={newPatient.dob || ""} name="dob" onChange={handleInputChange(setNewPatient)} />
-          <input placeholder="Gender" value={newPatient.gender || ""} name="gender" onChange={handleInputChange(setNewPatient)} />
-          <input placeholder="Contact" value={newPatient.contact_phone || ""} name="contact_phone" onChange={handleInputChange(setNewPatient)} />
-          <input placeholder="Address" value={newPatient.address || ""} name="address" onChange={handleInputChange(setNewPatient)} />
-          <textarea placeholder="Notes" value={newPatient.patient_notes || ""} name="patient_notes" onChange={handleInputChange(setNewPatient)} />
+          {["first_name","last_name","dob","gender","contact_phone","address"].map((key) => (
+            <div key={key} className="form-field">
+              <label>{key.replace("_"," ").toUpperCase()}</label>
+              <input
+                name={key}
+                value={newPatient[key] || ""}
+                type={key==="dob"?"date":"text"}
+                onChange={handleInputChange(setNewPatient)}
+              />
+            </div>
+          ))}
+          <div className="form-field full-width">
+            <label>Notes</label>
+            <textarea
+              name="patient_notes"
+              value={newPatient.patient_notes || ""}
+              onChange={handleInputChange(setNewPatient)}
+            />
+          </div>
         </div>
         <button className="btn btn-success" onClick={createPatient}>Add Patient</button>
       </div>

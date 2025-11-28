@@ -1,46 +1,52 @@
 const express = require("express");
 const router = express.Router();
+
 const {
   getAdminDashboard,
   searchPatients,
+
   // Patients
   createPatient,
   updatePatient,
   deletePatient,
+
   // Appointments
-  createAppointment,
   updateAppointment,
-  deleteAppointment,
+
   // Medicines
-  createMedicine,
   updateMedicine,
-  deleteMedicine,
+
   // Medical Team
-  createTeamMember,
   updateTeamMember,
-  deleteTeamMember,
 } = require("../Controllers/adminDashboardController");
 
-// ----------------- Patient Routes -----------------
+// ------------------------------------------------------
+//                 PATIENT ROUTES
+// ------------------------------------------------------
 router.get("/search", searchPatients);
-router.get("/:patientId", getAdminDashboard);
+
 router.post("/patient", createPatient);
 router.put("/patient/:patientId", updatePatient);
 router.delete("/patient/:patientId", deletePatient);
 
-// ----------------- Appointment Routes -----------------
-router.post("/:patientId/appointments", createAppointment);
+// ------------------------------------------------------
+//              APPOINTMENT ROUTES (update only)
+// ------------------------------------------------------
 router.put("/appointments/:appointmentId", updateAppointment);
-router.delete("/appointments/:appointmentId", deleteAppointment);
 
-// ----------------- Medicine Routes -----------------
-router.post("/:patientId/medicines", createMedicine);
+// ------------------------------------------------------
+//                 MEDICINE ROUTES (update only)
+// ------------------------------------------------------
 router.put("/medicines/:medicineId", updateMedicine);
-router.delete("/medicines/:medicineId", deleteMedicine);
 
-// ----------------- Medical Team Routes -----------------
-router.post("/:patientId/team", createTeamMember);
+// ------------------------------------------------------
+//               MEDICAL TEAM ROUTES (update only)
+// ------------------------------------------------------
 router.put("/team/:teamId", updateTeamMember);
-router.delete("/team/:teamId", deleteTeamMember);
+
+// ------------------------------------------------------
+//       SINGLE PATIENT DASHBOARD 
+// ------------------------------------------------------
+router.get("/:patientId", getAdminDashboard);
 
 module.exports = router;
