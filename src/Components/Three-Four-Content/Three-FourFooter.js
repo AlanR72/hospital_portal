@@ -11,16 +11,16 @@ import XLogo from '../../assets/images/x.png'
 import TicTokLogo from '../../assets/images/tiktok.png'
 
 
-export default function Footer() {
+export default function Footer({setView}) {
   return (
     //The <footer> ~HTML5 semantic tag is used for better accessibility and SEO.
     <footer className='footer-container'>
 
       {/* Group 1: Hospital Map */}
-      <a href="/hospital-map" className="footer-item">
+      <div className="footer-item" onClick={() => setView("Map")}>
         <img src={HospitalMap} alt="Illustration of Hospital" />
         <span>Hospital Map</span>
-      </a>
+      </div>
 
       {/* Group 2: Main Menu Items */}
       <a href="/games" className="footer-item">

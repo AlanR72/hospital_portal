@@ -20,4 +20,5 @@ app.use("/auth", authRouter);
 app.use("/parentDashboard", parentDashboardRouter);
 app.use("/adminDashboard", adminDashboardRouter);
 
+
 app.listen(4000, () => console.log("Server running on port 4000"));

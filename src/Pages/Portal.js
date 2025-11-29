@@ -14,6 +14,8 @@ import NineTwelveMedicine from "../Components/Nine-Twelve-Content/Nine-TwelveMed
 import NineTwelveMedicalTeam from "../Components/Nine-Twelve-Content/Nine-TwelveMedicalTeam";
 import NineTwelveCalendar from "../Components/Nine-Twelve-Content/Nine-TwelveCalendar";
 
+import HospitalMap from "../Components/Map";
+
 const Portal = () => {
   const ageGroup = localStorage.getItem("age_group");
   const patientId = Number(localStorage.getItem("patientId"));
@@ -49,6 +51,7 @@ const Portal = () => {
     MedicalTeam: <ThreeFourMedicalTeam patientId={patientId} />,
     Calendar: <ThreeFourCalendar patientId={patientId} />,
     Content: <ThreeFourContent patient={patient} />,
+    Map: <HospitalMap />,
   };
 
   const NineTwelveComponents = {
@@ -56,6 +59,7 @@ const Portal = () => {
     MedicalTeam: <NineTwelveMedicalTeam patientId={patientId} />,
     Calendar: <NineTwelveCalendar patientId={patientId} />,
     Content: <NineTwelveContent patientId={patientId} />,
+    Map: <HospitalMap />,
   };
 
   const renderContent = () => {
@@ -70,7 +74,7 @@ const Portal = () => {
       <div>
         <ThreeFourHeader setView={setView} />
         {renderContent()}
-        <ThreeFourFooter />
+        <ThreeFourFooter setView={setView}/>
       </div>
     );
   }
@@ -80,7 +84,7 @@ const Portal = () => {
       <div>
         <NineTwelveHeader setView={setView} />
         {renderContent()}
-        <NineTwelveFooter />
+        <NineTwelveFooter setView={setView}/>
       </div>
     );
   }
