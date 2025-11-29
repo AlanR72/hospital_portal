@@ -22,17 +22,17 @@ CREATE TABLE medical_team (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-INSERT INTO medical_team (name, role, department, contact_email, contact_phone, profile_notes) VALUES
-('Dr. Sarah Smith', 'Doctor', 'Pediatrics', 'sarah.smith@hospital.org', '01234 111222', 'Specialist in childhood respiratory conditions.'),
-('Dr. Olivia White', 'Doctor', 'Neurology', 'olivia.white@hospital.org', '01234 777888', 'Specializes in pediatric neurological disorders.'),
-('Dr. James Green', 'Doctor', 'Cardiology', 'james.green@hospital.org', '01234 555666', 'Focuses on pediatric heart health.'),
-('Dr. Chloe Patel', 'Doctor', 'Oncology', 'chloe.patel@hospital.org', '01234 222333', 'Expert in childhood cancer treatments.'),
-('Dr. Ethan Jones', 'Doctor', 'Orthopedics', 'ethan.jones@hospital.org', '01234 666777', 'Treats bone and joint conditions in children.'),
-('Dr. Daniel Wilson', 'Doctor', 'Gastroenterology', 'daniel.wilson@hospital.org', '01234 121314', 'Specialist in pediatric digestive health.'),
-('Nurse Emma Brown', 'Nurse', 'Outpatient Care', 'emma.brown@hospital.org', '01234 333444', 'Provides follow-up and aftercare support.'),
-('Nurse Liam Turner', 'Nurse', 'Intensive Care', 'liam.turner@hospital.org', '01234 999000', 'Experienced in critical care for young patients.'),
-('Nurse Sophie Clark', 'Nurse', 'Emergency', 'sophie.clark@hospital.org', '01234 444555', 'Works in emergency response and triage.'),
-('Nurse Ava Martin', 'Nurse', 'Cardiology', 'ava.martin@hospital.org', '01234 888999', 'Supports cardiac patients and post-surgery care.');
+INSERT INTO medical_team (name, role, department, contact_email, contact_phone, profile_notes, photo_url) VALUES
+('Dr. Sarah Smith', 'Doctor', 'Pediatrics', 'sarah.smith@hospital.org', '01234 111222', 'Specialist in childhood respiratory conditions.', '/images/Staff/dr_sarah_smith.png'),
+('Dr. Olivia White', 'Doctor', 'Neurology', 'olivia.white@hospital.org', '01234 777888', 'Specializes in pediatric neurological disorders.', '/images/Staff/dr_olivia_white.png'),
+('Dr. James Green', 'Doctor', 'Cardiology', 'james.green@hospital.org', '01234 555666', 'Focuses on pediatric heart health.', '/images/Staff/dr_james_green.png'),
+('Dr. Chloe Patel', 'Doctor', 'Oncology', 'chloe.patel@hospital.org', '01234 222333', 'Expert in childhood cancer treatments.', '/images/Staff/dr_chloe_patel.png'),
+('Dr. Ethan Jones', 'Doctor', 'Orthopedics', 'ethan.jones@hospital.org', '01234 666777', 'Treats bone and joint conditions in children.', '/images/Staff/dr_ethan_jones.png'),
+('Dr. Daniel Wilson', 'Doctor', 'Gastroenterology', 'daniel.wilson@hospital.org', '01234 121314', 'Specialist in pediatric digestive health.', '/images/Staff/dr_daniel_wilson.png'),
+('Nurse Emma Brown', 'Nurse', 'Outpatient Care', 'emma.brown@hospital.org', '01234 333444', 'Provides follow-up and aftercare support.', '/images/Staff/nurse_emma_brown.png'),
+('Nurse Liam Turner', 'Nurse', 'Intensive Care', 'liam.turner@hospital.org', '01234 999000', 'Experienced in critical care for young patients.', '/images/Staff/nurse_liam_turner.png'),
+('Nurse Sophie Clark', 'Nurse', 'Emergency', 'sophie.clark@hospital.org', '01234 444555', 'Works in emergency response and triage.', '/images/Staff/nurse_sophie_clark.png'),
+('Nurse Ava Martin', 'Nurse', 'Cardiology', 'ava.martin@hospital.org', '01234 888999', 'Supports cardiac patients and post-surgery care.', '/images/Staff/nurse_ava_martin.png');
 
 -- ==========================================================
 -- 2. PATIENTS TABLE
@@ -47,23 +47,24 @@ CREATE TABLE patients (
     contact_phone VARCHAR(50),
     guardian_id INT NULL,
     notes TEXT,
+    photo_url VARCHAR(255),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-INSERT INTO patients (first_name, last_name, dob, gender, address, contact_phone, notes) VALUES
-('Emily','Johnson','2022-06-15','Female','12 Oak Street, Glasgow','07891 223344','Asthma – regular check-ups with Dr. Sarah Smith.'),
-('Mia','Patel','2022-08-10','Female','9 Willow Crescent, Paisley','07891 445566','Epilepsy – managed with medication.'),
-('Sophia','White','2022-04-05','Female','19 Pine Close, Glasgow','07891 889900','Heart murmur – monitored by Dr. James Green.'),
-('Grace','Lewis','2023-01-20','Female','8 Cedar Grove, Glasgow','07891 333444','Post-surgery recovery – supervised by Dr. James Green.'),
-('Liam','Brown','2014-06-15','Male','45 Maple Avenue, Glasgow','07891 334455','Congenital heart defect – under care of Dr. James Green.'),
-('Noah','Wilson','2014-05-20','Male','33 Birch Lane, East Kilbride','07891 556677','Recovering from a broken leg – physiotherapy ongoing.'),
-('Ava','Thompson','2015-05-18','Female','21 Cherry Road, Glasgow','07891 667788','Leukemia – ongoing treatment with Dr. Chloe Patel.'),
-('Oliver','Evans','2015-09-04','Male','88 Spruce Street, Hamilton','07891 778899','Ulcerative colitis – monitored by Dr. Daniel Wilson.'),
-('Benjamin','Hall','2014-08-30','Male','4 Hawthorn Drive, Glasgow','07891 990011','Fractured arm – follow-up with Dr. Ethan Jones.'),
-('Lucas','Scott','2015-06-11','Male','15 Poplar Street, Glasgow','07891 222333','Food allergies – advised by Dr. Sarah Smith.'),
-('Isabella','King','2014-12-15','Female','62 Rowan Way, Glasgow','07891 111222','Chronic migraines – under review by Dr. Olivia White.'),
-('Jacob','Moore','2015-03-19','Male','27 Elm Road, Glasgow','07891 444555','Sports injury – attending rehab with Dr. Ethan Jones.');
+INSERT INTO patients (first_name, last_name, dob, gender, address, contact_phone, notes, photo_url) VALUES
+('Emily','Johnson','2022-06-15','Female','12 Oak Street, Glasgow','07891 223344','Asthma – regular check-ups with Dr. Sarah Smith.', '/images/Patients/emily_johnson.png'),
+('Mia','Patel','2022-08-10','Female','9 Willow Crescent, Paisley','07891 445566','Epilepsy – managed with medication.', '/images/Patients/mia_patel.png'),
+('Sophia','White','2022-04-05','Female','19 Pine Close, Glasgow','07891 889900','Heart murmur – monitored by Dr. James Green.', '/images/Patients/sophia_white.png'),
+('Grace','Lewis','2023-01-20','Female','8 Cedar Grove, Glasgow','07891 333444','Post-surgery recovery – supervised by Dr. James Green.', '/images/Patients/grace_lewis.png'),
+('Liam','Brown','2014-06-15','Male','45 Maple Avenue, Glasgow','07891 334455','Congenital heart defect – under care of Dr. James Green.', '/images/Patients/liam_brown.png'),
+('Noah','Wilson','2014-05-20','Male','33 Birch Lane, East Kilbride','07891 556677','Recovering from a broken leg – physiotherapy ongoing.', '/images/Patients/noah_wilson.png'),
+('Ava','Thompson','2015-05-18','Female','21 Cherry Road, Glasgow','07891 667788','Leukemia – ongoing treatment with Dr. Chloe Patel.', '/images/Patients/ava_thompson.png'),
+('Oliver','Evans','2015-09-04','Male','88 Spruce Street, Hamilton','07891 778899','Ulcerative colitis – monitored by Dr. Daniel Wilson.', '/images/Patients/oliver_evans.png'),
+('Benjamin','Hall','2014-08-30','Male','4 Hawthorn Drive, Glasgow','07891 990011','Fractured arm – follow-up with Dr. Ethan Jones.', '/images/Patients/benjamin_hall.png'),
+('Lucas','Scott','2015-06-11','Male','15 Poplar Street, Glasgow','07891 222333','Food allergies – advised by Dr. Sarah Smith.', '/images/Patients/lucas_scott.png'),
+('Isabella','King','2014-12-15','Female','62 Rowan Way, Glasgow','07891 111222','Chronic migraines – under review by Dr. Olivia White.', '/images/Patients/isabella_king.png'),
+('Jacob','Moore','2015-03-19','Male','27 Elm Road, Glasgow','07891 444555','Sports injury – attending rehab with Dr. Ethan Jones.', '/images/Patients/jacob_moore.png');
 
 -- ==========================================================
 -- 3. USERS TABLE (medical team, patients, parents)

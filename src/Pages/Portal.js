@@ -28,6 +28,7 @@ const Portal = () => {
         const res = await fetch(`http://localhost:4000/patients/${patientId}`);
         const data = await res.json();
         setPatient(data);
+        
       } catch (err) {
         console.error("Error fetching patient:", err);
       }

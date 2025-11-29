@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import '../../assets/Styles/Content.css'
 
-import ambulance from '../../assets/images/ambulance.png'
+
 import clinic from '../../assets/images/9-12 year icons/clinic.png'
 import Xray from '../../assets/images/9-12 year icons/xray.png'
 import mri from '../../assets/images/9-12 year icons/mri.png'
@@ -67,7 +67,7 @@ export default function NineTwelveContent({patientId}) {
     <div className="portal-layout">
       <aside className="profile-panel">
         <img
-          src={ambulance}
+          src={patient?.photo_url}
           alt="Profile"
           className="profile-image"
         />

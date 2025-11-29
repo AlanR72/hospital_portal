@@ -45,7 +45,7 @@ export default function ThreeFourContent({ patient }) {
     <div className="portal-layout">
 
       <aside className="profile-panel">
-        <img src={ambulance} alt="Profile" className="profile-image" />
+        <img src={patient.photo_url} alt="Profile" className="profile-image" />
 
         <div className="profile-info">
           <h3 className="profile-name">

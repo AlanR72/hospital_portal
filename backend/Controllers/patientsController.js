@@ -12,7 +12,8 @@ const getPatientById = (req, res) => {
       first_name, 
       last_name, 
       DATE_FORMAT(dob, '%Y-%m-%d') AS dob,
-      TIMESTAMPDIFF(YEAR, dob, CURDATE()) AS age
+      TIMESTAMPDIFF(YEAR, dob, CURDATE()) AS age,
+      photo_url
     FROM patients
     WHERE id = ?
   `;
@@ -20,7 +21,7 @@ const getPatientById = (req, res) => {
   pool.query(sql, [patientId], (err, results) => {
     if (err) return res.status(500).json({ error: "Database error" });
     if (results.length === 0) return res.status(404).json({ error: "Patient not found" });
-
+    
     res.json(results[0]);
   });
 };
