@@ -126,6 +126,12 @@ export default function AdminDashboard() {
         : [{ name: "TBD", role: "TBD", department: "TBD", contact_email: "", contact_phone: "", relationship: "TBD", patient_notes: "" }]
     });
 
+    // Ensure patient_notes populates correctly
+      setPatientForm({
+        ...data.patient,
+        patient_notes: data.patient?.notes || ""  
+      });
+
     // Convert DOB for the input
     setPatientForm({
       ...data.patient,
@@ -305,7 +311,7 @@ export default function AdminDashboard() {
               <label>Notes</label>
               <textarea
                 name="patient_notes"
-                value={patientForm.patient_notes || ""}
+                value={patientForm.notes || ""}
                 onChange={handleInputChange(setPatientForm)}
               />
             </div>

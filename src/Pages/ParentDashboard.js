@@ -41,6 +41,13 @@ export default function ParentDashboard() {
 
   const { patient, appointments, medicines, medicalTeam } = data;
 
+  const formatDate = (dateString) => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-GB"); // DD/MM/YYYY
+};
+
+
   return (
     <div className="parent-dashboard">
       <h1>Parent Dashboard</h1>
@@ -48,11 +55,11 @@ export default function ParentDashboard() {
       {/* Patient Info */}
       <section>
         <h2>{patient.first_name} {patient.last_name}</h2>
-        <p>DOB: {patient.dob}</p>
+        <p>DOB: {formatDate(patient.dob)}</p>
         <p>Gender: {patient.gender}</p>
         <p>Contact: {patient.contact_phone}</p>
         <p>Address: {patient.address}</p>
-        <p>Notes: {patient.patient_notes}</p>
+        <p>Notes: {patient.notes}</p>
       </section>
 
       {/* Appointments */}
@@ -60,7 +67,7 @@ export default function ParentDashboard() {
         <h3>Appointments</h3>
         {appointments?.length ? appointments.map((a, idx) => (
           <div key={idx}>
-            <p>{a.appointment_date} - {a.purpose} at {a.location} ({a.status})</p>
+            <p>{formatDate(a.appointment_date)} - {a.purpose} at {a.location} ({a.status})</p>
             <p>Notes: {a.appointment_notes}</p>
           </div>
         )) : <p>No appointments found.</p>}
@@ -73,7 +80,7 @@ export default function ParentDashboard() {
           <div key={idx}>
             <p>{m.medicine_name} - {m.dosage}, {m.frequency}</p>
             <p>Prescribed by: {m.prescribed_by}</p>
-            <p>Duration: {m.start_date} to {m.end_date}</p>
+            <p>Duration: {formatDate(m.start_date)} to {formatDate(m.end_date)}</p>
             <p>Notes: {m.medicine_notes}</p>
           </div>
         )) : <p>No medicines found.</p>}
@@ -87,7 +94,7 @@ export default function ParentDashboard() {
             <p>{member.role} - {member.name} ({member.department})</p>
             <p>Contact: {member.contact_email}, {member.contact_phone}</p>
             <p>Relationship: {member.relationship}</p>
-            <p>Notes: {member.patient_notes}</p>
+            <p>Notes: {member.profile_notes}</p>
           </div>
         )) : <p>No team members assigned.</p>}
       </section>

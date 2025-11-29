@@ -1,5 +1,5 @@
 -- ==========================================================
--- Hospital Portal Database Schema (Static Parents Version)
+-- Hospital Portal Database Schema (Clean Version with Appointment Notes)
 -- ==========================================================
 
 DROP DATABASE IF EXISTS hospital_portal;
@@ -10,26 +10,26 @@ USE hospital_portal;
 -- 1. MEDICAL TEAM TABLE
 -- ==========================================================
 CREATE TABLE medical_team (
-id INT AUTO_INCREMENT PRIMARY KEY,
-name VARCHAR(100) NOT NULL,
-role ENUM('Doctor', 'Nurse', 'Specialist', 'Therapist', 'Admin') NOT NULL,
-department VARCHAR(100),
-contact_email VARCHAR(255),
-contact_phone VARCHAR(50),
-profile_notes TEXT,
-photo_url VARCHAR(255),
-created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    role ENUM('Doctor', 'Nurse', 'Specialist', 'Therapist', 'Admin') NOT NULL,
+    department VARCHAR(100),
+    contact_email VARCHAR(255),
+    contact_phone VARCHAR(50),
+    profile_notes TEXT,
+    photo_url VARCHAR(255),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 INSERT INTO medical_team (name, role, department, contact_email, contact_phone, profile_notes) VALUES
 ('Dr. Sarah Smith', 'Doctor', 'Pediatrics', 'sarah.smith@hospital.org', '01234 111222', 'Specialist in childhood respiratory conditions.'),
-('Nurse Emma Brown', 'Nurse', 'Outpatient Care', 'emma.brown@hospital.org', '01234 333444', 'Provides follow-up and aftercare support.'),
-('Dr. James Green', 'Specialist', 'Cardiology', 'james.green@hospital.org', '01234 555666', 'Focuses on pediatric heart health.'),
 ('Dr. Olivia White', 'Doctor', 'Neurology', 'olivia.white@hospital.org', '01234 777888', 'Specializes in pediatric neurological disorders.'),
+('Dr. James Green', 'Doctor', 'Cardiology', 'james.green@hospital.org', '01234 555666', 'Focuses on pediatric heart health.'),
 ('Dr. Chloe Patel', 'Doctor', 'Oncology', 'chloe.patel@hospital.org', '01234 222333', 'Expert in childhood cancer treatments.'),
 ('Dr. Ethan Jones', 'Doctor', 'Orthopedics', 'ethan.jones@hospital.org', '01234 666777', 'Treats bone and joint conditions in children.'),
 ('Dr. Daniel Wilson', 'Doctor', 'Gastroenterology', 'daniel.wilson@hospital.org', '01234 121314', 'Specialist in pediatric digestive health.'),
+('Nurse Emma Brown', 'Nurse', 'Outpatient Care', 'emma.brown@hospital.org', '01234 333444', 'Provides follow-up and aftercare support.'),
 ('Nurse Liam Turner', 'Nurse', 'Intensive Care', 'liam.turner@hospital.org', '01234 999000', 'Experienced in critical care for young patients.'),
 ('Nurse Sophie Clark', 'Nurse', 'Emergency', 'sophie.clark@hospital.org', '01234 444555', 'Works in emergency response and triage.'),
 ('Nurse Ava Martin', 'Nurse', 'Cardiology', 'ava.martin@hospital.org', '01234 888999', 'Supports cardiac patients and post-surgery care.');
@@ -38,17 +38,17 @@ INSERT INTO medical_team (name, role, department, contact_email, contact_phone, 
 -- 2. PATIENTS TABLE
 -- ==========================================================
 CREATE TABLE patients (
-id INT AUTO_INCREMENT PRIMARY KEY,
-first_name VARCHAR(100) NOT NULL,
-last_name VARCHAR(100) NOT NULL,
-dob DATE NOT NULL,
-gender ENUM('Male','Female','Other') DEFAULT 'Other',
-address VARCHAR(255),
-contact_phone VARCHAR(50),
-guardian_id INT NULL,
-notes TEXT,
-created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    dob DATE NOT NULL,
+    gender ENUM('Male','Female','Other') DEFAULT 'Other',
+    address VARCHAR(255),
+    contact_phone VARCHAR(50),
+    guardian_id INT NULL,
+    notes TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 INSERT INTO patients (first_name, last_name, dob, gender, address, contact_phone, notes) VALUES
@@ -66,36 +66,38 @@ INSERT INTO patients (first_name, last_name, dob, gender, address, contact_phone
 ('Jacob','Moore','2015-03-19','Male','27 Elm Road, Glasgow','07891 444555','Sports injury – attending rehab with Dr. Ethan Jones.');
 
 -- ==========================================================
--- 3. USERS TABLE
+-- 3. USERS TABLE (medical team, patients, parents)
 -- ==========================================================
 CREATE TABLE users (
-id INT AUTO_INCREMENT PRIMARY KEY,
-username VARCHAR(100) NOT NULL UNIQUE,
-password_hash VARCHAR(255) NOT NULL,
-role ENUM('patient','parent','doctor','nurse','admin') NOT NULL,
-patient_id INT NULL,
-created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE SET NULL
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    role ENUM('patient','parent','doctor','nurse','admin') NOT NULL,
+    patient_id INT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE SET NULL
 );
 
--- Staff accounts
+-- Medical team users
 INSERT INTO users (username, password_hash, role) VALUES
-('dr_smith','Password123!','doctor'),
-('nurse_brown','Password123!','nurse'),
-('dr_green','Password123!','doctor'),
-('dr_white','Password123!','doctor'),
-('dr_patel','Password123!','doctor'),
-('dr_jones','Password123!','doctor');
+('dr_sarah_smith','Password123!','doctor'),
+('dr_olivia_white','Password123!','doctor'),
+('dr_james_green','Password123!','doctor'),
+('dr_chloe_patel','Password123!','doctor'),
+('dr_ethan_jones','Password123!','doctor'),
+('dr_daniel_wilson','Password123!','doctor'),
+('nurse_emma_brown','Password123!','nurse'),
+('nurse_liam_turner','Password123!','nurse'),
+('nurse_sophie_clark','Password123!','nurse'),
+('nurse_ava_martin','Password123!','nurse');
 
--- Patient accounts
+-- Patient users
 INSERT INTO users (username, password_hash, role, patient_id)
 SELECT LOWER(CONCAT(first_name,'_',last_name)), 'Password123!', 'patient', id
 FROM patients;
 
--- ==========================================================
--- 4. STATIC PARENT USERS (MANUALLY DEFINED)
--- ==========================================================
+-- Parent users
 INSERT INTO users (username, password_hash, role) VALUES
 ('brian_johnson','Password123!','parent'),
 ('raj_patel','Password123!','parent'),
@@ -111,15 +113,15 @@ INSERT INTO users (username, password_hash, role) VALUES
 ('kevin_moore','Password123!','parent');
 
 -- ==========================================================
--- 5. PARENT-CHILD LINKS
+-- 4. PARENT-CHILD LINKS
 -- ==========================================================
 CREATE TABLE parent_child (
-id INT AUTO_INCREMENT PRIMARY KEY,
-parent_user_id INT NOT NULL,
-patient_id INT NOT NULL,
-relationship VARCHAR(50) DEFAULT 'parent',
-FOREIGN KEY (parent_user_id) REFERENCES users(id),
-FOREIGN KEY (patient_id) REFERENCES patients(id)
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    parent_user_id INT NOT NULL,
+    patient_id INT NOT NULL,
+    relationship VARCHAR(50) DEFAULT 'parent',
+    FOREIGN KEY (parent_user_id) REFERENCES users(id),
+    FOREIGN KEY (patient_id) REFERENCES patients(id)
 );
 
 INSERT INTO parent_child (parent_user_id, patient_id) VALUES
@@ -137,75 +139,101 @@ INSERT INTO parent_child (parent_user_id, patient_id) VALUES
 ((SELECT id FROM users WHERE username='kevin_moore'), 12);
 
 -- ==========================================================
--- 6. PATIENT TEAM (unchanged)
+-- 5. PATIENT TEAM (Doctors 1:1, Nurses 1:2)
 -- ==========================================================
 CREATE TABLE patient_team (
-id INT AUTO_INCREMENT PRIMARY KEY,
-patient_id INT NOT NULL,
-team_member_id INT NOT NULL,
-relationship VARCHAR(50) DEFAULT 'Primary Doctor',
-notes TEXT,
-created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-FOREIGN KEY (patient_id) REFERENCES patients(id),
-FOREIGN KEY (team_member_id) REFERENCES users(id)
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    patient_id INT NOT NULL,
+    team_member_id INT NOT NULL,
+    relationship VARCHAR(50) DEFAULT 'Primary Doctor',
+    notes TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (patient_id) REFERENCES patients(id),
+    FOREIGN KEY (team_member_id) REFERENCES users(id)
 );
 
-DELETE FROM patient_team;
-
+-- Assign doctors
 INSERT INTO patient_team (patient_id, team_member_id, relationship)
-SELECT p.id, d.id, 'Primary Doctor'
+SELECT p.id, u.id, 'Primary Doctor'
 FROM patients p
-JOIN (SELECT id FROM users WHERE role='doctor' ORDER BY RAND()) d
-GROUP BY p.id;
+JOIN users u ON 
+    (p.id = 1 AND u.username = 'dr_sarah_smith') OR
+    (p.id = 2 AND u.username = 'dr_olivia_white') OR
+    (p.id = 3 AND u.username = 'dr_james_green') OR
+    (p.id = 4 AND u.username = 'dr_ethan_jones') OR
+    (p.id = 5 AND u.username = 'dr_james_green') OR
+    (p.id = 6 AND u.username = 'dr_ethan_jones') OR
+    (p.id = 7 AND u.username = 'dr_chloe_patel') OR
+    (p.id = 8 AND u.username = 'dr_daniel_wilson') OR
+    (p.id = 9 AND u.username = 'dr_ethan_jones') OR
+    (p.id = 10 AND u.username = 'dr_sarah_smith') OR
+    (p.id = 11 AND u.username = 'dr_olivia_white') OR
+    (p.id = 12 AND u.username = 'dr_ethan_jones');
 
+-- Assign nurses (each nurse for 2 patients)
 INSERT INTO patient_team (patient_id, team_member_id, relationship)
-SELECT p.id, n.id, 'Nurse'
+SELECT p.id, u.id, 'Nurse'
 FROM patients p
-JOIN (SELECT id FROM users WHERE role='nurse' ORDER BY RAND()) n
-GROUP BY p.id;
+JOIN users u ON 
+    (u.username = 'nurse_emma_brown' AND p.id IN (1,2,7,10)) OR
+    (u.username = 'nurse_liam_turner' AND p.id IN (3,4,8,11)) OR
+    (u.username = 'nurse_sophie_clark' AND p.id IN (5,6,9,12));
 
 -- ==========================================================
--- 7. APPOINTMENTS TABLE
+-- 6. APPOINTMENTS
 -- ==========================================================
 CREATE TABLE appointments (
-id INT AUTO_INCREMENT PRIMARY KEY,
-patient_id INT NOT NULL,
-doctor_id INT NULL,
-appointment_date DATETIME NOT NULL,
-location VARCHAR(255),
-purpose VARCHAR(255),
-status ENUM('upcoming','completed','cancelled') DEFAULT 'upcoming',
-notes TEXT,
-created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE,
-FOREIGN KEY (doctor_id) REFERENCES users(id) ON DELETE SET NULL
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    patient_id INT NOT NULL,
+    doctor_id INT NULL,
+    appointment_date DATETIME NOT NULL,
+    location VARCHAR(255),
+    purpose VARCHAR(255),
+    status ENUM('upcoming','completed','cancelled') DEFAULT 'upcoming',
+    notes TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE,
+    FOREIGN KEY (doctor_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
-DELETE FROM appointments;
-
-INSERT INTO appointments (patient_id, doctor_id, appointment_date, location, purpose)
-SELECT p.id, pt.team_member_id, DATE_ADD('2025-12-01', INTERVAL p.id DAY), CONCAT('Room ', p.id), 'Checkup'
+INSERT INTO appointments (patient_id, doctor_id, appointment_date, location, purpose, notes)
+SELECT p.id, pt.team_member_id, DATE_ADD('2025-12-01', INTERVAL p.id DAY), CONCAT('Room ', p.id), 'Checkup',
+    CASE p.id
+        WHEN 1 THEN 'Asthma review'
+        WHEN 2 THEN 'Epilepsy follow-up'
+        WHEN 3 THEN 'Heart murmur check'
+        WHEN 4 THEN 'Post-surgery assessment'
+        WHEN 5 THEN 'Congenital heart monitoring'
+        WHEN 6 THEN 'Physiotherapy progress'
+        WHEN 7 THEN 'Leukemia treatment review'
+        WHEN 8 THEN 'Ulcerative colitis check'
+        WHEN 9 THEN 'Fractured arm follow-up'
+        WHEN 10 THEN 'Food allergy assessment'
+        WHEN 11 THEN 'Migraine review'
+        WHEN 12 THEN 'Sports injury rehab'
+        ELSE 'General checkup'
+    END
 FROM patients p
 JOIN patient_team pt ON pt.patient_id = p.id AND pt.relationship='Primary Doctor';
 
 -- ==========================================================
--- 8. MEDICINES TABLE (unchanged)
+-- 7. MEDICINES
 -- ==========================================================
 CREATE TABLE medicines (
-id INT AUTO_INCREMENT PRIMARY KEY,
-patient_id INT NOT NULL,
-medicine_name VARCHAR(100) NOT NULL,
-dosage VARCHAR(50) NOT NULL,
-frequency VARCHAR(100) NOT NULL,
-start_date DATE NOT NULL,
-end_date DATE,
-prescribed_by VARCHAR(100),
-notes TEXT,
-created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    patient_id INT NOT NULL,
+    medicine_name VARCHAR(100) NOT NULL,
+    dosage VARCHAR(50) NOT NULL,
+    frequency VARCHAR(100) NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE,
+    prescribed_by VARCHAR(100),
+    notes TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE
 );
 
 INSERT INTO medicines (patient_id, medicine_name, dosage, frequency, start_date, end_date, prescribed_by, notes) VALUES

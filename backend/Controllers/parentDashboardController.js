@@ -36,7 +36,7 @@ const getParentDashboard = (req, res) => {
 
     // Step 4: Get medical team
     const medicalTeamQuery = `
-      SELECT mt.id, mt.name, mt.role, mt.department, mt.contact_email, mt.contact_phone, pt.relationship, pt.notes AS patient_notes
+      SELECT mt.id, mt.name, mt.role, mt.department, mt.contact_email, mt.contact_phone, mt.profile_notes, pt.relationship, pt.notes AS patient_notes
       FROM patient_team pt
       JOIN medical_team mt ON pt.team_member_id = mt.id
       WHERE pt.patient_id = ?
