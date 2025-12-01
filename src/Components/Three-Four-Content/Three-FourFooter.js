@@ -28,7 +28,7 @@ export default function Footer({setView}) {
         <span>Games</span>
       </div>
       <div className="footer-item" onClick={() => setView("Videos")}>
-        <img src={FunVideos} alt="Snakes and Ladders" />
+        <img src={FunVideos} alt="YouTube style Icon" />
         <span>Fun Videos</span>
       </div>
       <a href="/activities" className="footer-item">

@@ -24,15 +24,15 @@ export default function Footer({setView}) {
 
       {/* Group 2: Main Menu Items */}
       <div className="footer-item" onClick={() => setView("Games")}>
-        <img src={GamesLogo} alt="Snakes and Ladders" />
+        <img src={GamesLogo} alt="GameController" />
         <span>Games</span>
       </div>
       <div className="footer-item" onClick={() => setView("Videos")}>
-        <img src={FunVideos} alt="Snakes and Ladders" />
+        <img src={FunVideos} alt="YouTube style TV icon" />
         <span>Fun Videos</span>
       </div>
       <a href='/activities' className="footer-item">
-        <img src={Activities} alt="YouTube style icon" />
+        <img src={Activities} alt="" />
         <span>Activities</span>
       </a>
       <a href='/quiz' className="footer-item">
