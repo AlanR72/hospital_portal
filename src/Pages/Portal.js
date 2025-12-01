@@ -6,6 +6,9 @@ import ThreeFourFooter from "../Components/Three-Four-Content/Three-FourFooter";
 import ThreeFourMedicine from "../Components/Three-Four-Content/Three-FourMedicine";
 import ThreeFourMedicalTeam from "../Components/Three-Four-Content/Three-FourMedicalTeam";
 import ThreeFourCalendar from "../Components/Three-Four-Content/Three-FourCalendar";
+import ThreeFourGames from "../Components/Three-Four-Content/Three-FourGames";
+import ThreeFourVideos from "../Components/Three-Four-Content/Three-FourVideos";
+
 
 import NineTwelveHeader from "../Components/Nine-Twelve-Content/Nine-TwelveHeader";
 import NineTwelveContent from "../Components/Nine-Twelve-Content/Nine-TwelveContent";
@@ -13,6 +16,9 @@ import NineTwelveFooter from "../Components/Nine-Twelve-Content/Nine-TwelveFoote
 import NineTwelveMedicine from "../Components/Nine-Twelve-Content/Nine-TwelveMedicine";
 import NineTwelveMedicalTeam from "../Components/Nine-Twelve-Content/Nine-TwelveMedicalTeam";
 import NineTwelveCalendar from "../Components/Nine-Twelve-Content/Nine-TwelveCalendar";
+import NineTwelveGames from "../Components/Nine-Twelve-Content/Nine-TwelveGames";
+import NineTwelveVideos from "../Components/Nine-Twelve-Content/Nine-TwelveVideos";
+
 
 import HospitalMap from "../Components/Map";
 
@@ -52,6 +58,8 @@ const Portal = () => {
     Calendar: <ThreeFourCalendar patientId={patientId} />,
     Content: <ThreeFourContent patient={patient} />,
     Map: <HospitalMap />,
+    Games: <ThreeFourGames />,
+    Videos: <ThreeFourVideos />,
   };
 
   const NineTwelveComponents = {
@@ -60,6 +68,8 @@ const Portal = () => {
     Calendar: <NineTwelveCalendar patientId={patientId} />,
     Content: <NineTwelveContent patientId={patientId} />,
     Map: <HospitalMap />,
+    Games: <NineTwelveGames />,
+    Videos: <NineTwelveVideos />,
   };
 
   const renderContent = () => {
