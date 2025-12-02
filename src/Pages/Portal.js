@@ -8,6 +8,8 @@ import ThreeFourMedicalTeam from "../Components/Three-Four-Content/Three-FourMed
 import ThreeFourCalendar from "../Components/Three-Four-Content/Three-FourCalendar";
 import ThreeFourGames from "../Components/Three-Four-Content/Three-FourGames";
 import ThreeFourVideos from "../Components/Three-Four-Content/Three-FourVideos";
+import ThreeFourActivities from "../Components/Three-Four-Content/Three-FourActivities";
+import ThreeFourQuiz from "../Components/Three-Four-Content/Three-FourQuiz";
 
 
 import NineTwelveHeader from "../Components/Nine-Twelve-Content/Nine-TwelveHeader";
@@ -18,6 +20,8 @@ import NineTwelveMedicalTeam from "../Components/Nine-Twelve-Content/Nine-Twelve
 import NineTwelveCalendar from "../Components/Nine-Twelve-Content/Nine-TwelveCalendar";
 import NineTwelveGames from "../Components/Nine-Twelve-Content/Nine-TwelveGames";
 import NineTwelveVideos from "../Components/Nine-Twelve-Content/Nine-TwelveVideos";
+import NineTwelveActivities from "../Components/Nine-Twelve-Content/Nine-TwelveActivities";
+import NineTwelveQuiz from "../Components/Nine-Twelve-Content/Nine-TwelveQuiz";
 
 
 import HospitalMap from "../Components/Map";
@@ -60,6 +64,8 @@ const Portal = () => {
     Map: <HospitalMap />,
     Games: <ThreeFourGames />,
     Videos: <ThreeFourVideos />,
+    Activities: <ThreeFourActivities />,
+    Quiz: <ThreeFourQuiz />,
   };
 
   const NineTwelveComponents = {
@@ -70,6 +76,8 @@ const Portal = () => {
     Map: <HospitalMap />,
     Games: <NineTwelveGames />,
     Videos: <NineTwelveVideos />,
+    Activities: <NineTwelveActivities />,
+    Quiz: <NineTwelveQuiz />,
   };
 
   const renderContent = () => {
