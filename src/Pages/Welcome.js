@@ -117,12 +117,7 @@ export default function Welcome() {
             <img src={portalLogo} alt="Childrens Portal Logo" className="hide-on-mobile" />
             <h2>Portal Login</h2>
             <form onSubmit={handleLogin}>
-            <label>Login As:</label>
-            <select value={role} onChange={(e) => setRole(e.target.value)}>
-              <option value="patient">Patient</option>
-              <option value="parent">Parent/Guardian</option>
-              <option value="doctor">Doctor/Admin</option>
-            </select>
+            
             <input
               type="text"
               value={username}

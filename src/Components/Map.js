@@ -6,12 +6,12 @@ function Map() {
   const [activeMarker, setActiveMarker] = useState(null);
 
   const markerPositions = {
-    x_ray: { top: "25%", left: "35%", color: "red" },
-    neurology: { top: "26%", left: "56%", color: "blue" },
-    dental: { top: "45%", left: "70%", color: "yellow" },
-    maindoor: { top: "75%", left: "30%", color: "teal" },
-    cafe: { top: "65%", left: "60%", color: "purple" },
-    fun: { top: "45%", left: "30%", color: "orange" },
+    X_ray: { top: "25%", left: "35%", color: "red" },
+    Neurology: { top: "26%", left: "56%", color: "blue" },
+    Dental: { top: "45%", left: "70%", color: "yellow" },
+    MainDoor: { top: "75%", left: "30%", color: "teal" },
+    Cafe: { top: "65%", left: "60%", color: "purple" },
+    FunPark: { top: "45%", left: "30%", color: "orange" },
   };
 
   return (

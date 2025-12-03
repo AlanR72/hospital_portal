@@ -11,7 +11,6 @@ import ThreeFourVideos from "../Components/Three-Four-Content/Three-FourVideos";
 import ThreeFourActivities from "../Components/Three-Four-Content/Three-FourActivities";
 import ThreeFourQuiz from "../Components/Three-Four-Content/Three-FourQuiz";
 
-
 import NineTwelveHeader from "../Components/Nine-Twelve-Content/Nine-TwelveHeader";
 import NineTwelveContent from "../Components/Nine-Twelve-Content/Nine-TwelveContent";
 import NineTwelveFooter from "../Components/Nine-Twelve-Content/Nine-TwelveFooter";
@@ -23,7 +22,6 @@ import NineTwelveVideos from "../Components/Nine-Twelve-Content/Nine-TwelveVideo
 import NineTwelveActivities from "../Components/Nine-Twelve-Content/Nine-TwelveActivities";
 import NineTwelveQuiz from "../Components/Nine-Twelve-Content/Nine-TwelveQuiz";
 
-
 import HospitalMap from "../Components/Map";
 
 const Portal = () => {
@@ -33,29 +31,26 @@ const Portal = () => {
   const [view, setView] = useState("Content");
   const [patient, setPatient] = useState(null);
 
-  
+  // Fetch patient record
   useEffect(() => {
     async function fetchPatient() {
       try {
         const res = await fetch(`http://localhost:4000/patients/${patientId}`);
         const data = await res.json();
         setPatient(data);
-        
       } catch (err) {
         console.error("Error fetching patient:", err);
       }
     }
 
-    if (patientId) {
-      fetchPatient();
-    }
+    if (patientId) fetchPatient();
   }, [patientId]);
 
-  
   if (!patientId) {
     return <p>Error: No patient ID found. Please log in again.</p>;
   }
 
+  // Component maps for both age groups
   const ThreeFourComponents = {
     Medicines: <ThreeFourMedicine patientId={patientId} />,
     MedicalTeam: <ThreeFourMedicalTeam patientId={patientId} />,
@@ -64,7 +59,7 @@ const Portal = () => {
     Map: <HospitalMap />,
     Games: <ThreeFourGames />,
     Videos: <ThreeFourVideos />,
-    Activities: <ThreeFourActivities />,
+    Activities: <ThreeFourActivities setView={setView} />,
     Quiz: <ThreeFourQuiz />,
   };
 
@@ -76,7 +71,7 @@ const Portal = () => {
     Map: <HospitalMap />,
     Games: <NineTwelveGames />,
     Videos: <NineTwelveVideos />,
-    Activities: <NineTwelveActivities />,
+    Activities: <NineTwelveActivities setView={setView} />,
     Quiz: <NineTwelveQuiz />,
   };
 
@@ -86,13 +81,13 @@ const Portal = () => {
     return <p>No content available.</p>;
   };
 
-
+  // ⬇ Render layout based on age group
   if (ageGroup === "2-4") {
     return (
       <div>
         <ThreeFourHeader setView={setView} />
         {renderContent()}
-        <ThreeFourFooter setView={setView}/>
+        <ThreeFourFooter setView={setView} />
       </div>
     );
   }
@@ -102,7 +97,7 @@ const Portal = () => {
       <div>
         <NineTwelveHeader setView={setView} />
         {renderContent()}
-        <NineTwelveFooter setView={setView}/>
+        <NineTwelveFooter setView={setView} />
       </div>
     );
   }
