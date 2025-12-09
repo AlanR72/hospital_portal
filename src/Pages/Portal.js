@@ -59,8 +59,8 @@ const Portal = () => {
     Map: <HospitalMap />,
     Games: <ThreeFourGames />,
     Videos: <ThreeFourVideos />,
-    Activities: <ThreeFourActivities setView={setView} />,
-    Quiz: <ThreeFourQuiz />,
+    Activities: <ThreeFourActivities setView={setView} patient={patient} />,
+    Quiz: <ThreeFourQuiz patient={patient} />,
   };
 
   const NineTwelveComponents = {
@@ -71,8 +71,8 @@ const Portal = () => {
     Map: <HospitalMap />,
     Games: <NineTwelveGames />,
     Videos: <NineTwelveVideos />,
-    Activities: <NineTwelveActivities setView={setView} />,
-    Quiz: <NineTwelveQuiz />,
+    Activities: <NineTwelveActivities setView={setView} patient={patient} />,
+    Quiz: <NineTwelveQuiz patient={patient} />,
   };
 
   const renderContent = () => {

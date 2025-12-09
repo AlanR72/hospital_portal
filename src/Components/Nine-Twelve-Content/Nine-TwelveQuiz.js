@@ -7,30 +7,43 @@ import quiz4 from "../../assets/images/quizImages/quiz2.1.png";
 import quiz5 from "../../assets/images/quizImages/quiz3.png";
 import quiz6 from "../../assets/images/quizImages/quiz3.1.png";
 
-export default function NineTwelveQuiz() {
+import '../../assets/Styles/Quiz.css'
+
+export default function NineTwelveQuiz({patient}) {
   return (
     <div>
       <div className="child-friendly-container">
         <p className="child-friendly-greeting">
-          Hi! Hope you’re having a great day! 🌟
+          Hi {patient ? patient.first_name : "there"}! Hope you’re having a great day! 🌟
         </p>
         <p className="child-friendly-greeting">Why not try one of our below interactive quizzes?</p>
-        <div className= "quiz1">
-        <img src={quiz1}/>
-        <img src={quiz2}/>
-        <label>Space Academy</label>
+        <div className="quiz-container">
+
+          <a className="quiz" href="https://quizassessement.netlify.app" target="_blank" rel="noopener noreferrer">
+            <div className="quiz-images">
+              <img src={quiz1} />
+              <img src={quiz2} />
+            </div>
+            <p className="quiz-label">Space Academy</p>
+          </a>
+
+          <a className="quiz" href="https://quiz4teens.netlify.app/ " target="_blank" rel="noopener noreferrer">
+            <div className="quiz-images">
+              <img src={quiz3} />
+              <img src={quiz4} />
+            </div>
+            <p className="quiz-label">Teen Quiz</p>
+          </a>
+
+          <a className="quiz" href="https://quiz4kidzkm.netlify.app/" target="_blank" rel="noopener noreferrer">
+            <div className="quiz-images">
+              <img src={quiz5} />
+              <img src={quiz6} />
+            </div>
+            <p className="quiz-label">Quiz4Kidz</p>
+          </a>
+
         </div>
-        <div className= "quiz2">
-        <img src={quiz3}/>
-        <img src={quiz4}/>
-        <label>Teen Quiz</label>
-        </div>
-        <div className= "quiz3">
-        <img src={quiz5}/>
-        <img src={quiz6}/>
-        <label>Quiz4Kidz</label>
-        </div>
-        
       </div>
     </div>
   )
