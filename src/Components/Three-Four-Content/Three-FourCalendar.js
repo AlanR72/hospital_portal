@@ -32,7 +32,7 @@ function ThreeFourCalendar({patientId}) {
   }
 
   return (
-  <div className="child-friendly-container">
+  <div className="child-friendly-container-calendar">
     <p className="child-friendly-greeting">
       Hi {appointment?.patient_first_name}! Hope you're feeling happy and well today! 🌟
     </p>

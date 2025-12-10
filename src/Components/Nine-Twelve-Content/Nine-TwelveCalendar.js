@@ -31,7 +31,7 @@ function NineTwelveCalendar({patientId}) {
   }
 
   return (
-  <div className="child-friendly-container">
+  <div className="child-friendly-container-calendar">
     <p className="child-friendly-greeting">
       Hello {appointment?.patient_first_name}! We hope you're having a great day! 🙂
     </p>

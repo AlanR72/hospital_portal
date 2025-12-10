@@ -12,7 +12,7 @@ import '../../assets/Styles/Quiz.css'
 export default function ThreeFourQuiz({patient}) {
   return (
     <div>
-      <div className="child-friendly-container">
+      <div className="child-friendly-container-quiz">
         <p className="child-friendly-greeting">
           Hi {patient ? patient.first_name : "there"}! Hope you’re having a great day! 🌟
         </p>

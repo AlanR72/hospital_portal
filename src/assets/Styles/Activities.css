@@ -1,3 +1,77 @@
-img{
-    width: 150%;
+/* Global image rule */
+img {
+  width: 10%;
+}
+
+/* Main layout wrapper */
+.activities-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+  position: relative;
+  width: 100%;
+}
+
+/* Side image columns */
+.side-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 120px;
+}
+
+/* Override global img rule inside side columns */
+.side-column img {
+  width: 100% !important;  /* ensures full-size images */
+  height: auto;
+}
+.hospital-map {
+  width: 70%;     
+  max-width: 400px;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Center content (your green box) */
+.child-friendly-container-activities {
+  flex: 1;
+  max-width: 600px;
+  margin: 0 40px;
+  background-color: #E7F1E0;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+/* -------------------------- */
+/*         MOBILE RULES       */
+/* -------------------------- */
+@media (max-width: 768px) {
+
+  /* Hide side columns on mobile */
+  .side-column {
+    display: none;
+  }
+
+  /* Make main content span full width */
+  .child-friendly-container-activities {
+    max-width: 100%;
+    margin: 0 20px;
+  }
+  .hospital-map {
+    width: 60%;
+    max-width: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .child-friendly-container-activities {
+    margin: 0 10px;
+    padding: 15px;
+  }
+  .hospital-map {
+    width: 70%;
+    max-width: 220px;
+  }
 }
