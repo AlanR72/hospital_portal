@@ -14,14 +14,18 @@
   background-color: #eaf2f8;
   border-radius: 8px;
   flex-shrink: 0;
+  margin: 5% 5%;
+  height: 30vh;
 }
 
 .profile-image {
-  width: 50px;
-  height: 50px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #5DADE2;
+  margin-right: 20%;
+  margin-left: 10%;
 }
 
 .profile-info {
@@ -46,6 +50,7 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 0.7rem;
   flex-grow: 1;
+  width: 100%;
 }
 
 .grid-item img {
@@ -135,9 +140,10 @@
     flex-direction: row;
     gap: 2rem;
     /* ADD THIS: Prevents any weird overflow issues at the main layout level */
-    align-items: center;
+    align-items: stretch;
     width: 95%;
-    max-width: 900px;
+    max-width: none;
+    max-height: auto;
   }
 
   /* --- Profile Panel becomes a Sidebar --- */
@@ -147,6 +153,9 @@
     flex-shrink: 0;
     justify-content: center;
     padding: 2rem;
+    margin: 10% 0;
+    margin-left: 3%;
+    height: 60vh;
   }
 
   /* ... (tus otros estilos para .profile-image, .profile-info, etc.) ... */
@@ -166,13 +175,9 @@
 
   /* --- Grid adjusts for more space --- */
   .content-grid {
-    grid-template-columns: repeat(3, 1fr);
-    /* ADD THESE TWO LINES - THIS IS THE KEY FIX */
+    grid-template-columns: repeat(3, 1fr);    
     gap: 1rem;
-    /* Make the grid container take the full available height */
-    overflow-y: auto;
-    /* If the grid items overflow, THIS container will scroll, not the whole page */
-    margin: 1rem auto;
+    margin: 1rem 0;
   }
 
   /* ... (tus otros estilos para .grid-item, .image-title, etc.) ... */
@@ -186,6 +191,10 @@
 
   .image-title {
     font-size: 1.2rem;
+  }
+  .grid-item {
+    aspect-ratio: auto;
+    min-height: 220px;
   }
 }
 
@@ -230,5 +239,7 @@
   .click-me {
     font-size: 1rem;
   }
-
+  .grid-item {
+    min-height: 260px;
+  }
 }
