@@ -4,10 +4,10 @@ import langsideLogo from "../assets/images/langside-logo.png";
 import portalLogo from "../assets/images/portal_logo1.png";
 import uponarrival from "../assets/images/uponarrival.PNG";
 import prescription from "../assets/images/Prescription.PNG";
-import research from "../assets/images/researchstudies.PNG";
+import patientPortal from "../assets/images/patientportallogo.png";
 import calendar from "../assets/images/Calendar.PNG";
-import testube from "../assets/images/testube.PNG";
-import communicate from "../assets/images/communicatelogo.png";
+import parentPortal from "../assets/images/parentportallogo.png";
+import medicalTeam from "../assets/images/medicalteamlogo.png";
 import "../assets/Styles/Welcome.css";
 
 
@@ -87,27 +87,27 @@ export default function Welcome() {
               {/* ... (all your icon items) ... */}
               <div className="icon-item">
                 <img src={uponarrival} alt="Drawing of hospital" />
-                <span>Arrival Instructions</span>
+                <span>Hospital Map</span>
               </div>
               <div className="icon-item">
                 <img src={prescription} alt="Drawing of pills" />
-                <span>Prescriptions</span>
+                <span>Medicines</span>
               </div>
               <div className="icon-item">
-                <img src={research} alt="Drawing of microscope" />
-                <span>Research</span>
+                <img src={parentPortal} alt="Logo of parentand child" />
+                <span>Parent Portal</span>
               </div>
               <div className="icon-item">
                 <img src={calendar} alt="Drawing of calendar" />
-                <span>Appointments Calendar</span>
+                <span>Appointments</span>
               </div>
               <div className="icon-item">
-                <img src={testube} alt="Drawing of testube" />
-                <span>Test Results</span>
+                <img src={patientPortal} alt="Medical record logo" />
+                <span>Patient Portal</span>
               </div>
               <div className="icon-item">
-                <img src={communicate} alt="Drawing of hospital" />
-                <span>Communicate with Doctor</span>
+                <img src={medicalTeam} alt="Logo of doctor and nurse" />
+                <span>Medical Teams</span>
               </div>
             </div>
           </div>
