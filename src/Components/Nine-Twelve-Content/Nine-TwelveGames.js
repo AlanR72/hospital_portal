@@ -47,12 +47,13 @@ const games = [
     image: coolmathgames,
     link: "https://www.coolmathgames.com/0-moto-x3m"
   }
+
 ];
 
 const GamesPage = () => {
   return (
     <div className="games-page">
-      <h1>Fun Games Websites</h1>
+      <h1>Fun Games Websites 🎮</h1>
       <div className="games-grid">
         {/* First 4 games */}
         {games.slice(0, 4).map((game, index) => (
@@ -69,7 +70,7 @@ const GamesPage = () => {
         ))}
 
         {/* Insert heading here */}
-        <h2 className="recommended-heading">Recommended Games</h2>
+        <h2 className="recommended-heading">Recommended Games 🕹️</h2>
 
         {/* Remaining games */}
         {games.slice(4).map((game, index) => (
