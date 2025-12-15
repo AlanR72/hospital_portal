@@ -33,9 +33,9 @@ const games = [
     link: "https://www.coolmathgames.com/0-papas-freezeria"
   },
   {
-    title: "Chess",
+    title: "Run 3",
     image: coolmathgames,
-    link: "https://www.coolmathgames.com/0-chess"
+    link: "https://www.coolmathgames.com/0-run-3"
   },
   {
     title: "Cookie Clicker",
@@ -43,16 +43,16 @@ const games = [
     link: "https://www.coolmathgames.com/0-cookie-clicker"
   },
   {
-    title: "Moto X3M",
+    title: "Jelly Truck",
     image: coolmathgames,
-    link: "https://www.coolmathgames.com/0-moto-x3m"
+    link: "https://www.coolmathgames.com/0-jelly-truck"
   }
 ];
 
 const GamesPage = () => {
   return (
     <div className="games-page">
-      <h1>Fun Games Websites</h1>
+      <h1>Fun Games Websites 🎮</h1>
       <div className="games-grid">
         {/* First 4 games */}
         {games.slice(0, 4).map((game, index) => (
@@ -69,7 +69,7 @@ const GamesPage = () => {
         ))}
 
         {/* Insert heading here */}
-        <h2 className="recommended-heading">Recommended Games</h2>
+        <h2 className="recommended-heading">Recommended Games 🕹️</h2>
 
         {/* Remaining games */}
         {games.slice(4).map((game, index) => (
