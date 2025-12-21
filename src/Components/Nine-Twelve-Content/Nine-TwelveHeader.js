@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import "../../assets/Styles/Header.css";
 
 //Import image assets for the navigation menu.
-
 import portalLogo from "../../assets/images/portal_logo1.png";
 import homeIcon from "../../assets/images/nine-twelvehome.png"
 import calendarIcon from "../../assets/images/nine-twelvecalendar.png"
@@ -22,6 +21,7 @@ export default function NineTwelveHeader() {
 
   // 2. EVENT HANDLER:
   // This function toggles the menu's open/closed state.
+
   const toggleMenu = () => {
     // setIsMeenuOpen received the opposite of the current value.
     // If IsMenuOpen is true, it become false, and vice-versa.
@@ -53,6 +53,7 @@ export default function NineTwelveHeader() {
           A dynamic class 'open' is added using a template literal if 'IsMenuOpen' is true.
           This allows CSS to control the show/hide transition of the menu on mobile devices. 
         */}
+
         <div className={`portal-menu-panel ${isMenuOpen ? 'open' : ''}`}>
 
           {/* THE CLOSE BUTTON MUST BE *INSIDE* THE MENU PANEL */}
@@ -84,4 +85,3 @@ export default function NineTwelveHeader() {
     </header>
   );
 }
-

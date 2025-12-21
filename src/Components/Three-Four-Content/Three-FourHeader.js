@@ -10,7 +10,6 @@ import clipboardIcon from "../../assets/images/clipboard.png";
 import medicineIcon from "../../assets/images/medicine.png";
 import medicalTeamIcon from "../../assets/images/ambulance.png";
 
-
 //Define and export the 'ThreeFourHeader' functional component.
 export default function ThreeFourHeader() {
   // 1. STATE MANAGEMENT:
