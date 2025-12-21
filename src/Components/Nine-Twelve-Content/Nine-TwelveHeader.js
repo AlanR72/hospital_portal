@@ -11,7 +11,7 @@ import medicineIcon from "../../assets/images/nine-twelvemedicine.png"
 import teamIcon from "../../assets/images/nine-twelveteam.png"
 
 //Define and export the 'ThreeFourHeader' functional component.
-export default function NineTwelveHeader() {
+export default function NineTwelveHeader( {setView}) {
   // 1. STATE MANAGEMENT:
   // Create a state variable to track if the mobile menu is open or closed.
   // -'isMenuOpen' will be 'true' if the menu is open, 'false' otherwise.
@@ -36,10 +36,9 @@ export default function NineTwelveHeader() {
       <nav className="nav-container">
 
         {/* The site logo, which links to the portal homepage */}
-        <div className="portal-logo">
-          <a id="logo" href="/Portal">
-            <img src={portalLogo} alt="Hospital Logo" />
-          </a>
+        <div className="portal-logo" onClick={() => setView("Content")} 
+              style={{ cursor: "pointer" }}>
+          <img src={portalLogo} alt="Hospital Logo" />
         </div>
 
         {/* The burger menu button, visible only on mobile. */}
@@ -63,19 +62,23 @@ export default function NineTwelveHeader() {
 
           {/* The navigation menu items with icons */}
           <ul className="portal-menu-list">
-            <li>
+            <li onClick={() => setView("Content")} 
+              style={{ cursor: "pointer" }}>
               <img src={homeIcon} alt="Home icon" />
               <span>Home</span>
             </li>
-            <li>
+            <li onClick={() => setView('Calendar')} 
+              style={{cursor: "pointer"}}>
               <img src={calendarIcon} alt="Calendar icon" />
               <span>My Calendar</span>
             </li>
-            <li>
-              <img src={medicineIcon} alt="Medicine icon" />
-              <span>My Medicine</span>
+            <li onClick={() => setView('Medicines')} 
+              style={{cursor: "pointer"}}>
+            <img src={medicineIcon} alt="Medicine icon" />
+            <span>My Medicine</span>
             </li>
-            <li>
+            <li onClick={() => setView("MedicalTeam")} 
+              style={{ cursor: "pointer" }}>
               <img src={teamIcon} alt="Team icon" />
               <span>Medical Team</span>
             </li>

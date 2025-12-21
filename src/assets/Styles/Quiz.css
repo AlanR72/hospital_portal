@@ -1,0 +1,57 @@
+/* Container that holds everything */
+.child-friendly-container-quiz{
+  background-color: #E7F1E0;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+}
+.child-friendly-greeting{
+    margin: 3% 0;
+}
+
+/* Holds all quiz blocks */
+.quiz-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+  gap: 30px;
+  width: 100%;
+}
+
+/* Each quiz card */
+.quiz {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-decoration: none;  /* remove underline */
+  color: inherit;         /* keep normal text color */
+}
+
+/* Image pair row */
+.quiz-images {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+/* Images scale down automatically */
+.quiz-images img {
+  width: 48%;
+  max-height: 140px;
+  object-fit: contain;
+}
+
+/* Label under images */
+.quiz-label {
+  margin-top: 15px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+}

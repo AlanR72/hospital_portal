@@ -3,12 +3,11 @@ import { useNavigate } from "react-router-dom";
 import langsideLogo from "../assets/images/langside-logo.png";
 import portalLogo from "../assets/images/portal_logo1.png";
 import uponarrival from "../assets/images/uponarrival.PNG";
-import prescription from "../assets/images/Prescription.PNG";
-import research from "../assets/images/researchstudies.PNG";
-import calendar from "../assets/images/Calendar.PNG";
-import testube from "../assets/images/testube.PNG";
-import communicate from "../assets/images/communicatelogo.png";
-import WelcomeFooter from '../Components/WelcomeFooter';
+import prescription from "../assets/images/medicineslogo.png";
+import patientPortal from "../assets/images/patientportallogo.png";
+import calendar from "../assets/images/calendarlogo.png";
+import parentPortal from "../assets/images/parentportallogo.png";
+import medicalTeam from "../assets/images/medicalteamlogo.png";
 import "../assets/Styles/Welcome.css";
 
 
@@ -20,40 +19,50 @@ export default function Welcome() {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
+  setError("");
 
-    try {
-      const response = await fetch("http://localhost:4000/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password, role }),
-      });
+  try {
+    const res = await fetch("http://localhost:4000/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }) // no role
+    });
 
-      const data = await response.json();
+    const data = await res.json();
 
-      if (!response.ok) {
-        setError(data.error || "Login failed");
-        return;
-      }
-
-      // Save info locally
-      localStorage.setItem("username", data.username);
-      localStorage.setItem("role", role);
-      if (data.age_group) localStorage.setItem("age_group", data.age_group);
-
-      // Redirect based on role
-      if (role === "doctor" || role === "admin") {
-        navigate("/admin-dashboard");      // Admin.js
-      } else if (role === "parent") {
-        navigate("/parent-dashboard");     // Parent.js
-      } else if (role === "patient") {
-        navigate("/patient-portal");       // Portal.js (handles age groups)
-      }
-    } catch (err) {
-      console.error("Login error:", err);
-      setError("An error occurred while logging in.");
+    if (!res.ok) {
+      setError(data.error || "Login failed");
+      return;
     }
-  };
+
+    // Save user info
+    localStorage.setItem("username", data.username);
+    localStorage.setItem("role", data.role);
+    localStorage.setItem("userId", data.id); 
+    if (data.patient_id) localStorage.setItem("patientId", data.patient_id);
+    
+    if (data.age_group) {
+      localStorage.setItem("age_group", data.age_group);
+    }
+
+    // Redirect based on backend validation
+    if (data.canAccessAdmin) {
+      navigate("/admin-dashboard");
+    } else if (data.role === "parent") {
+      navigate("/parent-dashboard");
+    } else if (data.role === "patient") {
+      navigate("/patient-portal");
+    } else {
+      setError("Unknown user role");
+    }
+
+  } catch (err) {
+    console.error("Login error:", err);
+    setError("An error occurred while logging in.");
+  }
+};
+
 
   return (
     <div className="page-container">
@@ -78,27 +87,27 @@ export default function Welcome() {
               {/* ... (all your icon items) ... */}
               <div className="icon-item">
                 <img src={uponarrival} alt="Drawing of hospital" />
-                <span>Arrival Instructions</span>
+                <span>Hospital Map</span>
               </div>
               <div className="icon-item">
                 <img src={prescription} alt="Drawing of pills" />
-                <span>Prescriptions</span>
+                <span>Medicines</span>
               </div>
               <div className="icon-item">
-                <img src={research} alt="Drawing of microscope" />
-                <span>Research</span>
+                <img src={parentPortal} alt="Logo of parentand child" />
+                <span>Parent Portal</span>
               </div>
               <div className="icon-item">
                 <img src={calendar} alt="Drawing of calendar" />
-                <span>Appointments Calendar</span>
+                <span>Appointments</span>
               </div>
               <div className="icon-item">
-                <img src={testube} alt="Drawing of testube" />
-                <span>Test Results</span>
+                <img src={patientPortal} alt="Medical record logo" />
+                <span>Patient Portal</span>
               </div>
               <div className="icon-item">
-                <img src={communicate} alt="Drawing of hospital" />
-                <span>Communicate with Doctor</span>
+                <img src={medicalTeam} alt="Logo of doctor and nurse" />
+                <span>Medical Teams</span>
               </div>
             </div>
           </div>
@@ -108,12 +117,7 @@ export default function Welcome() {
             <img src={portalLogo} alt="Childrens Portal Logo" className="hide-on-mobile" />
             <h2>Portal Login</h2>
             <form onSubmit={handleLogin}>
-            <label>Login As:</label>
-            <select value={role} onChange={(e) => setRole(e.target.value)}>
-              <option value="patient">Patient</option>
-              <option value="parent">Parent/Guardian</option>
-              <option value="doctor">Doctor/Admin</option>
-            </select>
+            
             <input
               type="text"
               value={username}
@@ -138,3 +142,5 @@ export default function Welcome() {
     </div>
   );
 }
+
+

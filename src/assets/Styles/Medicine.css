@@ -1,0 +1,39 @@
+.child-medicine-container {
+  background-color: #E7F1E0;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 700px;
+  margin: 15px auto;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.child-medicine-title {
+  color: #5DADE2;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.child-medicine-item {
+  background-color: #fff;
+  border: 2px solid #5DADE2;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.child-medicine-item p {
+  font-size: 1.2rem;
+  margin: 5px 0;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .child-medicine-container {
+    padding: 15px;
+  }
+
+  .child-medicine-item p {
+    font-size: 1rem;
+  }
+}

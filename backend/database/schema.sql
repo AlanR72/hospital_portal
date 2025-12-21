@@ -1,18 +1,14 @@
--- ============================================
--- Hospital Portal Database Schema (Fresh Start)
--- Author: Alan
--- ============================================
+-- ==========================================================
+-- Hospital Portal Database Schema (Clean Version with Appointment Notes)
+-- ==========================================================
 
--- Drop old database if exists
 DROP DATABASE IF EXISTS hospital_portal;
-
--- Create database
 CREATE DATABASE hospital_portal;
 USE hospital_portal;
 
--- =========================
+-- ==========================================================
 -- 1. MEDICAL TEAM TABLE
--- =========================
+-- ==========================================================
 CREATE TABLE medical_team (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -26,23 +22,21 @@ CREATE TABLE medical_team (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Insert medical team
-INSERT INTO medical_team (name, role, department, contact_email, contact_phone, profile_notes)
-VALUES
-('Dr. Sarah Smith', 'Doctor', 'Pediatrics', 'sarah.smith@hospital.org', '01234 111222', 'Specialist in childhood respiratory conditions.'),
-('Nurse Emma Brown', 'Nurse', 'Outpatient Care', 'emma.brown@hospital.org', '01234 333444', 'Provides follow-up and aftercare support.'),
-('Dr. James Green', 'Specialist', 'Cardiology', 'james.green@hospital.org', '01234 555666', 'Focuses on pediatric heart health.'),
-('Dr. Olivia White', 'Doctor', 'Neurology', 'olivia.white@hospital.org', '01234 777888', 'Specializes in pediatric neurological disorders.'),
-('Dr. Chloe Patel', 'Doctor', 'Oncology', 'chloe.patel@hospital.org', '01234 222333', 'Expert in childhood cancer treatments.'),
-('Dr. Ethan Jones', 'Doctor', 'Orthopedics', 'ethan.jones@hospital.org', '01234 666777', 'Treats bone and joint conditions in children.'),
-('Dr. Daniel Wilson', 'Doctor', 'Gastroenterology', 'daniel.wilson@hospital.org', '01234 121314', 'Specialist in pediatric digestive health.'),
-('Nurse Liam Turner', 'Nurse', 'Intensive Care', 'liam.turner@hospital.org', '01234 999000', 'Experienced in critical care for young patients.'),
-('Nurse Sophie Clark', 'Nurse', 'Emergency', 'sophie.clark@hospital.org', '01234 444555', 'Works in emergency response and triage.'),
-('Nurse Ava Martin', 'Nurse', 'Cardiology', 'ava.martin@hospital.org', '01234 888999', 'Supports cardiac patients and post-surgery care.');
+INSERT INTO medical_team (name, role, department, contact_email, contact_phone, profile_notes, photo_url) VALUES
+('Dr. Sarah Smith', 'Doctor', 'Pediatrics', 'sarah.smith@hospital.org', '01234 111222', 'Specialist in childhood respiratory conditions.', '/images/Staff/dr_sarah_smith.png'),
+('Dr. Olivia White', 'Doctor', 'Neurology', 'olivia.white@hospital.org', '01234 777888', 'Specializes in pediatric neurological disorders.', '/images/Staff/dr_olivia_white.png'),
+('Dr. James Green', 'Doctor', 'Cardiology', 'james.green@hospital.org', '01234 555666', 'Focuses on pediatric heart health.', '/images/Staff/dr_james_green.png'),
+('Dr. Chloe Patel', 'Doctor', 'Oncology', 'chloe.patel@hospital.org', '01234 222333', 'Expert in childhood cancer treatments.', '/images/Staff/dr_chloe_patel.png'),
+('Dr. Ethan Jones', 'Doctor', 'Orthopedics', 'ethan.jones@hospital.org', '01234 666777', 'Treats bone and joint conditions in children.', '/images/Staff/dr_ethan_jones.png'),
+('Dr. Daniel Wilson', 'Doctor', 'Gastroenterology', 'daniel.wilson@hospital.org', '01234 121314', 'Specialist in pediatric digestive health.', '/images/Staff/dr_daniel_wilson.png'),
+('Nurse Emma Brown', 'Nurse', 'Outpatient Care', 'emma.brown@hospital.org', '01234 333444', 'Provides follow-up and aftercare support.', '/images/Staff/nurse_emma_brown.png'),
+('Nurse Liam Turner', 'Nurse', 'Intensive Care', 'liam.turner@hospital.org', '01234 999000', 'Experienced in critical care for young patients.', '/images/Staff/nurse_liam_turner.png'),
+('Nurse Sophie Clark', 'Nurse', 'Emergency', 'sophie.clark@hospital.org', '01234 444555', 'Works in emergency response and triage.', '/images/Staff/nurse_sophie_clark.png'),
+('Nurse Ava Martin', 'Nurse', 'Cardiology', 'ava.martin@hospital.org', '01234 888999', 'Supports cardiac patients and post-surgery care.', '/images/Staff/nurse_ava_martin.png');
 
--- =========================
+-- ==========================================================
 -- 2. PATIENTS TABLE
--- =========================
+-- ==========================================================
 CREATE TABLE patients (
     id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
@@ -53,108 +47,143 @@ CREATE TABLE patients (
     contact_phone VARCHAR(50),
     guardian_id INT NULL,
     notes TEXT,
+    photo_url VARCHAR(255),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Insert 12 patients with correct ages for 2025
-INSERT INTO patients (first_name, last_name, dob, gender, address, contact_phone, guardian_id, notes)
-VALUES
--- 2-4 year olds (2021-11-13 → 2023-11-13)
-('Emily','Johnson','2022-06-15','Female','12 Oak Street, Glasgow','07891 223344',NULL,'Asthma – regular check-ups with Dr. Sarah Smith.'),
-('Mia','Patel','2022-08-10','Female','9 Willow Crescent, Paisley','07891 445566',NULL,'Epilepsy – managed with medication.'),
-('Sophia','White','2022-04-05','Female','19 Pine Close, Glasgow','07891 889900',NULL,'Heart murmur – monitored by Dr. James Green.'),
-('Grace','Lewis','2023-01-20','Female','8 Cedar Grove, Glasgow','07891 333444',NULL,'Post-surgery recovery – supervised by Dr. James Green.'),
+INSERT INTO patients (first_name, last_name, dob, gender, address, contact_phone, notes, photo_url) VALUES
+('Emily','Johnson','2022-06-15','Female','12 Oak Street, Glasgow','07891 223344','Asthma – regular check-ups with Dr. Sarah Smith.', '/images/Patients/emily_johnson.png'),
+('Mia','Patel','2022-08-10','Female','9 Willow Crescent, Paisley','07891 445566','Epilepsy – managed with medication.', '/images/Patients/mia_patel.png'),
+('Sophia','White','2022-04-05','Female','19 Pine Close, Glasgow','07891 889900','Heart murmur – monitored by Dr. James Green.', '/images/Patients/sophia_white.png'),
+('Grace','Lewis','2023-01-20','Female','8 Cedar Grove, Glasgow','07891 333444','Post-surgery recovery – supervised by Dr. James Green.', '/images/Patients/grace_lewis.png'),
+('Liam','Brown','2014-06-15','Male','45 Maple Avenue, Glasgow','07891 334455','Congenital heart defect – under care of Dr. James Green.', '/images/Patients/liam_brown.png'),
+('Noah','Wilson','2014-05-20','Male','33 Birch Lane, East Kilbride','07891 556677','Recovering from a broken leg – physiotherapy ongoing.', '/images/Patients/noah_wilson.png'),
+('Ava','Thompson','2015-05-18','Female','21 Cherry Road, Glasgow','07891 667788','Leukemia – ongoing treatment with Dr. Chloe Patel.', '/images/Patients/ava_thompson.png'),
+('Oliver','Evans','2015-09-04','Male','88 Spruce Street, Hamilton','07891 778899','Ulcerative colitis – monitored by Dr. Daniel Wilson.', '/images/Patients/oliver_evans.png'),
+('Benjamin','Hall','2014-08-30','Male','4 Hawthorn Drive, Glasgow','07891 990011','Fractured arm – follow-up with Dr. Ethan Jones.', '/images/Patients/benjamin_hall.png'),
+('Lucas','Scott','2015-06-11','Male','15 Poplar Street, Glasgow','07891 222333','Food allergies – advised by Dr. Sarah Smith.', '/images/Patients/lucas_scott.png'),
+('Isabella','King','2014-12-15','Female','62 Rowan Way, Glasgow','07891 111222','Chronic migraines – under review by Dr. Olivia White.', '/images/Patients/isabella_king.png'),
+('Jacob','Moore','2015-03-19','Male','27 Elm Road, Glasgow','07891 444555','Sports injury – attending rehab with Dr. Ethan Jones.', '/images/Patients/jacob_moore.png');
 
--- 9-12 year olds (2013-11-13 → 2016-11-13)
-('Liam','Brown','2014-06-15','Male','45 Maple Avenue, Glasgow','07891 334455',NULL,'Congenital heart defect – under care of Dr. James Green.'),
-('Noah','Wilson','2014-05-20','Male','33 Birch Lane, East Kilbride','07891 556677',NULL,'Recovering from a broken leg – physiotherapy ongoing.'),
-('Ava','Thompson','2015-05-18','Female','21 Cherry Road, Glasgow','07891 667788',NULL,'Leukemia – ongoing treatment with Dr. Chloe Patel.'),
-('Oliver','Evans','2015-09-04','Male','88 Spruce Street, Hamilton','07891 778899',NULL,'Ulcerative colitis – monitored by Dr. Daniel Wilson.'),
-('Benjamin','Hall','2014-08-30','Male','4 Hawthorn Drive, Glasgow','07891 990011',NULL,'Fractured arm – follow-up with Dr. Ethan Jones.'),
-('Lucas','Scott','2015-06-11','Male','15 Poplar Street, Glasgow','07891 222333',NULL,'Food allergies – advised by Dr. Sarah Smith.'),
-('Isabella','King','2014-12-15','Female','62 Rowan Way, Glasgow','07891 111222',NULL,'Chronic migraines – under review by Dr. Olivia White.'),
-('Jacob','Moore','2015-03-19','Male','27 Elm Road, Glasgow','07891 444555',NULL,'Sports injury – attending rehab with Dr. Ethan Jones.');
-
--- =========================
--- 3. USERS TABLE
--- =========================
+-- ==========================================================
+-- 3. USERS TABLE (medical team, patients, parents)
+-- ==========================================================
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(100) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
-    role ENUM('patient','parent','doctor','nurse','admin') NOT NULL DEFAULT 'patient',
+    role ENUM('patient','parent','doctor','nurse','admin') NOT NULL,
     patient_id INT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CONSTRAINT fk_patient_user FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE SET NULL ON UPDATE CASCADE
+    FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE SET NULL
 );
 
--- Insert users for patients, parents, and staff (all passwords: Password123!)
+-- Medical team users
+INSERT INTO users (username, password_hash, role) VALUES
+('dr_sarah_smith','Password123!','doctor'),
+('dr_olivia_white','Password123!','doctor'),
+('dr_james_green','Password123!','doctor'),
+('dr_chloe_patel','Password123!','doctor'),
+('dr_ethan_jones','Password123!','doctor'),
+('dr_daniel_wilson','Password123!','doctor'),
+('nurse_emma_brown','Password123!','nurse'),
+('nurse_liam_turner','Password123!','nurse'),
+('nurse_sophie_clark','Password123!','nurse'),
+('nurse_ava_martin','Password123!','nurse');
+
+-- Patient users
 INSERT INTO users (username, password_hash, role, patient_id)
-VALUES
--- Parents (guardian accounts)
-('john_johnson','Password123!','parent',NULL),
-('rachel_brown','Password123!','parent',NULL),
-('anita_patel','Password123!','parent',NULL),
-('mark_wilson','Password123!','parent',NULL),
+SELECT LOWER(CONCAT(first_name,'_',last_name)), 'Password123!', 'patient', id
+FROM patients;
 
--- Staff accounts
-('dr_smith','Password123!','doctor',NULL),
-('nurse_brown','Password123!','nurse',NULL),
-('dr_green','Password123!','doctor',NULL),
-('dr_white','Password123!','doctor',NULL),
-('dr_patel','Password123!','doctor',NULL),
-('dr_jones','Password123!','doctor',NULL),
+-- Parent users
+INSERT INTO users (username, password_hash, role) VALUES
+('brian_johnson','Password123!','parent'),
+('raj_patel','Password123!','parent'),
+('james_white','Password123!','parent'),
+('michael_lewis','Password123!','parent'),
+('david_brown','Password123!','parent'),
+('peter_wilson','Password123!','parent'),
+('mark_thompson','Password123!','parent'),
+('steven_evans','Password123!','parent'),
+('john_hall','Password123!','parent'),
+('alan_scott','Password123!','parent'),
+('robert_king','Password123!','parent'),
+('kevin_moore','Password123!','parent');
 
--- Patient accounts
-('emily_johnson','Password123!','patient',1),
-('mia_patel','Password123!','patient',2),
-('sophia_white','Password123!','patient',3),
-('grace_lewis','Password123!','patient',4),
-('liam_brown','Password123!','patient',5),
-('noah_wilson','Password123!','patient',6),
-('ava_thompson','Password123!','patient',7),
-('oliver_evans','Password123!','patient',8),
-('benjamin_hall','Password123!','patient',9),
-('lucas_scott','Password123!','patient',10),
-('isabella_king','Password123!','patient',11),
-('jacob_moore','Password123!','patient',12);
+-- ==========================================================
+-- 4. PARENT-CHILD LINKS
+-- ==========================================================
+CREATE TABLE parent_child (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    parent_user_id INT NOT NULL,
+    patient_id INT NOT NULL,
+    relationship VARCHAR(50) DEFAULT 'parent',
+    FOREIGN KEY (parent_user_id) REFERENCES users(id),
+    FOREIGN KEY (patient_id) REFERENCES patients(id)
+);
 
--- =========================
--- 4. PATIENT_TEAM TABLE
--- =========================
+INSERT INTO parent_child (parent_user_id, patient_id) VALUES
+((SELECT id FROM users WHERE username='brian_johnson'), 1),
+((SELECT id FROM users WHERE username='raj_patel'), 2),
+((SELECT id FROM users WHERE username='james_white'), 3),
+((SELECT id FROM users WHERE username='michael_lewis'), 4),
+((SELECT id FROM users WHERE username='david_brown'), 5),
+((SELECT id FROM users WHERE username='peter_wilson'), 6),
+((SELECT id FROM users WHERE username='mark_thompson'), 7),
+((SELECT id FROM users WHERE username='steven_evans'), 8),
+((SELECT id FROM users WHERE username='john_hall'), 9),
+((SELECT id FROM users WHERE username='alan_scott'), 10),
+((SELECT id FROM users WHERE username='robert_king'), 11),
+((SELECT id FROM users WHERE username='kevin_moore'), 12);
+
+-- ==========================================================
+-- 5. PATIENT TEAM (Doctors 1:1, Nurses 1:2)
+-- ==========================================================
 CREATE TABLE patient_team (
     id INT AUTO_INCREMENT PRIMARY KEY,
     patient_id INT NOT NULL,
     team_member_id INT NOT NULL,
-    relationship VARCHAR(50),
+    relationship VARCHAR(50) DEFAULT 'Primary Doctor',
     notes TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CONSTRAINT fk_pt_patient FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_pt_team FOREIGN KEY (team_member_id) REFERENCES medical_team(id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (patient_id) REFERENCES patients(id),
+    FOREIGN KEY (team_member_id) REFERENCES users(id)
 );
 
--- Link patients to doctors/nurses
-INSERT INTO patient_team (patient_id, team_member_id, relationship, notes)
-VALUES
-(1,1,'Primary Doctor','Asthma care'),
-(2,3,'Cardiologist','Heart condition'),
-(3,4,'Neurologist','Epilepsy management'),
-(4,6,'Orthopedic Doctor','Fracture rehab'),
-(5,5,'Oncologist','Chemotherapy treatment'),
-(6,7,'Gastroenterologist','Ulcerative colitis monitoring'),
-(7,3,'Cardiologist','Heart murmur follow-up'),
-(8,6,'Orthopedic Doctor','Arm recovery'),
-(9,3,'Cardiologist','Fractured arm follow-up'),
-(10,1,'Primary Doctor','Allergy management'),
-(11,4,'Neurologist','Migraine management'),
-(12,6,'Orthopedic Doctor','Sports injury rehab');
+-- Assign doctors
+INSERT INTO patient_team (patient_id, team_member_id, relationship)
+SELECT p.id, u.id, 'Primary Doctor'
+FROM patients p
+JOIN users u ON 
+    (p.id = 1 AND u.username = 'dr_sarah_smith') OR
+    (p.id = 2 AND u.username = 'dr_olivia_white') OR
+    (p.id = 3 AND u.username = 'dr_james_green') OR
+    (p.id = 4 AND u.username = 'dr_ethan_jones') OR
+    (p.id = 5 AND u.username = 'dr_james_green') OR
+    (p.id = 6 AND u.username = 'dr_ethan_jones') OR
+    (p.id = 7 AND u.username = 'dr_chloe_patel') OR
+    (p.id = 8 AND u.username = 'dr_daniel_wilson') OR
+    (p.id = 9 AND u.username = 'dr_ethan_jones') OR
+    (p.id = 10 AND u.username = 'dr_sarah_smith') OR
+    (p.id = 11 AND u.username = 'dr_olivia_white') OR
+    (p.id = 12 AND u.username = 'dr_ethan_jones');
 
--- =========================
--- 5. APPOINTMENTS TABLE
--- =========================
+-- Assign nurses (each nurse for 2 patients)
+INSERT INTO patient_team (patient_id, team_member_id, relationship)
+SELECT p.id, u.id, 'Nurse'
+FROM patients p
+JOIN users u ON 
+    (u.username = 'nurse_emma_brown' AND p.id IN (1,2,7,10)) OR
+    (u.username = 'nurse_liam_turner' AND p.id IN (3,4,8,11)) OR
+    (u.username = 'nurse_sophie_clark' AND p.id IN (5,6,9,12));
+
+-- ==========================================================
+-- 6. APPOINTMENTS
+-- ==========================================================
 CREATE TABLE appointments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     patient_id INT NOT NULL,
@@ -166,29 +195,33 @@ CREATE TABLE appointments (
     notes TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CONSTRAINT fk_appointment_patient FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_appointment_doctor FOREIGN KEY (doctor_id) REFERENCES medical_team(id) ON DELETE SET NULL ON UPDATE CASCADE
+    FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE,
+    FOREIGN KEY (doctor_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
--- Insert appointments
-INSERT INTO appointments (patient_id, doctor_id, appointment_date, location, purpose, status, notes)
-VALUES
-(1,1,'2025-03-20 10:30:00','Room 201 - Pediatrics','Asthma review','completed','Condition stable'),
-(2,3,'2025-05-18 14:00:00','Room 304 - Cardiology','Heart check-up','completed','Improved condition'),
-(3,4,'2025-10-01 09:15:00','Room 220 - Neurology','Epilepsy consultation','upcoming','EEG test scheduled'),
-(4,6,'2025-02-12 11:00:00','Orthopedics Ward','Leg physiotherapy','completed','Excellent recovery'),
-(5,5,'2025-11-15 13:30:00','Oncology Suite','Chemotherapy session','upcoming','Continue treatment plan'),
-(6,7,'2025-09-10 10:00:00','Room 412 - Gastroenterology','Ulcerative colitis review','completed','Medication adjusted'),
-(7,3,'2025-11-10 15:30:00','Cardiology Wing','Heart murmur follow-up','upcoming','Check ECG readings'),
-(8,6,'2025-06-20 09:45:00','Orthopedics Ward','Arm check-up','completed','Full mobility restored'),
-(9,3,'2025-10-22 10:30:00','Cardiology Clinic','Fractured arm follow-up','completed','Recovery proceeding well'),
-(10,1,'2025-07-05 14:45:00','Pediatrics Wing','Allergy test','completed','Nut sensitivity identified'),
-(11,4,'2025-12-02 11:15:00','Neurology Clinic','Migraine management','upcoming','Adjust medication'),
-(12,6,'2025-08-30 13:00:00','Physio Room 2','Sports injury rehab','completed','Cleared for light activity');
+INSERT INTO appointments (patient_id, doctor_id, appointment_date, location, purpose, notes)
+SELECT p.id, pt.team_member_id, DATE_ADD('2025-12-01', INTERVAL p.id DAY), CONCAT('Room ', p.id), 'Checkup',
+    CASE p.id
+        WHEN 1 THEN 'Asthma review'
+        WHEN 2 THEN 'Epilepsy follow-up'
+        WHEN 3 THEN 'Heart murmur check'
+        WHEN 4 THEN 'Post-surgery assessment'
+        WHEN 5 THEN 'Congenital heart monitoring'
+        WHEN 6 THEN 'Physiotherapy progress'
+        WHEN 7 THEN 'Leukemia treatment review'
+        WHEN 8 THEN 'Ulcerative colitis check'
+        WHEN 9 THEN 'Fractured arm follow-up'
+        WHEN 10 THEN 'Food allergy assessment'
+        WHEN 11 THEN 'Migraine review'
+        WHEN 12 THEN 'Sports injury rehab'
+        ELSE 'General checkup'
+    END
+FROM patients p
+JOIN patient_team pt ON pt.patient_id = p.id AND pt.relationship='Primary Doctor';
 
--- =========================
--- 6. MEDICINES TABLE
--- =========================
+-- ==========================================================
+-- 7. MEDICINES
+-- ==========================================================
 CREATE TABLE medicines (
     id INT AUTO_INCREMENT PRIMARY KEY,
     patient_id INT NOT NULL,
@@ -196,26 +229,24 @@ CREATE TABLE medicines (
     dosage VARCHAR(50) NOT NULL,
     frequency VARCHAR(100) NOT NULL,
     start_date DATE NOT NULL,
-    end_date DATE DEFAULT NULL,
+    end_date DATE,
     prescribed_by VARCHAR(100),
     notes TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CONSTRAINT fk_medicine_patient FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE
 );
 
--- Insert medicines
-INSERT INTO medicines (patient_id, medicine_name, dosage, frequency, start_date, end_date, prescribed_by, notes)
-VALUES
-(1,'Salbutamol Inhaler','2 puffs','As needed','2025-01-10',NULL,'Dr. Sarah Smith','Asthma control'),
-(2,'Atenolol','25mg','Once daily','2024-12-01',NULL,'Dr. James Green','Heart condition management'),
-(3,'Levetiracetam','250mg','Twice daily','2025-03-05',NULL,'Dr. Olivia White','Epilepsy treatment'),
-(4,'Paracetamol','500mg','Every 6 hours','2025-02-15','2025-03-01','Dr. Ethan Jones','Pain relief post-fracture'),
-(5,'Methotrexate','10mg','Weekly','2025-06-01',NULL,'Dr. Chloe Patel','Chemotherapy maintenance'),
-(6,'Mesalazine','500mg','Three times daily','2024-11-20',NULL,'Dr. Daniel Wilson','Ulcerative colitis'),
-(7,'Propranolol','10mg','Twice daily','2025-09-10',NULL,'Dr. James Green','Heart murmur control'),
-(8,'Ibuprofen','200mg','Every 8 hours','2025-06-05','2025-06-15','Dr. Ethan Jones','Pain management'),
-(9,'Amitriptyline','10mg','Nightly','2025-10-20',NULL,'Dr. Olivia White','Chronic migraine management'),
-(10,'Cetirizine','10mg','Once daily','2025-07-10',NULL,'Dr. Sarah Smith','Allergy prevention'),
-(11,'Furosemide','20mg','Once daily','2025-04-01',NULL,'Dr. James Green','Heart surgery recovery'),
-(12,'Diclofenac Gel','2g','Twice daily','2025-03-25','2025-04-10','Dr. Ethan Jones','Sports injury inflammation');
+INSERT INTO medicines (patient_id, medicine_name, dosage, frequency, start_date, end_date, prescribed_by, notes) VALUES
+(1, 'Albuterol', '2 puffs', 'Every 4 hours', '2025-11-01', '2025-12-01', 'Dr. Sarah Smith', 'For asthma management.'),
+(2, 'Levetiracetam', '250 mg', 'Twice daily', '2025-11-05', NULL, 'Dr. James Green', 'Epilepsy maintenance dose.'),
+(3, 'Propranolol', '10 mg', 'Once daily', '2025-11-07', '2025-12-07', 'Dr. James Green', 'For heart murmur management.'),
+(4, 'Ibuprofen', '100 mg', 'Three times daily', '2025-11-10', '2025-11-20', 'Dr. James Green', 'Post-surgery pain relief.'),
+(5, 'Furosemide', '20 mg', 'Once daily', '2025-11-01', NULL, 'Dr. James Green', 'For congenital heart condition.'),
+(6, 'Paracetamol', '250 mg', 'Every 6 hours', '2025-11-08', '2025-11-18', 'Dr. Ethan Jones', 'Pain relief during physiotherapy.'),
+(7, 'Methotrexate', '5 mg', 'Weekly', '2025-11-01', NULL, 'Dr. Chloe Patel', 'Leukemia treatment.'),
+(8, 'Mesalazine', '500 mg', 'Three times daily', '2025-11-03', NULL, 'Dr. Daniel Wilson', 'Ulcerative colitis maintenance.'),
+(9, 'Amoxicillin', '250 mg', 'Three times daily', '2025-11-10', '2025-11-17', 'Dr. Ethan Jones', 'Post-fracture infection prevention.'),
+(10, 'Cetirizine', '10 mg', 'Once daily', '2025-11-05', '2025-12-05', 'Dr. Sarah Smith', 'For food allergy symptom control.'),
+(11, 'Sumatriptan', '50 mg', 'As needed', '2025-11-01', NULL, 'Dr. Olivia White', 'Migraine management.'),
+(12, 'Diclofenac', '25 mg', 'Twice daily', '2025-11-06', '2025-11-20', 'Dr. Ethan Jones', 'Sports injury pain control.');

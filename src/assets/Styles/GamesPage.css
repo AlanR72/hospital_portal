@@ -1,0 +1,78 @@
+/* Overall page styling */
+.games-page {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  padding: 20px;
+}
+
+/* Main heading */
+.games-page h1 {
+  text-align: center;
+  color: #333;
+}
+
+/* Grid layout for games */
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 per row */
+  gap: 20px;
+  margin-top: 30px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .games-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 per row on tablets */
+  }
+}
+
+@media (max-width: 600px) {
+  .games-grid {
+    grid-template-columns: 1fr; /* 1 per row on mobile */
+  }
+}
+
+/* Individual game card */
+.game-card {
+  background: rgb(116, 116, 252);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-decoration: none; /* removes link underline */
+  color: inherit;        /* keeps text consistent */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;      /* keeps image inside rounded corners */
+}
+
+/* Hover effect */
+.game-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+}
+
+/* Game images */
+.game-card img {
+  width: 100%;
+  height: 200px;       /* consistent height */
+  object-fit: cover;   /* fills box neatly */
+  border-radius: 0;    /* matches card edges */
+  flex-shrink: 0;
+}
+
+/* Game title inside card */
+.game-card h2 {
+  padding: 10px;
+  font-size: 1.1rem;
+  color: #002138;
+}
+
+/* Section heading (like "Recommended Games") */
+.recommended-heading {
+  grid-column: 1 / -1; /* spans full width of grid */
+  text-align: center;
+  margin: 20px 0;
+  font-size: 1.5rem;
+  color: #444;
+}

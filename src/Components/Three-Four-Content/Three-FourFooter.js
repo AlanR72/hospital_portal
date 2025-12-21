@@ -11,34 +11,34 @@ import XLogo from '../../assets/images/x.png'
 import TicTokLogo from '../../assets/images/tiktok.png'
 
 
-export default function Footer() {
+export default function Footer({setView}) {
   return (
     //The <footer> ~HTML5 semantic tag is used for better accessibility and SEO.
     <footer className='footer-container'>
 
       {/* Group 1: Hospital Map */}
-      <a href="/hospital-map" className="footer-item">
+      <div className="footer-item" onClick={() => setView("Map")}>
         <img src={HospitalMap} alt="Illustration of Hospital" />
         <span>Hospital Map</span>
-      </a>
+      </div>
 
       {/* Group 2: Main Menu Items */}
-      <a href="/games" className="footer-item">
-        <img src={GamesLogo} alt="Snakes and Ladders illustration" />
+      <div className="footer-item" onClick={() => setView("Games")}>
+        <img src={GamesLogo} alt="Snakes and Ladders" />
         <span>Games</span>
-      </a>
-      <a href="/videos" className="footer-item">
-        <img src={FunVideos} alt="Illustration of videos" />
+      </div>
+      <div className="footer-item" onClick={() => setView("Videos")}>
+        <img src={FunVideos} alt="YouTube style Icon" />
         <span>Fun Videos</span>
-      </a>
-      <a href="/activities" className="footer-item">
-        <img src={Activities} alt="Illustration of girl" />
+      </div>
+      <div className="footer-item" onClick={() => setView("Activities")}>
+        <img src={Activities} alt="Illustration of a girl" />
         <span>Activities</span>
-      </a>
-      <a href="/quiz" className="footer-item">
-        <img src={QuizLogo} alt="Illustration of quiz questions" />
+      </div>
+      <div className="footer-item" onClick={() => setView("Quiz")}>
+        <img src={QuizLogo} alt="Quiz Board" />
         <span>Quiz</span>
-      </a>
+      </div>
 
       {/* Group 3: Social Media Icons. Placed within a div for easier styling. */}
       <div className="social-media-icons">

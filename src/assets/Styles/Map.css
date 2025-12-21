@@ -1,0 +1,132 @@
+/* MAP WRAPPER */
+.map-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+/* MAP CONTAINER */
+.map-container {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+}
+
+/* MAP IMAGE */
+.map-image {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* FLOATING KEY */
+.department-key {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(255,255,255,0.92);
+  padding: 12px;
+  border-radius: 10px;
+  width: 160px;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.department-key h3 {
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.department-item {
+  padding: 6px 10px;
+  margin: 4px 0;
+  cursor: pointer;
+  background: #f2f2f2;
+  border-radius: 6px;
+  font-size: 13px;
+  transition: background 0.2s ease, transform 0.15s ease;
+  border-left: 4px solid transparent;
+}
+
+.department-item:hover,
+.department-item.active {
+  background: #e0e0e0;
+  transform: scale(1.03);
+}
+
+/* MARKER */
+.marker {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: top 0.6s ease, left 0.6s ease;
+}
+
+.peg-head {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 5px solid white;           
+  box-shadow: 0 0 12px rgba(0,0,0,0.5), 0 0 8px rgba(255,255,255,0.7);
+  background-color: inherit;
+}
+
+.peg-body {
+  width: 6px;
+  height: 40px;
+}
+
+/* ACTIVE MARKER */
+.active-marker {
+  z-index: 20;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .department-key {
+    width: 130px;
+    padding: 10px;
+    top: 8px;
+    left: 8px;
+  }
+
+  .department-item {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .department-key {
+    width: 70px;        /* smaller width */
+    padding: 6px;         /* less padding */
+    top: 6px;
+    left: 6px;
+  }
+
+  .department-key h3 {
+    font-size: 10px;      /* smaller title */
+    margin-bottom: 4px;
+  }
+
+  .department-item {
+    font-size: 10px;      /* smaller items */
+    padding: 4px 6px;     
+    margin: 2px 0;        /* less spacing */
+  }
+
+  .peg-head {
+    width: 20px;
+    height: 20px;
+  }
+
+  .peg-body {
+    width: 5px;
+    height: 24px;
+  }
+
+}

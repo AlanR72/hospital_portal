@@ -1,21 +1,93 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
 import ThreeFourHeader from "../Components/Three-Four-Content/Three-FourHeader";
 import ThreeFourContent from "../Components/Three-Four-Content/Three-FourContent";
 import ThreeFourFooter from "../Components/Three-Four-Content/Three-FourFooter";
+import ThreeFourMedicine from "../Components/Three-Four-Content/Three-FourMedicine";
+import ThreeFourMedicalTeam from "../Components/Three-Four-Content/Three-FourMedicalTeam";
+import ThreeFourCalendar from "../Components/Three-Four-Content/Three-FourCalendar";
+import ThreeFourGames from "../Components/Three-Four-Content/Three-FourGames";
+import ThreeFourVideos from "../Components/Three-Four-Content/Three-FourVideos";
+import ThreeFourActivities from "../Components/Three-Four-Content/Three-FourActivities";
+import ThreeFourQuiz from "../Components/Three-Four-Content/Three-FourQuiz";
 
 import NineTwelveHeader from "../Components/Nine-Twelve-Content/Nine-TwelveHeader";
 import NineTwelveContent from "../Components/Nine-Twelve-Content/Nine-TwelveContent";
 import NineTwelveFooter from "../Components/Nine-Twelve-Content/Nine-TwelveFooter";
+import NineTwelveMedicine from "../Components/Nine-Twelve-Content/Nine-TwelveMedicine";
+import NineTwelveMedicalTeam from "../Components/Nine-Twelve-Content/Nine-TwelveMedicalTeam";
+import NineTwelveCalendar from "../Components/Nine-Twelve-Content/Nine-TwelveCalendar";
+import NineTwelveGames from "../Components/Nine-Twelve-Content/Nine-TwelveGames";
+import NineTwelveVideos from "../Components/Nine-Twelve-Content/Nine-TwelveVideos";
+import NineTwelveActivities from "../Components/Nine-Twelve-Content/Nine-TwelveActivities";
+import NineTwelveQuiz from "../Components/Nine-Twelve-Content/Nine-TwelveQuiz";
+
+import HospitalMap from "../Components/Map";
 
 const Portal = () => {
-  const ageGroup = localStorage.getItem("age_group"); // set at login
+  const ageGroup = localStorage.getItem("age_group");
+  const patientId = Number(localStorage.getItem("patientId"));
 
+  const [view, setView] = useState("Content");
+  const [patient, setPatient] = useState(null);
+
+  // Fetch patient record
+  useEffect(() => {
+    async function fetchPatient() {
+      try {
+        const res = await fetch(`http://localhost:4000/patients/${patientId}`);
+        const data = await res.json();
+        setPatient(data);
+      } catch (err) {
+        console.error("Error fetching patient:", err);
+      }
+    }
+
+    if (patientId) fetchPatient();
+  }, [patientId]);
+
+  if (!patientId) {
+    return <p>Error: No patient ID found. Please log in again.</p>;
+  }
+
+  // Component maps for both age groups
+  const ThreeFourComponents = {
+    Medicines: <ThreeFourMedicine patientId={patientId} />,
+    MedicalTeam: <ThreeFourMedicalTeam patientId={patientId} />,
+    Calendar: <ThreeFourCalendar patientId={patientId} />,
+    Content: <ThreeFourContent patient={patient} />,
+    Map: <HospitalMap />,
+    Games: <ThreeFourGames />,
+    Videos: <ThreeFourVideos />,
+    Activities: <ThreeFourActivities setView={setView} patient={patient} />,
+    Quiz: <ThreeFourQuiz patient={patient} />,
+  };
+
+  const NineTwelveComponents = {
+    Medicines: <NineTwelveMedicine patientId={patientId} />,
+    MedicalTeam: <NineTwelveMedicalTeam patientId={patientId} />,
+    Calendar: <NineTwelveCalendar patientId={patientId} />,
+    Content: <NineTwelveContent patientId={patientId} />,
+    Map: <HospitalMap />,
+    Games: <NineTwelveGames />,
+    Videos: <NineTwelveVideos />,
+    Activities: <NineTwelveActivities setView={setView} patient={patient} />,
+    Quiz: <NineTwelveQuiz patient={patient} />,
+  };
+
+  const renderContent = () => {
+    if (ageGroup === "2-4") return ThreeFourComponents[view];
+    if (ageGroup === "9-12") return NineTwelveComponents[view];
+    return <p>No content available.</p>;
+  };
+
+  // ⬇ Render layout based on age group
   if (ageGroup === "2-4") {
     return (
       <div>
-        <ThreeFourHeader />
-        <ThreeFourContent />
-        <ThreeFourFooter />
+        <ThreeFourHeader setView={setView} />
+        {renderContent()}
+        <ThreeFourFooter setView={setView} />
       </div>
     );
   }
@@ -23,9 +95,9 @@ const Portal = () => {
   if (ageGroup === "9-12") {
     return (
       <div>
-        <NineTwelveHeader />
-        <NineTwelveContent />
-        <NineTwelveFooter />
+        <NineTwelveHeader setView={setView} />
+        {renderContent()}
+        <NineTwelveFooter setView={setView} />
       </div>
     );
   }
