@@ -1,0 +1,89 @@
+/* --- Main page container --- */
+.videos-page {
+    padding: 2rem;
+    background-color: #f0f8ff;
+    /* A soft, sky-blue background color */
+    min-height: 100vh;
+    text-align: center;
+}
+
+/* --- Main page title --- */
+.videos-page h1 {
+    font-size: clamp(2rem, 6vw, 3rem);
+    /* Responsive font size for the title */
+    color: #ff6347;
+    /* A bright coral color */
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    /* Soft shadow to make it pop */
+}
+
+/* --- The grid containing all video cards --- */
+.videos-grid {
+    display: grid;
+    /* 
+    'repeat(auto-fit, minmax(250px, 1fr))' is a powerful CSS Grid technique:
+    - It creates as many columns as will fit on the screen.
+    - Each column will have a minimum width of 250px.
+    - The `1fr` allows the columns to stretch and fill any available space.
+    - This makes the grid fully responsive without needing media queries!
+  */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    /* The space between the cards */
+    max-width: 1200px;
+    margin: 0 auto;
+    /* Centers the grid on the page */
+}
+
+/* --- Style for each individual video card --- */
+.video-card {
+    background-color: #ffffff;
+    /* White background */
+    border-radius: 20px;
+    /* Very rounded corners, friendly for kids */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    /* A more pronounced shadow for a "floating" effect */
+    text-decoration: none;
+    /* Removes the underline from links */
+    overflow: hidden;
+    /* Ensures the image doesn't bleed past the rounded corners */
+
+    display: flex;
+    flex-direction: column;
+    /* Stacks the image and text vertically */
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Smooth transition for the hover effect */
+}
+
+/* --- Hover effect for the cards --- */
+.video-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    /* The card lifts up and gets slightly bigger */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    /* The shadow becomes more intense */
+}
+
+/* --- Style for the thumbnail image --- */
+.video-card img {
+    width: 100%;
+    height: 200px;
+    /* A fixed height for all images */
+    object-fit: cover;
+    /* Ensures the image covers the space without being distorted */
+}
+
+/* --- Style for the video title --- */
+.video-card h2 {
+    font-size: 1.2rem;
+    color: #333;
+    padding: 1rem;
+    margin: 0;
+    /* 'flex-grow: 1' and 'display: flex' on the h2 are a trick to vertically center the text,
+     even if the text wraps to more than one line. */
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
